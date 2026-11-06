@@ -5,8 +5,13 @@ import { useEffect } from 'react';
 /** Opts the page into the `.js .rv` reveal and adds `in` as each `.rv` scrolls into view. */
 export function Reveal() {
   useEffect(() => {
-    document.documentElement.classList.add('js');
     const els = document.querySelectorAll('.rv');
+    // Mark what is already on screen before `js` arrives, so it never dips to opacity 0.
+    els.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+    });
+    document.documentElement.classList.add('js');
     if (!('IntersectionObserver' in window)) {
       els.forEach((el) => el.classList.add('in'));
       return;

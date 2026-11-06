@@ -159,6 +159,7 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .now{position:absolute;top:4px;bottom:4px;width:2px;background:var(--n900);border-radius:2px}
 .now::before{content:attr(data-t);position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:11.5px;line-height:16px;font-weight:700;background:var(--n900);color:#fff;padding:2px 7px;border-radius:6px;white-space:nowrap}
+.h-today .track,.ticks{direction:ltr}
 .ticks{display:flex;justify-content:space-between;font-size:12px;line-height:16px;color:var(--n500);margin:4px 2px 0;font-variant-numeric:tabular-nums}
 .t-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
 .t-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--r-sm);background:var(--b50);font-size:15px;line-height:22px;color:var(--n700)}

@@ -1,18 +1,39 @@
 import { easeInOutCubic, scrollDuration } from '@/lib/scroll';
 
-/** Eased scroll to a page Y (spec §7.5). Runs under reduced motion too: the user starts it. */
-export function smoothTo(y: number): void {
+let raf = 0;
+let cancelRunning: (() => void) | null = null;
+
+/**
+ * Eased scroll to a page Y (spec §7.5). Runs under reduced motion too: the user starts it.
+ * A new call, a wheel or a touch cancels the running one; `onDone` runs only if the scroll finished.
+ */
+export function smoothTo(y: number, onDone?: () => void): void {
+  cancelRunning?.();
   const start = window.scrollY;
   const dist = y - start;
   const dur = scrollDuration(dist);
   let t0: number | null = null;
+  const stop = () => {
+    cancelAnimationFrame(raf);
+    window.removeEventListener('wheel', stop);
+    window.removeEventListener('touchstart', stop);
+    if (cancelRunning === stop) cancelRunning = null;
+  };
+  cancelRunning = stop;
+  window.addEventListener('wheel', stop, { passive: true });
+  window.addEventListener('touchstart', stop, { passive: true });
   const step = (ts: number) => {
     if (t0 === null) t0 = ts;
     const p = Math.min(1, (ts - t0) / dur);
     window.scrollTo(0, start + dist * easeInOutCubic(p));
-    if (p < 1) requestAnimationFrame(step);
+    if (p < 1) {
+      raf = requestAnimationFrame(step);
+    } else {
+      stop();
+      onDone?.();
+    }
   };
-  requestAnimationFrame(step);
+  raf = requestAnimationFrame(step);
 }
 
 /** Sticky header height plus breathing room, so targets land below the header. */

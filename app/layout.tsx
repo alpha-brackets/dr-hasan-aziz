@@ -15,6 +15,7 @@ const gulzar = Gulzar({
   weight: '400',
   variable: '--font-gulzar',
   display: 'swap',
+  preload: false,
 });
 
 export const metadata: Metadata = {

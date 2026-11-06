@@ -58,7 +58,7 @@ export function ChatDemo({ name, status, me1, me2, them, times }: ChatDemoProps)
   }, []);
 
   return (
-    <div className="phone" ref={root}>
+    <div className="phone" ref={root} aria-hidden="true">
       <div className="screen">
         <div className="wa-top">
           <span className="av" />
