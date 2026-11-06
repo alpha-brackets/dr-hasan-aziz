@@ -429,7 +429,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
   .h-statement strong{font-size:22px;line-height:30px}
   .h-conds span{height:32px;font-size:13.5px;padding:0 11px}
   .h-ctas .btn{flex:1 1 100%}
-  .h-today{padding:22px 18px}
+  .h-today{padding:22px 18px}.seg-t{display:none}
   .t-foot,.ribbon,.cl-grid,.rv-grid,.ex-list{grid-template-columns:1fr}
   .ribbon{gap:12px}
   .tx-grid{grid-template-columns:1fr 1fr;gap:10px}

@@ -171,6 +171,7 @@ export interface SiteContent {
     heading: string;
     lead: string;
     lead2: string;
+    photoBadge: string; // label on the About photo card
     facts: { value: string; label: string }[];
     qualHeading: string;
     quals: { title: string; chip: string; where: string }[];
@@ -308,6 +309,7 @@ const en: SiteContent = {
     lead:
       'Dr. Hasan Aziz is a consultant physician at Dua Hospital and Hayat Medical Center, Multan. He treats adults for everyday illness, such as fever, cough and infections, and for long-term conditions, such as diabetes and high blood pressure.',
     lead2: 'If you need a surgeon or another specialist, he explains why and guides you to the right one.',
+    photoBadge: 'Clinical Consultation',
     facts: [
       { value: 'Adults', label: 'Adult medicine' },
       { value: 'Mon – Sat', label: 'Closed on Sunday' },
@@ -492,6 +494,7 @@ const ur: SiteContent = {
     lead:
       'ڈاکٹر حسن عزیز دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان میں کنسلٹنٹ فزیشن ہیں۔ وہ بڑوں کا علاج کرتے ہیں: روزمرہ بیماریوں جیسے بخار، کھانسی اور انفیکشن، اور لمبے عرصے کی بیماریاں جیسے شوگر اور ہائی بلڈ پریشر۔',
     lead2: 'اگر آپ کو سرجن یا کسی اور سپیشلسٹ کی ضرورت ہو تو وہ وجہ سمجھاتے ہیں اور صحیح ڈاکٹر تک پہنچنے میں مدد کرتے ہیں۔',
+    photoBadge: 'کلینیکل معائنہ و مشاورت',
     facts: [
       { value: 'بالغ افراد', label: 'بڑوں کی بیماریوں کا علاج' },
       { value: 'پیر تا ہفتہ', label: 'اتوار کو بند' },

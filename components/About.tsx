@@ -32,7 +32,7 @@ export function About({ c }: { c: SiteContent }) {
             />
             <span className="about-photo-badge">
               <Icon name="steth" />
-              <span>{a.heading.includes('سنتے') ? 'کلینیکل معائنہ و مشاورت' : 'Clinical Consultation'}</span>
+              <span>{a.photoBadge}</span>
             </span>
           </div>
           <div className="facts">

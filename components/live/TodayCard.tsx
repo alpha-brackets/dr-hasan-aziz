@@ -45,7 +45,9 @@ export function TodayCard({ locale }: { locale: Locale }) {
                 width: `${trackPercent(x.closeMin) - trackPercent(x.openMin)}%`,
               }}
             >
-              {name(x)}
+              <span className="seg-t">
+                {formatClock(x.openMin)} – {formatClock(x.closeMin)}
+              </span>
             </div>
           ))}
           {now && now.minutes >= TRACK_START && now.minutes <= TRACK_END && (
