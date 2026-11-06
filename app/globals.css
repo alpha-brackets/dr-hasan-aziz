@@ -464,8 +464,8 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 [dir=rtl] .to-top{right:auto;left:24px}
 @media (max-width:760px){[dir=rtl] .to-top{left:16px}}
 
-/* Urdu type scale (Gulzar) */
-[lang=ur]{font-size:20px;line-height:2}
-[lang=ur] body{font-family:var(--font-gulzar),serif;font-size:20px;line-height:2}
-[lang=ur] h2{font-size:36px;line-height:68px}
-[lang=ur] .h-name{font-size:clamp(40px,3vw + 20px,56px);line-height:1.86}
+/* Urdu type scale (Gulzar) - scoped to the Urdu page wrapper only, so inline
+   lang=ur snippets on the English page keep their mockup sizes */
+[dir=rtl][lang=ur]{font-family:var(--font-gulzar),serif;font-size:20px;line-height:2}
+[dir=rtl][lang=ur] h2{font-size:36px;line-height:68px}
+[dir=rtl][lang=ur] .h-name{font-size:clamp(40px,3vw + 20px,56px);line-height:1.86}
