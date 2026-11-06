@@ -27,7 +27,9 @@ Every Urdu string in the new content, by key. Repeated text is listed once, unde
 - nav.faq — سوالات
 - nav.cta — واٹس ایپ پر اپوائنٹمنٹ لیں
 - nav.menu — مینو
+- nav.subtitle — کنسلٹنٹ فزیشن · ملتان (header subtitle; same separator as hero.urLine)
 - status.neutral — پیر تا ہفتہ · اوقات دیکھیں
+- status.comma — «، » (Urdu comma between the clinic name and its detail in the hero pill, e.g. «دعا ہسپتال، 10 PM تک»)
 - status.sunday — آج اتوار ہے، کلینک بند ہیں
 - status.seeing — ابھی مریض دیکھ رہے ہیں
 - status.until — {x} تک

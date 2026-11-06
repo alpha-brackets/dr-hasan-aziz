@@ -40,6 +40,7 @@ export function BackToTop({ label }: { label: string }) {
       className={`to-top${show ? ' show' : ''}${done ? ' done' : ''}`}
       type="button"
       aria-label={label}
+      tabIndex={show ? undefined : -1}
       onClick={onClick}
     >
       <svg className="ring" viewBox="0 0 56 56" aria-hidden="true">

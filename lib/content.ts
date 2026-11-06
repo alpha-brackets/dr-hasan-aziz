@@ -125,9 +125,11 @@ export interface SiteContent {
   langSwitch: { label: string; href: string };
   skipLink: string;
   toTop: string;
-  nav: { about: string; treatments: string; clinics: string; book: string; reviews: string; faq: string; cta: string; menu: string };
+  nav: { about: string; treatments: string; clinics: string; book: string; reviews: string; faq: string; cta: string; menu: string; subtitle: string };
   status: {
     neutral: string;
+    lead: string; // before the pill's detail: "· "
+    comma: string; // between clinic name and its detail
     sunday: string;
     seeing: string;
     until: Text; // (clock)
@@ -246,9 +248,12 @@ const en: SiteContent = {
     faq: 'Questions',
     cta: 'Book on WhatsApp',
     menu: 'Menu',
+    subtitle: 'Consultant Physician · Multan',
   },
   status: {
     neutral: 'Mon–Sat · see timings',
+    lead: '· ',
+    comma: ', ',
     sunday: 'Closed today (Sunday)',
     seeing: 'Seeing patients now',
     until: (clock) => `until ${clock}`,
@@ -427,9 +432,12 @@ const ur: SiteContent = {
     faq: 'سوالات',
     cta: BOOK_UR,
     menu: 'مینو',
+    subtitle: 'کنسلٹنٹ فزیشن · ملتان',
   },
   status: {
     neutral: 'پیر تا ہفتہ · اوقات دیکھیں',
+    lead: '· ',
+    comma: '، ',
     sunday: 'آج اتوار ہے، کلینک بند ہیں',
     seeing: 'ابھی مریض دیکھ رہے ہیں',
     until: (clock) => `${clock} تک`,

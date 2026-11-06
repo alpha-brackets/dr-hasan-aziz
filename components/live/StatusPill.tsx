@@ -9,7 +9,7 @@ import { dotClass, useKarachiNow, type LiveState } from './useKarachiNow';
 export function StatusPill({ locale }: { locale: Locale }) {
   const c = getContent(locale);
   const now = useKarachiNow();
-  const comma = locale === 'ur' ? '، ' : ', ';
+  const comma = c.status.comma;
   const nameOf = (id: string) => {
     const clinic = CLINICS.find((x) => x.id === id);
     return clinic ? (locale === 'ur' ? clinic.nameUr : clinic.name) : '';
@@ -47,7 +47,7 @@ export function StatusPill({ locale }: { locale: Locale }) {
     <span className="pill-status">
       <span className={dotClass(state)} />
       <span>{text}</span>
-      {where && <b>· {where}</b>}
+      {where && <b>{c.status.lead + where}</b>}
     </span>
   );
 }

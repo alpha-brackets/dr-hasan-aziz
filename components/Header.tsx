@@ -15,7 +15,7 @@ export function Header({ c, locale }: { c: SiteContent; locale: Locale }) {
           <span className="logo-ph" aria-hidden="true" />
           <span>
             {locale === 'ur' ? DOCTOR.nameUr : DOCTOR.name}
-            <small>{c.portrait.plateSub}</small>
+            <small>{c.nav.subtitle}</small>
           </span>
         </a>
         <nav className="nav-links" aria-label={c.nav.menu}>

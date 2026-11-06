@@ -15,11 +15,17 @@ export function SmoothNav() {
       if (!a) return;
       const id = a.getAttribute('href') ?? '';
       if (id === '#') return;
-      const el = id === '#top' ? document.body : document.getElementById(decodeURIComponent(id.slice(1)));
-      if (!el) return;
+      const el = document.getElementById(decodeURIComponent(id.slice(1)));
+      if (!el && id !== '#top') return;
       e.preventDefault();
-      smoothTo(id === '#top' ? 0 : el.getBoundingClientRect().top + window.scrollY - headerOffset());
+      smoothTo(id === '#top' || !el ? 0 : el.getBoundingClientRect().top + window.scrollY - headerOffset());
       history.replaceState(null, '', id);
+      // preventDefault skips the browser's focus move: move focus to the target ourselves
+      // (keeps the skip link and keyboard users in step with the scroll).
+      if (el) {
+        if (el.tabIndex < 0 && !el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+        el.focus({ preventScroll: true });
+      }
     };
     document.addEventListener('click', onClick);
 

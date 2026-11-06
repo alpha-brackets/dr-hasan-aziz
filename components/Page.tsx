@@ -16,13 +16,16 @@ export function Page({ locale }: { locale: Locale }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPageSchema(locale)).replace(/</g, '\\u003c') }}
       />
+      <a className="skip-link" href="#top">
+        {c.skipLink}
+      </a>
       <SmoothNav />
       <Reveal />
-      <BackToTop label={c.toTop} />
       <Header c={c} locale={locale} />
-      <main id="top">
+      <main id="top" tabIndex={-1}>
         <Hero c={c} locale={locale} />
       </main>
+      <BackToTop label={c.toTop} />
     </>
   );
 }
