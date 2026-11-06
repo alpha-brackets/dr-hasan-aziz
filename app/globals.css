@@ -219,7 +219,7 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .tx:hover .ic{transform:rotate(-8deg);background:var(--b600);color:#fff}
 .tx .ic svg{width:22px;height:22px}
 .tx b{font-size:17px;line-height:22px;color:var(--b900)}
-.tx .ur{font-size:17px;line-height:1.6;color:var(--b600);direction:rtl;text-align:start;margin-top:8px}
+.tx .ur{font-size:17px;line-height:1.6;color:var(--b600);direction:rtl;text-align:left;margin-top:8px}
 .tx p{grid-column:1/-1;font-size:14.5px;line-height:22px;color:var(--n500);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
 .tx.hide{display:none}
 @media (min-width:1081px){.tx-grid .ask{grid-column:span 3}.tx-grid.filtered .ask{grid-column:1/-1}}
@@ -243,7 +243,7 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .cl-body{padding:24px 28px 28px;display:flex;flex-direction:column;gap:18px;flex:1}
 .cl-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .cl-top h3{font-size:24px;line-height:32px;color:var(--b900);letter-spacing:-.02em;font-weight:700}
-.cl-top .ur{font-size:18px;color:var(--b600);text-align:start;line-height:1.7;margin-top:6px}
+.cl-top .ur{font-size:18px;color:var(--b600);text-align:left;line-height:1.7;margin-top:6px}
 .badge{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;line-height:20px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--b50);color:var(--b800);white-space:nowrap}
 .badge[data-state=open]{background:var(--ok-bg);color:var(--ok-text)}
 .badge[data-state=later]{background:var(--warn-bg);color:var(--warn)}
@@ -343,7 +343,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 .ft{display:grid;grid-template-columns:1.5fr 1fr 1.2fr 1fr;gap:40px}
 .ft-brand .nm{font-size:22px;line-height:28px;font-weight:700;color:#fff}
 .ft-brand p{margin:6px 0 2px;color:var(--b200)}
-.ft-brand .ur{font-size:20px;color:#fff;display:block;margin-bottom:18px;text-align:start}
+.ft-brand .ur{font-size:20px;color:#fff;display:block;margin-bottom:18px;text-align:left}
 .ft-brand .btn{background:#fff;color:var(--b800);box-shadow:none;--h:48px;font-size:15px}
 .ft h4{font-size:13px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--b300);margin-bottom:16px}
 .ft-links a{display:flex;align-items:center;gap:10px;padding:5px 0;color:var(--b100);transition:color .2s,transform .25s var(--ease)}
@@ -469,6 +469,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 [dir=rtl] .h-conds a svg{transform:scaleX(-1)}
 [dir=rtl] .h-conds a:hover svg{transform:scaleX(-1) translateX(3px)}
 [dir=rtl] .ft-links a:hover{transform:translateX(-3px)}
+[dir=rtl] .tx .ur,[dir=rtl] .cl-top .ur,[dir=rtl] .ft-brand .ur,[dir=rtl] .ft-clinic span{text-align:right}
 [dir=rtl] .to-top{right:auto;left:24px}
 @media (max-width:760px){[dir=rtl] .to-top{left:16px}}
 
