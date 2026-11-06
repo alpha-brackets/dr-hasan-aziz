@@ -33,5 +33,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <Page content={content} locale="en" />;
+  return <Page locale="en" />;
 }

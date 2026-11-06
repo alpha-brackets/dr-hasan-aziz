@@ -1,89 +1,73 @@
-import { DOCTOR, LOCATIONS, type SiteContent } from '@/lib/content';
-import { CalendarIcon, CheckIcon, ClockIcon, MapPinIcon, PhoneIcon, SparkIcon } from './icons';
+import { DOCTOR, type SiteContent } from '@/lib/content';
+import { bookingHref } from '@/lib/links';
+import type { Locale } from '@/lib/site';
+import { Icon } from './icons';
+import { InfoStrip } from './InfoStrip';
+import { PortraitCard } from './PortraitCard';
+import { StatusPill } from './live/StatusPill';
+import { TodayCard } from './live/TodayCard';
 
-export function Hero({ content }: { content: SiteContent }) {
-  const t = content.hero;
+const ECG = 'M0 23 H170 l12 -4 l10 4 h18 l10 -20 l14 40 l10 -26 l8 6 h40 l10 -5 l10 5 H500';
 
+/** The hero bento: main card, portrait, "Where is he today?" and the info strip (spec §3.2). */
+export function Hero({ c, locale }: { c: SiteContent; locale: Locale }) {
+  const h = c.hero;
+  const name = locale === 'ur' ? DOCTOR.nameUr : DOCTOR.name;
+  const cut = name.lastIndexOf(' ');
   return (
-    <section className="hero" id="top">
-      <div className="container hero-grid">
-        <div className="hero-copy">
-          <p className="eyebrow">
-            <SparkIcon className="icon-inline" />
-            {t.eyebrow}
-          </p>
-          <span className="badge-specialist">{t.specialistBadge}</span>
-          <h1>{t.name}</h1>
-          <p className="hero-title">{t.title}</p>
-          <p className="hero-quals" lang={content.dir === 'rtl' ? 'ur' : 'en'}>
-            {t.qualifications}
-          </p>
-          <p className="hero-intro">{t.intro}</p>
-
-          <div className="hero-actions">
-            <a href="#booking" className="btn btn-primary btn-lg">
-              <CalendarIcon className="icon-inline" />
-              {t.ctaBook}
-            </a>
-            <a
-              href={`tel:${DOCTOR.phoneTel}`}
-              className="btn btn-outline btn-lg"
-            >
-              <PhoneIcon className="icon-inline" />
-              <span dir="ltr">{t.ctaCall}</span>
-            </a>
+    <div className="hero">
+      <div className="wrap">
+        <div className="bento">
+          <div className="card h-main rv">
+            <StatusPill locale={locale} />
+            <div className="overline h-over">{h.overline}</div>
+            <h1 className="h-name">
+              {name.slice(0, cut + 1)}
+              <span>{name.slice(cut + 1)}</span>
+            </h1>
+            <svg className="ecg" viewBox="0 0 500 46" aria-hidden="true">
+              <path d={ECG} />
+              <circle className="dot" r="5" />
+            </svg>
+            <div className="h-ur ur" lang="ur">
+              {h.urLine}
+            </div>
+            <p className="h-statement">
+              <strong>
+                {h.lineStrong[0]}
+                <br />
+                {h.lineStrong[1]}
+              </strong>{' '}
+              {h.lineRest}
+            </p>
+            <div className="h-conds">
+              {h.chips.map((chip) => (
+                <span key={chip}>{chip}</span>
+              ))}
+              <a href="#treatments">
+                {h.seeAll}
+                <Icon name="arrow" />
+              </a>
+            </div>
+            <div className="h-ctas">
+              <a className="btn btn-pri wa-link" href={bookingHref(locale)} target="_blank" rel="noopener">
+                <Icon name="wa" />
+                {h.ctaBook}
+                <Icon name="arrow" className="arr" />
+              </a>
+              <a className="btn btn-ghost" href="#clinics">
+                <Icon name="clock" />
+                {h.ctaTimings}
+              </a>
+            </div>
+            <p className="h-note">{h.note}</p>
           </div>
+
+          <PortraitCard c={c} locale={locale} />
+          <TodayCard locale={locale} />
+          <InfoStrip c={c} locale={locale} />
         </div>
-
-        <aside className="hero-card" aria-label={t.quick}>
-          <h2 className="hero-card-title">{t.quick}</h2>
-
-          <ul className="hero-facts">
-            <li>
-              <span className="fact-icon">
-                <ClockIcon className="icon-inline" />
-              </span>
-              <span>
-                <strong>{t.quickHours}</strong>
-              </span>
-            </li>
-            <li>
-              <span className="fact-icon">
-                <MapPinIcon className="icon-inline" />
-              </span>
-              <span>
-                <strong>{t.quickLocations}</strong>
-              </span>
-            </li>
-          </ul>
-
-          <ul className="hero-clinics">
-            {LOCATIONS.map((loc) => (
-              <li key={loc.id}>
-                <span className="clinic-dot" aria-hidden="true" />
-                <span className="clinic-name">
-                  {content.dir === 'rtl' ? loc.nameUrdu : loc.name}
-                </span>
-                <span className="clinic-hours">
-                  {content.dir === 'rtl' ? loc.timeUrdu : loc.time}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          <a
-            href={`tel:${DOCTOR.phoneTel}`}
-            className="btn btn-blue btn-block hero-card-cta"
-          >
-            <PhoneIcon className="icon-inline" />
-            <span dir="ltr">{DOCTOR.phoneDisplay}</span>
-          </a>
-          <p className="hero-card-note">
-            <CheckIcon className="icon-inline" />
-            {content.contact.appointmentNote}
-          </p>
-        </aside>
       </div>
-    </section>
+    </div>
   );
 }

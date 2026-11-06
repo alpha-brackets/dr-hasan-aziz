@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 export default function UrduPage() {
   return (
     <div lang="ur" dir="rtl" className="urdu-page">
-      <Page content={content} locale="ur" />
+      <Page locale="ur" />
     </div>
   );
 }

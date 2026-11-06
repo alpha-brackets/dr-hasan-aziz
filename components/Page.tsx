@@ -1,46 +1,28 @@
-import type { Locale } from '@/lib/site';
-import { type SiteContent } from '@/lib/content';
+import { getContent } from '@/lib/content';
 import { buildPageSchema } from '@/lib/schema';
+import type { Locale } from '@/lib/site';
 import { Header } from './Header';
 import { Hero } from './Hero';
-import { About } from './About';
-import { Services } from './Services';
-import { Specialties } from './Specialties';
-import { Timings } from './Timings';
-import { Booking } from './Booking';
-import { ContactBand } from './ContactBand';
-import { Footer } from './Footer';
+import { BackToTop } from './nav/BackToTop';
+import { Reveal } from './nav/Reveal';
+import { SmoothNav } from './nav/SmoothNav';
 
-export function Page({
-  content,
-  locale,
-}: {
-  content: SiteContent;
-  locale: Locale;
-}) {
-  const path = locale === 'ur' ? '/ur/' : '/';
-  const schema = buildPageSchema(content, path);
-
+/** The whole page for one locale. Sections after the hero arrive in Tasks 7–9. */
+export function Page({ locale }: { locale: Locale }) {
+  const c = getContent(locale);
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildPageSchema(locale)).replace(/</g, '\\u003c') }}
       />
-      <a className="skip-link" href="#main">
-        {content.skipLink}
-      </a>
-      <Header content={content} />
-      <main id="main">
-        <Hero content={content} />
-        <Services content={content} />
-        <Specialties content={content} />
-        <About content={content} />
-        <Timings content={content} />
-        <Booking content={content} />
-        <ContactBand content={content} />
+      <SmoothNav />
+      <Reveal />
+      <BackToTop label={c.toTop} />
+      <Header c={c} locale={locale} />
+      <main id="top">
+        <Hero c={c} locale={locale} />
       </main>
-      <Footer content={content} />
     </>
   );
 }
