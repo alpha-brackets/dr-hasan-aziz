@@ -1,11 +1,13 @@
 import { getContent } from '@/lib/content';
 import { buildPageSchema } from '@/lib/schema';
 import type { Locale } from '@/lib/site';
+import { About } from './About';
 import { Header } from './Header';
 import { Hero } from './Hero';
 import { BackToTop } from './nav/BackToTop';
 import { Reveal } from './nav/Reveal';
 import { SmoothNav } from './nav/SmoothNav';
+import { Treatments } from './Treatments';
 
 /** The whole page for one locale. Sections after the hero arrive in Tasks 7–9. */
 export function Page({ locale }: { locale: Locale }) {
@@ -24,6 +26,8 @@ export function Page({ locale }: { locale: Locale }) {
       <Header c={c} locale={locale} />
       <main id="top" tabIndex={-1}>
         <Hero c={c} locale={locale} />
+        <About c={c} />
+        <Treatments c={c} locale={locale} />
       </main>
       <BackToTop label={c.toTop} />
     </>
