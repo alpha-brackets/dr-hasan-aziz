@@ -1,51 +1,38 @@
 import { DOCTOR, type SiteContent } from '@/lib/content';
-import { BrandMark, GlobeIcon, PhoneIcon } from './icons';
+import { bookingHref } from '@/lib/links';
+import type { Locale } from '@/lib/site';
+import { Icon } from './icons';
+import { MobileMenu } from './nav/MobileMenu';
+import { navItems } from './nav/items';
 
-const NAV_ITEMS = [
-  { href: '#services', key: 'services' },
-  { href: '#timings', key: 'timings' },
-  { href: '#about', key: 'about' },
-] as const;
-
-export function Header({ content }: { content: SiteContent }) {
+export function Header({ c, locale }: { c: SiteContent; locale: Locale }) {
+  const other: Locale = locale === 'ur' ? 'en' : 'ur';
   return (
-    <header className="site-header">
-      <div className="container header-inner">
-        <a href="#top" className="brand">
-          <BrandMark className="brand-mark" />
-          <span className="brand-text">
-            <strong>{content.hero.name}</strong>
-            <span className="brand-sub">{content.hero.title}</span>
+    <header className="nav">
+      <MobileMenu locale={locale}>
+        <a className="brand" href="#top">
+          {/* Placeholder slot until the master Dua logo SVG arrives (spec §10). */}
+          <span className="logo-ph" aria-hidden="true" />
+          <span>
+            {locale === 'ur' ? DOCTOR.nameUr : DOCTOR.name}
+            <small>{c.nav.subtitle}</small>
           </span>
         </a>
-
-        <nav className="nav" aria-label={content.footer.navLabel}>
-          {NAV_ITEMS.map((item) => (
-            <a key={item.key} href={item.href} className="nav-link">
-              {content.nav[item.key]}
+        <nav className="nav-links" aria-label={c.nav.menu}>
+          {navItems(c).map((i) => (
+            <a key={i.href} href={i.href}>
+              {i.label}
             </a>
           ))}
-          <a href="#booking" className="btn btn-primary btn-sm">
-            {content.nav.book}
-          </a>
-          <a
-            href={content.switchHref}
-            className="lang-switch"
-            lang={content.dir === 'rtl' ? 'en' : 'ur'}
-            hrefLang={content.dir === 'rtl' ? 'en' : 'ur'}
-          >
-            <GlobeIcon className="icon-inline" />
-            {content.langLabel}
-          </a>
-          <a
-            href={`tel:${DOCTOR.phoneTel}`}
-            className="btn btn-outline btn-sm header-phone"
-          >
-            <PhoneIcon className="icon-inline" />
-            <span dir="ltr">{DOCTOR.phoneDisplay}</span>
-          </a>
         </nav>
-      </div>
+        <a className="lang" href={c.langSwitch.href} lang={other} hrefLang={other}>
+          {c.langSwitch.label}
+        </a>
+        <a className="btn btn-pri wa-link" href={bookingHref(locale)} target="_blank" rel="noopener">
+          <Icon name="wa" />
+          {c.nav.cta}
+        </a>
+      </MobileMenu>
     </header>
   );
 }

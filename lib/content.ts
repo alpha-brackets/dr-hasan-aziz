@@ -1,505 +1,587 @@
-import type { Locale } from './site';
+import type { ClinicHours } from './clinic-status.ts';
+import type { Locale } from './site.ts';
+
+// The single source of all copy and data for both languages. Components hold no literal copy.
+// Urdu strings are awaiting native review: see docs/urdu-review.md.
+
+export type IconName = 'fever'|'bug'|'allergy'|'head'|'bone'|'sugar'|'bp'|'blood'|'scale'|'kidney'|'bladder'
+  |'heart'|'brain'|'zap'|'acid'|'ulcer'|'liver'|'virus'|'cough'|'asthma'|'lungs'
+  |'wa'|'arrow'|'chev'|'menu'|'close'|'check'|'award'|'cap'|'pin'|'chat'|'nav'|'cal'|'plus'|'alert'|'clock'|'file'|'steth'|'list'|'star'|'globe';
+
+type Both = { en: string; ur: string };
+
+export const DOCTOR = { name: 'Dr. Hasan Aziz', nameUr: 'ڈاکٹر حسن عزیز' } as const;
 
 /* ------------------------------------------------------------------ */
-/*  Shared, locale-independent data (names, numbers, addresses)        */
+/*  Clinics                                                            */
 /* ------------------------------------------------------------------ */
 
-export const DOCTOR = {
-  name: 'Dr. Hasan Aziz',
-  nameUrdu: 'ڈاکٹر حسن عزیز',
-  phoneDisplay: '0333-6489392',
-  phoneTel: '+923336489392',
-};
-
-export interface ClinicLocation {
-  id: 'dua' | 'prime';
+export interface Clinic extends ClinicHours {
   name: string;
-  nameUrdu: string;
-  addressLines: string[];
-  addressLinesUrdu: string[];
-  /** Human readable working days, e.g. "Mon – Sat" */
-  days: string;
-  daysUrdu: string;
-  /** e.g. "7:00 PM – 10:00 PM" */
-  time: string;
-  timeUrdu: string;
-  closed: string;
-  closedUrdu: string;
-  mapsUrl: string;
+  nameUr: string;
+  label: Both; // Daytime / Evening
+  address: Both | null; // null → "to confirm"
+  landmark: Both | null;
+  mapsQuery: string;
+  hoursText: string; // same in both locales
 }
 
-export const LOCATIONS: ClinicLocation[] = [
+const MON_SAT = [false, true, true, true, true, true, true] as const; // Sun..Sat
+
+export const CLINICS: readonly Clinic[] = [
+  {
+    id: 'hayat',
+    name: 'Hayat Medical Center',
+    nameUr: 'حیات میڈیکل سنٹر',
+    label: { en: 'Daytime', ur: 'دن کے وقت' },
+    openMin: 660,
+    closeMin: 1140,
+    days: MON_SAT,
+    address: null,
+    landmark: null,
+    mapsQuery: 'Hayat Medical Center Multan',
+    hoursText: '11:00 AM – 7:00 PM',
+  },
   {
     id: 'dua',
     name: 'Dua Hospital',
-    nameUrdu: 'دعا هسپتال',
-    addressLines: [
-      'First Floor, Bank Plaza,',
-      'near Shell Petrol Pump, Shir Shah Road, Garden Town, Multan',
-    ],
-    addressLinesUrdu: [
-      'فرسٹ فلور بینک پلازه نزد شیل پٹرول پمپ',
-      'شیر شاہ روڈ گارڈن ٹاؤن ملتان',
-    ],
-    days: 'Monday – Saturday',
-    daysUrdu: 'پیر تا ہفتہ',
-    time: '7:00 PM – 10:00 PM',
-    timeUrdu: 'شام 7 تا رات 10',
-    closed: 'Closed on Sunday',
-    closedUrdu: 'ناغہ برائے اتوار',
-    mapsUrl:
-      'https://www.google.com/maps/search/?api=1&query=' +
-      encodeURIComponent(
-        'Dua Hospital Bank Plaza Shir Shah Road Garden Town Multan'
-      ),
-  },
-  {
-    id: 'prime',
-    name: 'Prime Hospital',
-    nameUrdu: 'پرائم هسپتال',
-    addressLines: [
-      'Ground Floor, Dost Plaza,',
-      'Nishtar Road, Multan',
-    ],
-    addressLinesUrdu: ['گراؤنڈ فلور دوست پلازه نشتر روڈ ملتان'],
-    days: 'Saturday – Thursday',
-    daysUrdu: 'ہفتہ تا جمعرات',
-    time: '11:00 AM – 6:00 PM',
-    timeUrdu: 'صبح 11 بجے سے شام 6 بجے تک',
-    closed: 'Closed on Friday',
-    closedUrdu: 'ناغہ برائے جمعہ',
-    mapsUrl:
-      'https://www.google.com/maps/search/?api=1&query=' +
-      encodeURIComponent('Prime Hospital Dost Plaza Nishtar Road Multan'),
+    nameUr: 'دعا ہسپتال',
+    label: { en: 'Evening', ur: 'شام کے وقت' },
+    openMin: 1140,
+    closeMin: 1320,
+    days: MON_SAT,
+    address: {
+      en: 'First Floor, Bank Plaza, Sher Shah Road, Garden Town, Multan',
+      ur: 'فرسٹ فلور، بینک پلازہ، شیر شاہ روڈ، گارڈن ٹاؤن، ملتان',
+    },
+    landmark: { en: 'Near Shell Petrol Pump', ur: 'نزد شیل پٹرول پمپ' },
+    mapsQuery: 'Dua Hospital Bank Plaza Sher Shah Road Garden Town Multan',
+    hoursText: '7:00 PM – 10:00 PM',
   },
 ];
 
-export type IconName =
-  | 'liver'
-  | 'lungs'
-  | 'heart'
-  | 'glucose'
-  | 'thermometer'
-  | 'wind'
-  | 'droplet'
-  | 'kidney'
-  | 'pollen'
-  | 'flame';
+/* ------------------------------------------------------------------ */
+/*  Treatments (21, in the mockup's order)                             */
+/* ------------------------------------------------------------------ */
 
-export interface ServiceItem {
+export type TreatmentGroup = 'day' | 'long' | 'heart' | 'stomach' | 'chest';
+
+export interface Treatment {
   icon: IconName;
   name: string;
-  nameUrdu: string;
+  nameUr: string;
   blurb: string;
-  blurbUrdu: string;
+  blurbUr: string;
+  group: TreatmentGroup;
 }
 
-export const SERVICES: ServiceItem[] = [
-  {
-    icon: 'liver',
-    name: 'Jaundice',
-    nameUrdu: 'یرقان',
-    blurb: 'Liver-related jaundice (yellowness) — diagnosis & treatment.',
-    blurbUrdu: 'جگر کی بیماریوں اور یرقان کا تشخیص و علاج',
-  },
-  {
-    icon: 'lungs',
-    name: 'Cough',
-    nameUrdu: 'کھانسی',
-    blurb: 'Persistent cough, chest congestion & respiratory infections.',
-    blurbUrdu: 'مزیدار کھانسی، سینے کی گھٹن اور سانس کی عارضات',
-  },
-  {
-    icon: 'heart',
-    name: 'Blood Pressure',
-    nameUrdu: 'بلڈ پریشر',
-    blurb: 'Hypertension detection, monitoring & long-term control.',
-    blurbUrdu: 'ہائی بلڈ پریشر کی تشخیص، نگرانی اور کنٹرول',
-  },
-  {
-    icon: 'glucose',
-    name: 'Sugar (Diabetes)',
-    nameUrdu: 'شوگر',
-    blurb: 'Diabetes management, sugar profiles & complication screening.',
-    blurbUrdu: 'شوگر (ذیابیطس) کا علاج اور ٹیسٹس کی نگرانی',
-  },
-  {
-    icon: 'thermometer',
-    name: 'Fever',
-    nameUrdu: 'بخار',
-    blurb: 'Work-up for persistent or recurring fever, including dengue & flu.',
-    blurbUrdu: 'ڈینگی، فلو سمیت بار بار بخار کی مکمل جانچ',
-  },
-  {
-    icon: 'wind',
-    name: 'Asthma',
-    nameUrdu: 'دمہ',
-    blurb: 'Asthma & breathing difficulty — inhaler guidance and follow-up.',
-    blurbUrdu: 'دمہ اور سانس کی تکلیف کا علاج، انہیلر کی رہنمائی',
-  },
-  {
-    icon: 'droplet',
-    name: 'Blood Deficiency',
-    nameUrdu: 'خون کی کمی',
-    blurb: 'Investigation & treatment of low blood counts and weakness.',
-    blurbUrdu: 'کم خونی کی تشخیص اور علاج',
-  },
-  {
-    icon: 'kidney',
-    name: 'Kidney Stones',
-    nameUrdu: 'گردے کی پتھری',
-    blurb: 'Kidney stone detection, referral & follow-up care.',
-    blurbUrdu: 'گردوں کی پتھری کی تشخیص اور فالو اپ',
-  },
-  {
-    icon: 'pollen',
-    name: 'Allergy',
-    nameUrdu: 'الرجی',
-    blurb: 'Skin, food & seasonal allergies with long-term relief plans.',
-    blurbUrdu: 'جلد، کھانے اور موسمی الرجی کا طویل علاج',
-  },
-  {
-    icon: 'flame',
-    name: 'Acidity',
-    nameUrdu: 'تیزابیت',
-    blurb: 'Acidity, reflux, gastritis & general stomach discomfort.',
-    blurbUrdu: 'تیزابیت، گیس اور معدے کے مسائل',
-  },
+export const TREATMENT_GROUPS: readonly TreatmentGroup[] = ['day', 'long', 'heart', 'stomach', 'chest'];
+
+const tx = (icon: IconName, name: string, nameUr: string, blurb: string, blurbUr: string, group: TreatmentGroup): Treatment =>
+  ({ icon, name, nameUr, blurb, blurbUr, group });
+
+export const TREATMENTS: readonly Treatment[] = [
+  tx('fever', 'Fever', 'بخار', 'Fever that keeps coming back, including flu.', 'بار بار آنے والا بخار، فلو سمیت۔', 'day'),
+  tx('bug', 'Dengue', 'ڈینگی', 'Diagnosis, platelet checks and close follow-up.', 'تشخیص، پلیٹ لیٹس کی جانچ اور قریبی نگرانی۔', 'day'),
+  tx('allergy', 'Allergy', 'الرجی', 'Skin, food and seasonal allergies.', 'جلد، کھانے اور موسم کی الرجی۔', 'day'),
+  tx('head', 'Headache', 'سر درد', 'Frequent or severe headaches and migraine.', 'بار بار یا شدید سر درد اور آدھے سر کا درد۔', 'day'),
+  tx('bone', 'Back & joint pain', 'کمر اور جوڑوں کا درد', 'Aches, stiffness and joint pain.', 'درد، اکڑن اور جوڑوں کا درد۔', 'day'),
+  tx('sugar', 'Sugar (diabetes)', 'شوگر', 'Sugar control, tests and checks for complications.', 'شوگر کنٹرول، ٹیسٹ اور پیچیدگیوں کی جانچ۔', 'long'),
+  tx('bp', 'Blood pressure', 'بلڈ پریشر', 'Finding high BP early and keeping it controlled.', 'ہائی بلڈ پریشر کی جلد پہچان اور اسے قابو میں رکھنا۔', 'long'),
+  tx('blood', 'Low blood (anaemia)', 'خون کی کمی', 'Weakness and tiredness from low blood.', 'خون کی کمی سے کمزوری اور تھکاوٹ۔', 'long'),
+  tx('scale', 'Obesity', 'موٹاپا', 'Weight, diet and the health problems it causes.', 'وزن، خوراک اور موٹاپے سے ہونے والے مسائل۔', 'long'),
+  tx('kidney', 'Kidney stones', 'گردے کی پتھری', 'Diagnosis, pain relief and follow-up.', 'تشخیص، درد سے آرام اور فالو اپ۔', 'long'),
+  tx('bladder', 'Kidney & bladder', 'گردے اور مثانہ', 'Urine infections and kidney problems.', 'پیشاب کا انفیکشن اور گردوں کے مسائل۔', 'long'),
+  tx('heart', 'Heart disease', 'دل کے امراض', 'Chest pain, heart checks and ongoing care.', 'سینے میں درد، دل کا چیک اپ اور مسلسل علاج۔', 'heart'),
+  tx('brain', 'Stroke & paralysis', 'فالج', 'Care and recovery after a stroke or facial palsy.', 'فالج یا لقوہ کے بعد علاج اور بحالی۔', 'heart'),
+  tx('zap', 'Fits (epilepsy)', 'مرگی', 'Diagnosis and medicines to control fits.', 'تشخیص اور دوروں کو قابو میں رکھنے کی دوائیں۔', 'heart'),
+  tx('acid', 'Acidity', 'تیزابیت', 'Acidity, gas and stomach discomfort.', 'تیزابیت، گیس اور معدے کی تکلیف۔', 'stomach'),
+  tx('ulcer', 'Ulcer', 'السر', 'Stomach and intestine ulcers.', 'معدے اور آنتوں کے السر۔', 'stomach'),
+  tx('liver', 'Jaundice', 'یرقان', 'Yellowness from liver problems.', 'جگر کی خرابی سے ہونے والا پیلا پن۔', 'stomach'),
+  tx('virus', 'Hepatitis', 'ہیپاٹائٹس', 'Hepatitis B and C testing and treatment.', 'ہیپاٹائٹس بی اور سی کے ٹیسٹ اور علاج۔', 'stomach'),
+  tx('cough', 'Cough', 'کھانسی', 'Long-lasting cough and chest infections.', 'مسلسل کھانسی اور سینے کا انفیکشن۔', 'chest'),
+  tx('asthma', 'Asthma', 'دمہ', 'Breathing trouble, with help using inhalers.', 'سانس کی تکلیف کا علاج اور انہیلر کے استعمال میں مدد۔', 'chest'),
+  tx('lungs', 'TB', 'ٹی بی', 'Diagnosis and full-course treatment of TB.', 'ٹی بی کی تشخیص اور مکمل کورس کا علاج۔', 'chest'),
 ];
+
+/* ------------------------------------------------------------------ */
+/*  Reviews: empty until real reviews arrive (spec D9)                 */
+/* ------------------------------------------------------------------ */
+
+export interface Review { quote: string; name: string; condition: string }
+
+export const REVIEWS: readonly Review[] = [];
 
 /* ------------------------------------------------------------------ */
 /*  Per-locale strings                                                 */
 /* ------------------------------------------------------------------ */
 
+type Text = (value: string) => string;
+type Titled = { title: string; body: string };
+
 export interface SiteContent {
+  meta: { title: string; description: string; keywords: string[] };
   dir: 'ltr' | 'rtl';
-  langLabel: string;
-  switchHref: string;
+  langSwitch: { label: string; href: string };
   skipLink: string;
-
-  meta: {
-    title: string;
-    description: string;
-    keywords: string[];
+  toTop: string;
+  nav: { about: string; treatments: string; clinics: string; book: string; reviews: string; faq: string; cta: string; menu: string; subtitle: string };
+  status: {
+    neutral: string;
+    lead: string; // before the pill's detail: "· "
+    comma: string; // between clinic name and its detail
+    sunday: string;
+    seeing: string;
+    until: Text; // (clock)
+    next: string;
+    opensIn: Text; // (duration), lower-case, for the hero pill
+    closedNow: string;
+    bookTomorrow: string;
+    bookMonday: string;
+    open: string;
+    later: Text; // (duration), per-clinic label
+    done: string;
+    closedToday: string;
+    sundayNote: string;
   };
-
-  nav: {
-    services: string;
-    timings: string;
-    book: string;
-    call: string;
-    about: string;
-  };
-
   hero: {
-    eyebrow: string;
-    name: string;
-    title: string;
-    qualifications: string;
-    specialistBadge: string;
-    intro: string;
+    overline: string;
+    urLine: string;
+    lineStrong: [string, string];
+    lineRest: string;
+    chips: string[];
+    seeAll: string;
     ctaBook: string;
-    ctaCall: string;
-    quick: string;
-    quickHours: string;
-    quickLocations: string;
-  };
-
-  about: {
-    heading: string;
-    body: string[];
-    qualificationLabel: string;
-    designationLabel: string;
-    treatingLabel: string;
-    treatingValue: string;
-  };
-
-  services: {
-    heading: string;
-    sub: string;
-    cardTitle: string;
-  };
-
-  specialties: {
-    heading: string;
-    sub: string;
-    badge: string;
-    line1: string;
-    line2: string;
-  };
-
-  timings: {
-    heading: string;
-    sub: string;
-    daysLabel: string;
-    hoursLabel: string;
-    closedLabel: string;
-    directions: string;
+    ctaTimings: string;
     note: string;
   };
-
-  booking: {
-    heading: string;
-    sub: string;
-    dateLabel: string;
-    slotLabel: string;
-    selectDate: string;
-    selectSlot: string;
-    button: string;
-    comingSoon: string;
-    fallback: string;
-    fallbackCall: string;
-    placeholderNote: string;
+  portrait: {
+    plateTitle: string; plateSub: string;
+    sideOverline: string; sideTitle: string; sideSub: string;
+    degreeLabel: string; degree: string; degreeWhere: string;
+    specLabel: string; spec: string; specWhere: string;
   };
-
-  contact: {
+  today: { heading: string; now: string };
+  info: { title: string; sub: string; target: '#clinics' | '#treatments' | 'whatsapp' }[];
+  about: {
+    overline: string;
     heading: string;
-    phoneLabel: string;
-    callNow: string;
-    appointmentNote: string;
+    lead: string;
+    lead2: string;
+    facts: { value: string; label: string }[];
+    qualHeading: string;
+    quals: { title: string; chip: string; where: string }[];
+    visitHeading: string;
+    visit: { stage: string; title: string; body: string }[];
   };
-
+  treatments: {
+    overline: string;
+    heading: string;
+    lead: string;
+    groups: Record<'all' | TreatmentGroup, string>;
+    ask: Titled & { cta: string };
+  };
+  clinics: {
+    overline: string; heading: string; lead: string;
+    toConfirmAddress: string; toConfirmLandmark: string;
+    monSat: string; directions: string; bookHere: string; holiday: string;
+  };
+  book: {
+    overline: string;
+    heading: string;
+    lead: string;
+    steps: Titled[];
+    cta: string;
+    chat: {
+      name: string;
+      status: string;
+      me1: string;
+      me2: string;
+      them: { pre: string; time: string; post: string }; // `time` is shown in bold
+      times: [string, string, string];
+    };
+  };
+  reviews: { overline: string; heading: string };
+  faq: {
+    overline: string; heading: string; lead: string;
+    emergencyTitle: string; emergencyBody: string;
+    items: { q: string; a: string }[];
+  };
+  final: { heading: string; sub: string; cta: string };
   footer: {
-    tagline: string;
-    rights: string;
-    disclaimer: string;
-    navLabel: string;
+    tagline1: string; tagline2: string;
+    onPage: string; clinicsHeading: string; help: string; questions: string;
+    urduLink: string; // the link to the other language's page
+    emergency: Titled;
+    copyright: string;
   };
+  dock: { timings: string; book: string };
+  days: string[]; // Mon..Sun
 }
 
 const en: SiteContent = {
-  dir: 'ltr',
-  langLabel: 'اردو',
-  switchHref: '/ur/',
-  skipLink: 'Skip to main content',
-
   meta: {
-    title: 'Dr. Hasan Aziz — Consultant Physician & Medical Specialist in Multan',
+    title: 'Dr. Hasan Aziz — Consultant Physician in Multan',
     description:
-      'Dr. Hasan Aziz (MBBS, FCPS Medicine) — Consultant Physician & Medical Specialist at Dua Hospital & Prime Hospital, Multan. Treatment for heart, diabetes, blood pressure, liver, kidney, allergies, asthma & more. Clinic timings & appointment: 0333-6489392.',
+      'Dr. Hasan Aziz (MBBS, FCPS Medicine), consultant physician at Dua Hospital and Hayat Medical Center, Multan. Treatment for diabetes, blood pressure, fever, heart, liver, kidney, allergy and asthma. Monday to Saturday. Book on WhatsApp.',
     keywords: [
       'Dr Hasan Aziz',
       'doctor in Multan',
       'consultant physician Multan',
       'medical specialist Multan',
       'Dua Hospital Multan',
-      'Prime Hospital Multan',
+      'Hayat Medical Center Multan',
       'Garden Town doctor',
-      'Nishtar Road doctor',
-      'English speaking doctor Multan',
       'general physician Multan Pakistan',
     ],
   },
-
+  dir: 'ltr',
+  langSwitch: { label: 'اردو', href: '/ur/' },
+  skipLink: 'Skip to main content',
+  toTop: 'Back to top',
   nav: {
-    services: 'Services',
-    timings: 'Timings',
-    book: 'Book',
-    call: 'Call',
-    about: 'About',
+    about: 'About Me',
+    treatments: 'Treatments',
+    clinics: 'Clinics & timings',
+    book: 'How to book',
+    reviews: 'Reviews',
+    faq: 'Questions',
+    cta: 'Book on WhatsApp',
+    menu: 'Menu',
+    subtitle: 'Consultant Physician · Multan',
   },
-
+  status: {
+    neutral: 'Mon–Sat · see timings',
+    lead: '· ',
+    comma: ', ',
+    sunday: 'Closed today (Sunday)',
+    seeing: 'Seeing patients now',
+    until: (clock) => `until ${clock}`,
+    next: 'Next clinic',
+    opensIn: (d) => `opens in ${d}`,
+    closedNow: 'Clinics closed now',
+    bookTomorrow: 'Book now for tomorrow',
+    bookMonday: 'Book now for Monday',
+    open: 'Open now',
+    later: (d) => `Opens in ${d}`,
+    done: 'Closed for today',
+    closedToday: 'Closed today',
+    sundayNote: 'Both clinics are closed today (Sunday). Send a WhatsApp message to book for Monday.',
+  },
   hero: {
-    eyebrow: 'Consultant Physician • Multan, Pakistan',
-    name: 'Dr. Hasan Aziz',
-    title: 'Consultant Physician & Medical Specialist',
-    qualifications: 'MBBS (Army Medical College, Rawalpindi), FCPS (Medicine)',
-    specialistBadge: 'Specialist',
-    intro:
-      'Experienced, trusted care for heart, diabetes, blood pressure, liver, kidney, allergies and dozens of other conditions — at two convenient Multan locations.',
-    ctaBook: 'Book an appointment',
-    ctaCall: 'Call 0333-6489392',
-    quick: 'At a glance',
-    quickHours: 'Evenings 7–10 PM & daytimes 11 AM–6 PM',
-    quickLocations: 'Dua Hospital & Prime Hospital, Multan',
+    overline: 'Consultant Physician · FCPS Medicine',
+    urLine: 'ڈاکٹر حسن عزیز · کنسلٹنٹ فزیشن',
+    lineStrong: ['Sugar. Blood pressure.', "Fever that won't go away."],
+    lineRest: 'One specialist who finds the cause and treats it.',
+    chips: ['Diabetes', 'Blood pressure', 'Fever & dengue', 'Cough & asthma', 'Acidity & ulcer', 'Jaundice & hepatitis', 'Heart disease'],
+    seeAll: 'See all 21',
+    ctaBook: 'Book on WhatsApp',
+    ctaTimings: 'See clinic timings',
+    note: 'Monday to Saturday · Closed on Sunday',
   },
-
+  portrait: {
+    plateTitle: 'Dr. Hasan Aziz',
+    plateSub: 'Consultant Physician, Multan',
+    sideOverline: 'About Me',
+    sideTitle: 'Consultant Physician at Dua Hospital & Hayat Medical Center',
+    sideSub: 'Adult medicine: sudden illness and long-term care.',
+    degreeLabel: 'Degree',
+    degree: 'MBBS',
+    degreeWhere: 'Army Medical College, Rawalpindi',
+    specLabel: 'Specialisation',
+    spec: 'FCPS Medicine',
+    specWhere: 'College of Physicians & Surgeons Pakistan',
+  },
+  today: { heading: 'Where is he today?', now: 'Now' },
+  info: [
+    { title: '6 days a week', sub: 'Mon – Sat · closed Sunday', target: '#clinics' },
+    { title: 'Day & evening', sub: 'Hayat 11 AM – 7 PM · Dua 7 – 10 PM', target: '#clinics' },
+    { title: '21 conditions', sub: 'From fever to diabetes and BP', target: '#treatments' },
+    { title: 'Book in 1 message', sub: 'WhatsApp. No forms, no app.', target: 'whatsapp' },
+  ],
   about: {
-    heading: 'About Dr. Hasan Aziz',
-    body: [
-      'Dr. Hasan Aziz is a Consultant Physician and Medical Specialist practising in Multan, Pakistan. He holds an MBBS from Army Medical College, Rawalpindi, and FCPS in Medicine.',
-      'Patients consult him for a wide range of general medicine conditions — from heart and blood pressure issues to diabetes, liver and kidney disease, allergies, stomach and intestinal problems, and seasonal illnesses such as dengue and TB.',
-      'Consultations are available every evening at Dua Hospital and during the day at Prime Hospital, with an off day at each location so every patient gets time.',
+    overline: 'About Me',
+    heading: 'A specialist who listens first.',
+    lead:
+      'Dr. Hasan Aziz is a consultant physician at Dua Hospital and Hayat Medical Center, Multan. He treats adults for everyday illness, such as fever, cough and infections, and for long-term conditions, such as diabetes and high blood pressure.',
+    lead2: 'If you need a surgeon or another specialist, he explains why and guides you to the right one.',
+    facts: [
+      { value: 'Adults', label: 'Adult medicine' },
+      { value: 'Mon – Sat', label: 'Closed on Sunday' },
     ],
-    qualificationLabel: 'Qualifications',
-    designationLabel: 'Designation',
-    treatingLabel: 'Treats',
-    treatingValue: 'General medicine & chronic disease management',
+    qualHeading: 'Qualifications',
+    quals: [
+      { title: 'MBBS', chip: 'Degree', where: 'Army Medical College, Rawalpindi' },
+      { title: 'FCPS (Medicine)', chip: 'Specialist', where: 'College of Physicians & Surgeons Pakistan' },
+      { title: 'Consultant Physician', chip: 'Current', where: 'Dua Hospital & Hayat Medical Center, Multan' },
+    ],
+    visitHeading: 'Your visit, step by step',
+    visit: [
+      { stage: 'Before', title: 'Book on WhatsApp', body: 'Send your name and problem. You get a time and clinic in reply.' },
+      { stage: 'Bring', title: 'Old reports and medicines', body: 'Prescriptions, test reports, and the medicines you take now.' },
+      { stage: 'During', title: 'Talk and check-up', body: 'He asks about your problem, checks BP, pulse and sugar if needed, and examines you.' },
+      { stage: 'After', title: 'A clear written plan', body: 'Medicines, any tests, and when to come back, explained simply.' },
+    ],
   },
-
-  services: {
-    heading: 'Services & Conditions Treated',
-    sub: 'Everyday medical care for the whole family — prevention, diagnosis and long-term management.',
-    cardTitle: 'What patients come in for',
+  treatments: {
+    overline: 'Treatments',
+    heading: 'What he treats',
+    lead: 'Choose a group, or look through the full list.',
+    groups: { all: 'All', day: 'Everyday', long: 'Long-term', heart: 'Heart & brain', stomach: 'Stomach & liver', chest: 'Chest' },
+    ask: {
+      title: "Don't see your problem?",
+      body: "Send a message and ask. If it's not for him, we'll tell you who to see.",
+      cta: 'Ask on WhatsApp',
+    },
   },
-
-  specialties: {
-    heading: 'Specialist Areas',
-    sub: 'A specialist badge on a wide field of practice',
-    badge: 'Specialist',
-    line1:
-      'Heart, brain, sugar (diabetes), high blood pressure, chest, allergy, stomach, intestine, liver, kidney, gallbladder, hepatitis, black & yellow jaundice (viral hepatitis).',
-    line2:
-      'Ulcer, piles, fits (epilepsy), paralysis, obesity, back & joint pain, nervous & male weakness, infertility & hereditary diseases, dengue, constipation, headache, TB, asthma.',
+  clinics: {
+    overline: 'Clinics & timings',
+    heading: 'Two clinics. Same doctor.',
+    lead: 'Daytime at Hayat Medical Center, evenings at Dua Hospital. Both closed on Sunday.',
+    toConfirmAddress: 'Address to confirm, Multan',
+    toConfirmLandmark: 'Landmark to confirm',
+    monSat: 'Monday to Saturday',
+    directions: 'Directions',
+    bookHere: 'Book here',
+    holiday: 'On public holidays, timings can change. Send a message before you come.',
   },
-
-  timings: {
-    heading: 'Clinic Timings & Locations',
-    sub: 'Two locations in Multan — pick the one closest to you.',
-    daysLabel: 'Days',
-    hoursLabel: 'Hours',
-    closedLabel: 'Weekly off',
-    directions: 'Get directions',
-    note:
-      'Public holidays may differ. For the day’s exact timings, please call before visiting.',
+  book: {
+    overline: 'How to book',
+    heading: "One message. That's all it takes.",
+    lead: 'No forms, no app. Message on WhatsApp and the clinic replies with your time.',
+    steps: [
+      { title: 'Tap "Book on WhatsApp"', body: 'The message is already written for you.' },
+      { title: 'Add your name and problem', body: 'A voice note in Urdu is fine too.' },
+      { title: 'Get your time and clinic', body: 'Come at your time and show the message.' },
+    ],
+    cta: 'Book on WhatsApp',
+    chat: {
+      name: 'Dr. Hasan Aziz Clinic',
+      status: 'usually replies within the hour',
+      me1: "Assalam o Alaikum. I'd like to book an appointment with Dr. Hasan Aziz.",
+      me2: 'Name: Ahmed · Problem: fever for 3 days',
+      them: { pre: 'Walaikum Assalam. Your time is ', time: '8:15 PM today', post: ' at Dua Hospital. Please bring your old reports.' },
+      times: ['6:12 PM', '6:12 PM', '6:14 PM'],
+    },
   },
-
-  booking: {
-    heading: 'Book a Slot',
-    sub: 'Choose a day and time that works for you.',
-    dateLabel: 'Date',
-    slotLabel: 'Time slot',
-    selectDate: 'Select a date',
-    selectSlot: 'Select a slot',
-    button: 'Book this slot',
-    comingSoon: 'Online slot booking is coming soon.',
-    fallback: 'Until then, appointments are taken by phone:',
-    fallbackCall: 'Call 0333-6489392',
-    placeholderNote: 'Booking API integration pending',
+  reviews: { overline: 'Patient reviews', heading: 'What patients say' },
+  faq: {
+    overline: 'Before your visit',
+    heading: 'Questions patients ask',
+    lead: 'Still unsure? Send a WhatsApp message and someone will answer.',
+    emergencyTitle: "Emergency? Don't wait for a message.",
+    emergencyBody: 'Chest pain, fainting or trouble breathing: call 1122 or go to the nearest emergency.',
+    items: [
+      { q: 'How do I book?', a: 'Send a WhatsApp message with your name and problem. The clinic replies with your time and which clinic to visit.' },
+      { q: 'Which days is he available?', a: 'Monday to Saturday. Hayat Medical Center 11 AM – 7 PM, Dua Hospital 7 – 10 PM. Both clinics are closed on Sunday.' },
+      { q: 'Can I come without booking?', a: 'To confirm with the clinic. Booking first means less waiting.' },
+      { q: 'What should I bring?', a: 'Old prescriptions, test reports and the medicines you take now. Sugar patients: bring your readings.' },
+      { q: 'What is the fee?', a: 'To confirm with the clinic. Ask in your WhatsApp message.' },
+      { q: 'Which clinic should I choose?', a: 'Same doctor at both. Choose Hayat for daytime, Dua Hospital for evenings.' },
+    ],
   },
-
-  contact: {
-    heading: 'Get in Touch',
-    phoneLabel: 'For appointment',
-    callNow: 'Call now',
-    appointmentNote:
-      'Appointment bookings are handled by phone at the moment.',
+  final: {
+    heading: 'Feeling unwell? Book your visit.',
+    sub: 'Dr. Hasan Aziz · Monday to Saturday · Multan',
+    cta: 'Book on WhatsApp',
   },
-
   footer: {
-    tagline: 'Consultant Physician & Medical Specialist — Multan, Pakistan',
-    rights: 'All rights reserved.',
-    disclaimer:
-      'The information on this site is for general awareness only and does not replace a doctor’s consultation. Always consult your physician for diagnosis and treatment.',
-    navLabel: 'Site sections',
+    tagline1: 'Consultant Physician · FCPS Medicine',
+    tagline2: 'MBBS, Army Medical College',
+    onPage: 'On this page',
+    clinicsHeading: 'Clinics',
+    help: 'Help',
+    questions: 'Questions',
+    urduLink: 'اردو میں دیکھیں',
+    emergency: { title: 'Emergency?', body: 'Call 1122 or go to the nearest emergency.' },
+    copyright: '© 2026 Dr. Hasan Aziz · Part of Dua Hospital, Multan',
   },
+  dock: { timings: 'Timings', book: 'Book on WhatsApp' },
+  days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 };
 
-const ur: SiteContent = {
-  dir: 'rtl',
-  langLabel: 'English',
-  switchHref: '/',
-  skipLink: 'مرکزی مواد پر جائیں',
+const BOOK_UR = 'واٹس ایپ پر اپوائنٹمنٹ لیں';
+const ABOUT_UR = 'میرے بارے میں';
 
+const ur: SiteContent = {
   meta: {
-    title: 'ڈاکٹر حسن عزیز — کنسلٹنٹ فزیشن و میڈیکل سپیشلسٹ، ملتان',
+    title: 'ڈاکٹر حسن عزیز — کنسلٹنٹ فزیشن، ملتان',
     description:
-      'ڈاکٹر حسن عزیز (ایم بی بی ایس، ایف سی پی ایس میڈیسن) — کنسلٹنٹ فزیشن و میڈیکل سپیشلسٹ، دعا هسپتال و پرائم هسپتال ملتان۔ دل، شوگر، بلڈ پریشر، جگر، گردہ، الرجی، دمہ وغیرہ کا علاج۔ اوقات و اپوائنٹمنٹ: 03336489392',
+      'ڈاکٹر حسن عزیز (MBBS، FCPS میڈیسن)، کنسلٹنٹ فزیشن، دعا ہسپتال اور حیات میڈیکل سنٹر ملتان۔ شوگر، بلڈ پریشر، بخار، دل، جگر، گردے، الرجی اور دمہ کا علاج۔ پیر تا ہفتہ۔ اپوائنٹمنٹ واٹس ایپ پر۔',
     keywords: [
       'ڈاکٹر حسن عزیز',
       'ڈاکٹر ملتان',
       'کنسلٹنٹ فزیشن ملتان',
-      'دعا هسپتال ملتان',
-      'پرائم هسپتال ملتان',
+      'میڈیکل سپیشلسٹ ملتان',
+      'دعا ہسپتال ملتان',
+      'حیات میڈیکل سنٹر ملتان',
       'گارڈن ٹاؤن ڈاکٹر',
-      'نشتر روڈ ڈاکٹر',
-      'چیف فزیشن ملتان',
       'جنرل فزیشن ملتان',
     ],
   },
-
+  dir: 'rtl',
+  langSwitch: { label: 'English', href: '/' },
+  skipLink: 'مرکزی مواد پر جائیں',
+  toTop: 'اوپر جائیں',
   nav: {
-    services: 'سروسز',
-    timings: 'اوقات',
-    book: 'اپوائنٹمنٹ',
-    call: 'کال کریں',
-    about: 'تعارف',
+    about: ABOUT_UR,
+    treatments: 'علاج',
+    clinics: 'کلینک اور اوقات',
+    book: 'اپوائنٹمنٹ کیسے لیں',
+    reviews: 'مریضوں کی رائے',
+    faq: 'سوالات',
+    cta: BOOK_UR,
+    menu: 'مینو',
+    subtitle: 'کنسلٹنٹ فزیشن · ملتان',
   },
-
+  status: {
+    neutral: 'پیر تا ہفتہ · اوقات دیکھیں',
+    lead: '· ',
+    comma: '، ',
+    sunday: 'آج اتوار ہے، کلینک بند ہیں',
+    seeing: 'ابھی مریض دیکھ رہے ہیں',
+    until: (clock) => `${clock} تک`,
+    next: 'اگلا کلینک',
+    opensIn: (d) => `${d} میں کھلے گا`,
+    closedNow: 'ابھی کلینک بند ہیں',
+    bookTomorrow: 'کل کے لیے ابھی اپوائنٹمنٹ لیں',
+    bookMonday: 'پیر کے لیے ابھی اپوائنٹمنٹ لیں',
+    open: 'ابھی کھلا ہے',
+    later: (d) => `${d} میں کھلے گا`,
+    done: 'آج کے لیے بند',
+    closedToday: 'آج بند ہے',
+    sundayNote: 'آج اتوار ہے، دونوں کلینک بند ہیں۔ پیر کی اپوائنٹمنٹ کے لیے واٹس ایپ پر پیغام بھیجیں۔',
+  },
   hero: {
-    eyebrow: 'کنسلٹنٹ فزیشن • ملتان، پاکستان',
-    name: 'ڈاکٹر حسن عزیز',
-    title: 'کنسلٹنٹ فزیشن ومیکل سپیشلسٹ',
-    qualifications:
-      'ایم بی بی ایس (آرمی میڈیکل کالج، راولپنڈی)، ایف سی پی ایس (میڈیسن)',
-    specialistBadge: 'سپیشلسٹ',
-    intro:
-      'دل، شوگر، بلڈ پریشر، جگر، گردہ، الرجی اور دیگر دسیوں بیماریوں کا قابل اعتماد علاج — ملتان کے دو آسان مقامات پر۔',
-    ctaBook: 'اپوائنٹمنٹ لیں',
-    ctaCall: 'کال کریں 0333-6489392',
-    quick: 'ایک نظر میں',
-    quickHours: 'شام 7 سے رات 10 اور صبح 11 سے شام 6',
-    quickLocations: 'دعا هسپتال اور پرائم هسپتال، ملتان',
+    overline: 'کنسلٹنٹ فزیشن · FCPS میڈیسن',
+    urLine: 'کنسلٹنٹ فزیشن · ملتان',
+    lineStrong: ['شوگر۔ بلڈ پریشر۔', 'ایسا بخار جو جاتا ہی نہیں۔'],
+    lineRest: 'ایک سپیشلسٹ جو وجہ ڈھونڈ کر علاج کرتے ہیں۔',
+    chips: ['شوگر', 'بلڈ پریشر', 'بخار اور ڈینگی', 'کھانسی اور دمہ', 'تیزابیت اور السر', 'یرقان اور ہیپاٹائٹس', 'دل کے امراض'],
+    seeAll: 'تمام 21 دیکھیں',
+    ctaBook: BOOK_UR,
+    ctaTimings: 'کلینک کے اوقات دیکھیں',
+    note: 'پیر تا ہفتہ · اتوار کو بند',
   },
-
+  portrait: {
+    plateTitle: 'ڈاکٹر حسن عزیز',
+    plateSub: 'کنسلٹنٹ فزیشن، ملتان',
+    sideOverline: ABOUT_UR,
+    sideTitle: 'دعا ہسپتال اور حیات میڈیکل سنٹر میں کنسلٹنٹ فزیشن',
+    sideSub: 'بڑوں کا علاج: اچانک بیماری اور لمبے عرصے کی دیکھ بھال۔',
+    degreeLabel: 'ڈگری',
+    degree: 'MBBS',
+    degreeWhere: 'آرمی میڈیکل کالج، راولپنڈی',
+    specLabel: 'سپیشلائزیشن',
+    spec: 'FCPS میڈیسن',
+    specWhere: 'کالج آف فزیشنز اینڈ سرجنز پاکستان',
+  },
+  today: { heading: 'آج ڈاکٹر صاحب کہاں ہیں؟', now: 'ابھی' },
+  info: [
+    { title: 'ہفتے میں 6 دن', sub: 'پیر تا ہفتہ · اتوار بند', target: '#clinics' },
+    { title: 'دن اور شام', sub: 'حیات صبح 11 سے شام 7 · دعا شام 7 سے رات 10', target: '#clinics' },
+    { title: '21 بیماریاں', sub: 'بخار سے لے کر شوگر اور بلڈ پریشر تک', target: '#treatments' },
+    { title: 'ایک پیغام سے اپوائنٹمنٹ', sub: 'واٹس ایپ۔ نہ کوئی فارم، نہ کوئی ایپ۔', target: 'whatsapp' },
+  ],
   about: {
-    heading: 'ڈاکٹر حسن عزیز کے بارے میں',
-    body: [
-      'ڈاکٹر حسن عزیز ملتان میں پریکٹس کرنے والے کنسلٹنٹ فزیشن اور میڈیکل سپیشلسٹ ہیں۔ انہوں نے آرمی میڈیکل کالج راولپنڈی سے ایم بی بی ایس اور میڈیسن میں ایف سی پی ایس مکمل کی ہے۔',
-      'مریض قلب اور بلڈ پریشر، شوگر، جگر و گردے کی بیماریاں، الرجی، معدہ و آنت کے مسائل، اور ڈینگی، ٹی بی جیسی موسمی بیماریوں کے لیے ان کے پاس آتے ہیں۔',
-      'ڈیولی شام کو دعا هسپتال میں اور دن کے وقت پرائم هسپتال میں کنسلٹیشن دستیاب ہے — ہر مقام پر ایک دن اونچھا (آف) ہوتا ہے تاکہ ہر مریض کو وقت ملے۔',
+    overline: ABOUT_UR,
+    heading: 'ایک سپیشلسٹ جو پہلے آپ کی پوری بات سنتے ہیں۔',
+    lead:
+      'ڈاکٹر حسن عزیز دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان میں کنسلٹنٹ فزیشن ہیں۔ وہ بڑوں کا علاج کرتے ہیں: روزمرہ کی بیماریاں جیسے بخار، کھانسی اور انفیکشن، اور لمبے عرصے کی بیماریاں جیسے شوگر اور ہائی بلڈ پریشر۔',
+    lead2: 'اگر آپ کو سرجن یا کسی اور سپیشلسٹ کی ضرورت ہو تو وہ وجہ سمجھاتے ہیں اور صحیح ڈاکٹر تک پہنچنے میں مدد کرتے ہیں۔',
+    facts: [
+      { value: 'بالغ افراد', label: 'بڑوں کی بیماریوں کا علاج' },
+      { value: 'پیر تا ہفتہ', label: 'اتوار کو بند' },
     ],
-    qualificationLabel: 'تعلیم',
-    designationLabel: 'عہدہ',
-    treatingLabel: 'شعبہ',
-    treatingValue: 'جنرل میڈیسن و مزمن امراض کا علاج',
+    qualHeading: 'تعلیم',
+    quals: [
+      { title: 'MBBS', chip: 'ڈگری', where: 'آرمی میڈیکل کالج، راولپنڈی' },
+      { title: 'FCPS (میڈیسن)', chip: 'سپیشلسٹ', where: 'کالج آف فزیشنز اینڈ سرجنز پاکستان' },
+      { title: 'کنسلٹنٹ فزیشن', chip: 'موجودہ', where: 'دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان' },
+    ],
+    visitHeading: 'آپ کا چیک اپ، قدم بہ قدم',
+    visit: [
+      { stage: 'پہلے', title: BOOK_UR, body: 'اپنا نام اور مسئلہ بھیجیں۔ جواب میں آپ کو وقت اور کلینک بتا دیا جائے گا۔' },
+      { stage: 'ساتھ لائیں', title: 'پرانی رپورٹیں اور دوائیں', body: 'پرانے نسخے، ٹیسٹ رپورٹیں اور وہ دوائیں جو آپ ابھی لے رہے ہیں۔' },
+      { stage: 'چیک اپ کے دوران', title: 'بات چیت اور معائنہ', body: 'ڈاکٹر صاحب آپ کا مسئلہ پوچھتے ہیں، بلڈ پریشر، نبض اور ضرورت ہو تو شوگر چیک کرتے ہیں، اور معائنہ کرتے ہیں۔' },
+      { stage: 'بعد میں', title: 'لکھا ہوا صاف پلان', body: 'دوائیں، ضرورت ہو تو ٹیسٹ، اور دوبارہ کب آنا ہے، سب آسان الفاظ میں۔' },
+    ],
   },
-
-  services: {
-    heading: 'سروسز و عوارض کا علاج',
-    sub: 'پورے خاندان کے لیے روزمرہ طبی خدمات — بچاؤ، تشخیص اور طویل علاج۔',
-    cardTitle: 'مریض عام طور پر کنداں کے لیے آتے ہیں',
+  treatments: {
+    overline: 'علاج',
+    heading: 'وہ کن بیماریوں کا علاج کرتے ہیں',
+    lead: 'کوئی گروپ چنیں یا پوری فہرست دیکھیں۔',
+    groups: { all: 'سب', day: 'روزمرہ', long: 'لمبی بیماریاں', heart: 'دل اور دماغ', stomach: 'معدہ اور جگر', chest: 'سینہ' },
+    ask: {
+      title: 'آپ کا مسئلہ فہرست میں نہیں؟',
+      body: 'پیغام بھیج کر پوچھ لیں۔ اگر یہ ان کا شعبہ نہیں تو ہم بتا دیں گے کہ کس ڈاکٹر کو دکھائیں۔',
+      cta: 'واٹس ایپ پر پوچھیں',
+    },
   },
-
-  specialties: {
-    heading: 'سپیشلسٹ علاجات',
-    sub: 'ایک وسیع عمل کے ساتھ سپیشلسٹ',
-    badge: 'سپیشلسٹ',
-    line1:
-      'دل، دماغ، شوگر، ہائی بلڈ پریشر، سینہ، الرجی، معدہ، آنت، جگر، گردہ، مثانہ، گلہر، ہیپاٹائٹس، کالا و پیلا یرقان۔',
-    line2:
-      'السر، فالج، مرگی، لقوہ، موٹاپا، کمر وجوڑوں کا درد، اعصابی و مردانہ کمزوری، بانجھ پن وبائی امراض، ڈینگی، قبض، سر درد، ٹی بی، دممہ۔',
-  },
-
-  timings: {
-    heading: 'کلینک کے اوقات و مقامات',
-    sub: 'ملتان میں دو مقامات — اپنے قریبی منتخب کریں۔',
-    daysLabel: 'دن',
-    hoursLabel: 'اوقات',
-    closedLabel: 'ہفتہ وار آف',
+  clinics: {
+    overline: 'کلینک اور اوقات',
+    heading: 'دو کلینک، ایک ہی ڈاکٹر۔',
+    lead: 'دن میں حیات میڈیکل سنٹر، شام کو دعا ہسپتال۔ اتوار کو دونوں بند۔',
+    toConfirmAddress: 'پتے کی تصدیق باقی ہے، ملتان',
+    toConfirmLandmark: 'قریبی نشانی کی تصدیق باقی ہے',
+    monSat: 'پیر تا ہفتہ',
     directions: 'نقشہ دیکھیں',
-    note:
-      'عوامی چھٹیاں مختلف ہو سکتی ہیں۔ آنے سے پہلے روز کے اوقات کے لیے فون ضرور کریں۔',
+    bookHere: 'یہاں اپوائنٹمنٹ لیں',
+    holiday: 'سرکاری چھٹیوں پر اوقات بدل سکتے ہیں۔ آنے سے پہلے پیغام بھیج دیں۔',
   },
-
-  booking: {
-    heading: 'نوبت (سلات) بک کریں',
-    sub: 'اپنے مطابق دن اور وقت منتخب کریں۔',
-    dateLabel: 'تاریخ',
-    slotLabel: 'وقت',
-    selectDate: 'تاریخ منتخب کریں',
-    selectSlot: 'وقت منتخب کریں',
-    button: 'یہ نوبت بک کریں',
-    comingSoon: 'آن لائن نوبت بکنگ جلد شروع ہو رہی ہے۔',
-    fallback: 'ابھی اپوائنٹمنٹ فون پر لی جاتی ہیں:',
-    fallbackCall: 'کال کریں 0333-6489392',
-    placeholderNote: 'بکنگ ای پی آئی انٹیگریشن زیرِ التواء',
+  book: {
+    overline: 'اپوائنٹمنٹ کیسے لیں',
+    heading: 'بس ایک پیغام۔ اتنا ہی کافی ہے۔',
+    lead: 'نہ کوئی فارم، نہ کوئی ایپ۔ واٹس ایپ پر پیغام بھیجیں، کلینک آپ کو وقت بتا دے گا۔',
+    steps: [
+      { title: '"واٹس ایپ پر اپوائنٹمنٹ لیں" دبائیں', body: 'پیغام پہلے سے لکھا ہوا ہے۔' },
+      { title: 'اپنا نام اور مسئلہ لکھیں', body: 'اردو میں وائس نوٹ بھی بھیج سکتے ہیں۔' },
+      { title: 'اپنا وقت اور کلینک جانیں', body: 'اپنے وقت پر آئیں اور پیغام دکھا دیں۔' },
+    ],
+    cta: BOOK_UR,
+    chat: {
+      name: 'ڈاکٹر حسن عزیز کلینک',
+      status: 'عام طور پر ایک گھنٹے میں جواب دیتے ہیں',
+      me1: 'السلام علیکم۔ مجھے ڈاکٹر حسن عزیز سے اپوائنٹمنٹ چاہیے۔',
+      me2: 'نام: احمد · مسئلہ: 3 دن سے بخار',
+      them: { pre: 'وعلیکم السلام۔ آپ کا وقت ', time: 'آج رات 8:15 بجے', post: ' دعا ہسپتال میں ہے۔ براہ کرم پرانی رپورٹیں ساتھ لائیں۔' },
+      times: ['6:12 PM', '6:12 PM', '6:14 PM'],
+    },
   },
-
-  contact: {
-    heading: 'رابطہ کریں',
-    phoneLabel: 'اپوائنٹمنٹ کے لیے',
-    callNow: 'ابھی کال کریں',
-    appointmentNote: 'فی الحال اپوائنٹمنٹ فون پر لی جاتی ہیں۔',
+  reviews: { overline: 'مریضوں کی رائے', heading: 'مریض کیا کہتے ہیں' },
+  faq: {
+    overline: 'آنے سے پہلے',
+    heading: 'مریضوں کے سوالات',
+    lead: 'ابھی بھی کوئی سوال ہے؟ واٹس ایپ پر پیغام بھیجیں، آپ کو جواب دیا جائے گا۔',
+    emergencyTitle: 'ایمرجنسی ہے؟ پیغام کا انتظار نہ کریں۔',
+    emergencyBody: 'سینے میں درد، بے ہوشی یا سانس لینے میں مشکل ہو تو 1122 پر کال کریں یا قریبی ایمرجنسی میں جائیں۔',
+    items: [
+      { q: 'اپوائنٹمنٹ کیسے لوں؟', a: 'واٹس ایپ پر اپنا نام اور مسئلہ بھیجیں۔ کلینک جواب میں آپ کا وقت اور کلینک بتا دے گا۔' },
+      { q: 'ڈاکٹر صاحب کن دنوں میں ملتے ہیں؟', a: 'پیر سے ہفتہ تک۔ حیات میڈیکل سنٹر صبح 11 سے شام 7 بجے تک، دعا ہسپتال شام 7 سے رات 10 بجے تک۔ اتوار کو دونوں کلینک بند ہوتے ہیں۔' },
+      { q: 'کیا بغیر اپوائنٹمنٹ کے آ سکتے ہیں؟', a: 'اس کی تصدیق ابھی باقی ہے۔ پہلے اپوائنٹمنٹ لینے سے کم انتظار کرنا پڑتا ہے۔' },
+      { q: 'ساتھ کیا لائیں؟', a: 'پرانے نسخے، ٹیسٹ رپورٹیں اور وہ دوائیں جو آپ ابھی لے رہے ہیں۔ شوگر کے مریض اپنی ریڈنگز بھی ساتھ لائیں۔' },
+      { q: 'فیس کتنی ہے؟', a: 'اس کی تصدیق ابھی باقی ہے۔ اپنے واٹس ایپ پیغام میں پوچھ لیں۔' },
+      { q: 'کون سا کلینک چنوں؟', a: 'دونوں جگہ ایک ہی ڈاکٹر ہیں۔ دن میں آنا ہو تو حیات، شام کو آنا ہو تو دعا ہسپتال۔' },
+    ],
   },
-
+  final: {
+    heading: 'طبیعت ٹھیک نہیں؟ اپوائنٹمنٹ لیں۔',
+    sub: 'ڈاکٹر حسن عزیز · پیر تا ہفتہ · ملتان',
+    cta: BOOK_UR,
+  },
   footer: {
-    tagline: 'کنسلٹنٹ فزیشن و میڈیکل سپیشلسٹ — ملتان، پاکستان',
-    rights: 'جملہ حقوق محفوظ ہیں۔',
-    disclaimer:
-      'اس سائٹ پر معلومات عام آگہی کے لیے ہیں اور ڈاکٹر کے حتمی مشورے کا بدل نہیں۔ تشخیص اور علاج کے لیے ہمیشہ اپنے ڈاکٹر سے رجوع کریں۔',
-    navLabel: 'سائٹ کے حصے',
+    tagline1: 'کنسلٹنٹ فزیشن · FCPS میڈیسن',
+    tagline2: 'MBBS، آرمی میڈیکل کالج',
+    onPage: 'اس صفحے پر',
+    clinicsHeading: 'کلینک',
+    help: 'مدد',
+    questions: 'سوالات',
+    urduLink: 'View in English',
+    emergency: { title: 'ایمرجنسی؟', body: '1122 پر کال کریں یا قریبی ایمرجنسی میں جائیں۔' },
+    copyright: '© 2026 ڈاکٹر حسن عزیز · دعا ہسپتال ملتان کا حصہ',
   },
+  dock: { timings: 'اوقات', book: BOOK_UR },
+  days: ['پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتہ', 'اتوار'],
 };
 
 const dictionaries: Record<Locale, SiteContent> = { en, ur };

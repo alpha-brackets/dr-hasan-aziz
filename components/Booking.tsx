@@ -1,91 +1,41 @@
-'use client';
+import type { SiteContent } from '@/lib/content';
+import { bookingHref } from '@/lib/links';
+import type { Locale } from '@/lib/site';
+import { ChatDemo } from './ChatDemo';
+import { Icon } from './icons';
 
-import { useState } from 'react';
-import { DOCTOR, type SiteContent } from '@/lib/content';
-import { CalendarIcon, ClockIcon, PhoneIcon, SparkIcon } from './icons';
-
-/**
- * Slot booking UI.
- *
- * The date picker, slot list and submit button are intentionally left
- * empty/disabled: slot booking will be powered by an external booking
- * API later. Wire it up in `handleBook()` below (fetch the available
- * slots on date change, then POST the selected slot on submit).
- */
-export function Booking({ content }: { content: SiteContent }) {
-  const t = content.booking;
-  const [date, setDate] = useState('');
-  const [slot, setSlot] = useState('');
-
-  // Booking API integration point — intentionally empty for now.
-  const handleBook = () => {
-    void date;
-    void slot;
-    // TODO: integrate the external slot-booking API here.
-  };
-
+/** Section 04: the dark band with three steps, one Book button and the animated chat. */
+export function Booking({ c, locale }: { c: SiteContent; locale: Locale }) {
+  const b = c.book;
   return (
-    <section className="section" id="booking">
-      <div className="container">
-        <div className="section-head">
-          <h2>{t.heading}</h2>
-          <p>{t.sub}</p>
-        </div>
-
-        <div className="booking-panel">
-          <form
-            className="booking-form"
-            onSubmit={(event) => {
-              event.preventDefault();
-              handleBook();
-            }}
-          >
-            <div className="field">
-              <label htmlFor="booking-date">
-                <CalendarIcon className="icon-inline" />
-                {t.dateLabel}
-              </label>
-              <input
-                id="booking-date"
-                name="date"
-                type="date"
-                value={date}
-                onChange={(event) => setDate(event.target.value)}
-                disabled
-              />
-            </div>
-
-            <fieldset className="slot-field">
-              <legend>
-                <ClockIcon className="icon-inline" />
-                {t.slotLabel}
-              </legend>
-              <div className="slot-empty" role="status">
-                <ClockIcon className="icon-inline slot-empty-icon" />
-                <span>{t.placeholderNote}</span>
-              </div>
-              <input type="hidden" name="slot" value={slot} />
-            </fieldset>
-
-            <button type="submit" className="btn btn-primary btn-block" disabled>
-              {t.button}
-            </button>
-          </form>
-
-          <aside className="booking-aside">
-            <span className="soon-badge">
-              <SparkIcon className="icon-inline" />
-              {t.comingSoon}
+    <section id="book">
+      <div className="wrap">
+        <div className="book rv">
+          <div>
+            <span className="overline">
+              <span className="num">04</span>
+              {b.overline}
             </span>
-            <p>{t.fallback}</p>
-            <a
-              href={`tel:${DOCTOR.phoneTel}`}
-              className="btn btn-white btn-block btn-lg"
-            >
-              <PhoneIcon className="icon-inline" />
-              <span dir="ltr">{DOCTOR.phoneDisplay}</span>
+            <h2>{b.heading}</h2>
+            <p className="lead">{b.lead}</p>
+            <ol className="steps">
+              {b.steps.map((s, i) => (
+                <li key={s.title}>
+                  <span className="n">{i + 1}</span>
+                  <div>
+                    <b>{s.title}</b>
+                    <span>{s.body}</span>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <a className="btn btn-pri wa-link" href={bookingHref(locale)} target="_blank" rel="noopener">
+              <Icon name="wa" />
+              {b.cta}
+              <Icon name="arrow" className="arr" />
             </a>
-          </aside>
+          </div>
+          <ChatDemo {...b.chat} />
         </div>
       </div>
     </section>

@@ -1,34 +1,65 @@
-import { type SiteContent } from '@/lib/content';
+import type { CSSProperties } from 'react';
+import type { IconName, SiteContent } from '@/lib/content';
+import { Icon } from './icons';
 
-export function About({ content }: { content: SiteContent }) {
-  const t = content.about;
+const VISIT_ICONS: readonly IconName[] = ['wa', 'file', 'steth', 'list'];
 
+/** Section 01: who the doctor is, qualifications and what a visit looks like. */
+export function About({ c }: { c: SiteContent }) {
+  const a = c.about;
   return (
-    <section className="section section-alt" id="about">
-      <div className="container about-grid">
-        <div className="about-copy">
-          <div className="section-head section-head-start">
-            <h2>{t.heading}</h2>
+    <section id="doctor">
+      <div className="wrap about">
+        <div className="about-l rv">
+          <span className="overline">
+            <span className="num">01</span>
+            {a.overline}
+          </span>
+          <h2>{a.heading}</h2>
+          <p className="lead">{a.lead}</p>
+          <p className="lead" style={{ marginTop: 14 }}>
+            {a.lead2}
+          </p>
+          <div className="facts">
+            {a.facts.map((f) => (
+              <div className="fact" key={f.value}>
+                <b>{f.value}</b>
+                <span>{f.label}</span>
+              </div>
+            ))}
           </div>
-          {t.body.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
         </div>
-
-        <dl className="about-facts">
-          <div className="fact">
-            <dt>{t.qualificationLabel}</dt>
-            <dd>{content.hero.qualifications}</dd>
+        <div className="about-r">
+          <div className="card blk rv">
+            <h3>{a.qualHeading}</h3>
+            <ul className="tl">
+              {a.quals.map((q) => (
+                <li key={q.title}>
+                  <b>{q.title}</b>
+                  <span className="chip">{q.chip}</span>
+                  <span className="where">{q.where}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="fact">
-            <dt>{t.designationLabel}</dt>
-            <dd>{content.hero.title}</dd>
+          <div className="card blk rv" style={{ '--d': '.1s' } as CSSProperties}>
+            <h3>{a.visitHeading}</h3>
+            <ol className="ex-list">
+              {a.visit.map((v, i) => (
+                <li className="ex" key={v.title}>
+                  <span className="ic">
+                    <Icon name={VISIT_ICONS[i] ?? 'chev'} />
+                  </span>
+                  <b>
+                    <small>{v.stage}</small>
+                    {v.title}
+                  </b>
+                  <span>{v.body}</span>
+                </li>
+              ))}
+            </ol>
           </div>
-          <div className="fact fact-accent">
-            <dt>{t.treatingLabel}</dt>
-            <dd>{t.treatingValue}</dd>
-          </div>
-        </dl>
+        </div>
       </div>
     </section>
   );

@@ -1,0 +1,215 @@
+# Urdu strings awaiting native review
+
+- WhatsApp booking message (without clinic) — السلام علیکم۔ مجھے ڈاکٹر حسن عزیز سے اپوائنٹمنٹ چاہیے۔\nنام:\nمسئلہ:
+- WhatsApp booking message (with clinic) — السلام علیکم۔ مجھے ڈاکٹر حسن عزیز سے {clinic} میں اپوائنٹمنٹ چاہیے۔\nنام:\nمسئلہ:
+
+## Site content (lib/content.ts, v3 redesign)
+
+Every Urdu string in the new content, by key. Repeated text is listed once, under its first key. `{x}` marks a variable.
+
+- meta.title — ڈاکٹر حسن عزیز — کنسلٹنٹ فزیشن، ملتان
+- meta.description — ڈاکٹر حسن عزیز (MBBS، FCPS میڈیسن)، کنسلٹنٹ فزیشن، دعا ہسپتال اور حیات میڈیکل سنٹر ملتان۔ شوگر، بلڈ پریشر، بخار، دل، جگر، گردے، الرجی اور دمہ کا علاج۔ پیر تا ہفتہ۔ اپوائنٹمنٹ واٹس ایپ پر۔
+- meta.keywords[0] — ڈاکٹر حسن عزیز
+- meta.keywords[1] — ڈاکٹر ملتان
+- meta.keywords[2] — کنسلٹنٹ فزیشن ملتان
+- meta.keywords[3] — میڈیکل سپیشلسٹ ملتان
+- meta.keywords[4] — دعا ہسپتال ملتان
+- meta.keywords[5] — حیات میڈیکل سنٹر ملتان
+- meta.keywords[6] — گارڈن ٹاؤن ڈاکٹر
+- meta.keywords[7] — جنرل فزیشن ملتان
+- skipLink — مرکزی مواد پر جائیں
+- toTop — اوپر جائیں
+- nav.about — میرے بارے میں
+- nav.treatments — علاج
+- nav.clinics — کلینک اور اوقات
+- nav.book — اپوائنٹمنٹ کیسے لیں
+- nav.reviews — مریضوں کی رائے
+- nav.faq — سوالات
+- nav.cta — واٹس ایپ پر اپوائنٹمنٹ لیں
+- nav.menu — مینو
+- nav.subtitle — کنسلٹنٹ فزیشن · ملتان (header subtitle; same separator as hero.urLine)
+- status.neutral — پیر تا ہفتہ · اوقات دیکھیں
+- status.comma — «، » (Urdu comma between the clinic name and its detail in the hero pill, e.g. «دعا ہسپتال، 10 PM تک»)
+- status.sunday — آج اتوار ہے، کلینک بند ہیں
+- status.seeing — ابھی مریض دیکھ رہے ہیں
+- status.until — {x} تک
+- status.next — اگلا کلینک
+- status.opensIn — {x} میں کھلے گا
+- status.closedNow — ابھی کلینک بند ہیں
+- status.bookTomorrow — کل کے لیے ابھی اپوائنٹمنٹ لیں
+- status.bookMonday — پیر کے لیے ابھی اپوائنٹمنٹ لیں
+- status.open — ابھی کھلا ہے
+- status.done — آج کے لیے بند
+- status.closedToday — آج بند ہے
+- status.sundayNote — آج اتوار ہے، دونوں کلینک بند ہیں۔ پیر کی اپوائنٹمنٹ کے لیے واٹس ایپ پر پیغام بھیجیں۔
+- hero.overline — کنسلٹنٹ فزیشن · FCPS میڈیسن
+- hero.urLine — کنسلٹنٹ فزیشن · ملتان
+- hero.lineStrong[0] — شوگر۔ بلڈ پریشر۔
+- hero.lineStrong[1] — ایسا بخار جو جاتا ہی نہیں۔
+- hero.lineRest — ایک سپیشلسٹ جو وجہ ڈھونڈ کر علاج کرتے ہیں۔
+- hero.chips[0] — شوگر
+- hero.chips[1] — بلڈ پریشر
+- hero.chips[2] — بخار اور ڈینگی
+- hero.chips[3] — کھانسی اور دمہ
+- hero.chips[4] — تیزابیت اور السر
+- hero.chips[5] — یرقان اور ہیپاٹائٹس
+- hero.chips[6] — دل کے امراض
+- hero.seeAll — تمام 21 دیکھیں
+- hero.ctaTimings — کلینک کے اوقات دیکھیں
+- hero.note — پیر تا ہفتہ · اتوار کو بند
+- portrait.plateSub — کنسلٹنٹ فزیشن، ملتان
+- portrait.sideTitle — دعا ہسپتال اور حیات میڈیکل سنٹر میں کنسلٹنٹ فزیشن
+- portrait.sideSub — بڑوں کا علاج: اچانک بیماری اور لمبے عرصے کی دیکھ بھال۔
+- portrait.degreeLabel — ڈگری
+- portrait.degreeWhere — آرمی میڈیکل کالج، راولپنڈی
+- portrait.specLabel — سپیشلائزیشن
+- portrait.spec — FCPS میڈیسن
+- portrait.specWhere — کالج آف فزیشنز اینڈ سرجنز پاکستان
+- today.heading — آج ڈاکٹر صاحب کہاں ہیں؟
+- today.now — ابھی
+- info[0].title — ہفتے میں 6 دن
+- info[0].sub — پیر تا ہفتہ · اتوار بند
+- info[1].title — دن اور شام
+- info[1].sub — حیات صبح 11 سے شام 7 · دعا شام 7 سے رات 10
+- info[2].title — 21 بیماریاں
+- info[2].sub — بخار سے لے کر شوگر اور بلڈ پریشر تک
+- info[3].title — ایک پیغام سے اپوائنٹمنٹ
+- info[3].sub — واٹس ایپ۔ نہ کوئی فارم، نہ کوئی ایپ۔
+- about.heading — ایک سپیشلسٹ جو پہلے آپ کی پوری بات سنتے ہیں۔
+- about.lead — ڈاکٹر حسن عزیز دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان میں کنسلٹنٹ فزیشن ہیں۔ وہ بڑوں کا علاج کرتے ہیں: روزمرہ کی بیماریاں جیسے بخار، کھانسی اور انفیکشن، اور لمبے عرصے کی بیماریاں جیسے شوگر اور ہائی بلڈ پریشر۔
+- about.lead2 — اگر آپ کو سرجن یا کسی اور سپیشلسٹ کی ضرورت ہو تو وہ وجہ سمجھاتے ہیں اور صحیح ڈاکٹر تک پہنچنے میں مدد کرتے ہیں۔
+- about.facts[0].value — بالغ افراد
+- about.facts[0].label — بڑوں کی بیماریوں کا علاج
+- about.facts[1].value — پیر تا ہفتہ
+- about.facts[1].label — اتوار کو بند
+- about.qualHeading — تعلیم
+- about.quals[1].title — FCPS (میڈیسن)
+- about.quals[1].chip — سپیشلسٹ
+- about.quals[2].title — کنسلٹنٹ فزیشن
+- about.quals[2].chip — موجودہ
+- about.quals[2].where — دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان
+- about.visitHeading — آپ کا چیک اپ، قدم بہ قدم
+- about.visit[0].stage — پہلے
+- about.visit[0].body — اپنا نام اور مسئلہ بھیجیں۔ جواب میں آپ کو وقت اور کلینک بتا دیا جائے گا۔
+- about.visit[1].stage — ساتھ لائیں
+- about.visit[1].title — پرانی رپورٹیں اور دوائیں
+- about.visit[1].body — پرانے نسخے، ٹیسٹ رپورٹیں اور وہ دوائیں جو آپ ابھی لے رہے ہیں۔
+- about.visit[2].stage — چیک اپ کے دوران
+- about.visit[2].title — بات چیت اور معائنہ
+- about.visit[2].body — ڈاکٹر صاحب آپ کا مسئلہ پوچھتے ہیں، بلڈ پریشر، نبض اور ضرورت ہو تو شوگر چیک کرتے ہیں، اور معائنہ کرتے ہیں۔
+- about.visit[3].stage — بعد میں
+- about.visit[3].title — لکھا ہوا صاف پلان
+- about.visit[3].body — دوائیں، ضرورت ہو تو ٹیسٹ، اور دوبارہ کب آنا ہے، سب آسان الفاظ میں۔
+- treatments.heading — وہ کن بیماریوں کا علاج کرتے ہیں
+- treatments.lead — کوئی گروپ چنیں یا پوری فہرست دیکھیں۔
+- treatments.groups.all — سب
+- treatments.groups.day — روزمرہ
+- treatments.groups.long — لمبی بیماریاں
+- treatments.groups.heart — دل اور دماغ
+- treatments.groups.stomach — معدہ اور جگر
+- treatments.groups.chest — سینہ
+- treatments.ask.title — آپ کا مسئلہ فہرست میں نہیں؟
+- treatments.ask.body — پیغام بھیج کر پوچھ لیں۔ اگر یہ ان کا شعبہ نہیں تو ہم بتا دیں گے کہ کس ڈاکٹر کو دکھائیں۔
+- treatments.ask.cta — واٹس ایپ پر پوچھیں
+- clinics.heading — دو کلینک، ایک ہی ڈاکٹر۔
+- clinics.lead — دن میں حیات میڈیکل سنٹر، شام کو دعا ہسپتال۔ اتوار کو دونوں بند۔
+- clinics.toConfirmAddress — پتے کی تصدیق باقی ہے، ملتان
+- clinics.toConfirmLandmark — قریبی نشانی کی تصدیق باقی ہے
+- clinics.directions — نقشہ دیکھیں
+- clinics.bookHere — یہاں اپوائنٹمنٹ لیں
+- clinics.holiday — سرکاری چھٹیوں پر اوقات بدل سکتے ہیں۔ آنے سے پہلے پیغام بھیج دیں۔
+- book.heading — بس ایک پیغام۔ اتنا ہی کافی ہے۔
+- book.lead — نہ کوئی فارم، نہ کوئی ایپ۔ واٹس ایپ پر پیغام بھیجیں، کلینک آپ کو وقت بتا دے گا۔
+- book.steps[0].title — "واٹس ایپ پر اپوائنٹمنٹ لیں" دبائیں
+- book.steps[0].body — پیغام پہلے سے لکھا ہوا ہے۔
+- book.steps[1].title — اپنا نام اور مسئلہ لکھیں
+- book.steps[1].body — اردو میں وائس نوٹ بھی بھیج سکتے ہیں۔
+- book.steps[2].title — اپنا وقت اور کلینک جانیں
+- book.steps[2].body — اپنے وقت پر آئیں اور پیغام دکھا دیں۔
+- book.chat.name — ڈاکٹر حسن عزیز کلینک
+- book.chat.status — عام طور پر ایک گھنٹے میں جواب دیتے ہیں
+- book.chat.me1 — السلام علیکم۔ مجھے ڈاکٹر حسن عزیز سے اپوائنٹمنٹ چاہیے۔
+- book.chat.me2 — نام: احمد · مسئلہ: 3 دن سے بخار
+- book.chat.them.pre — وعلیکم السلام۔ آپ کا وقت 
+- book.chat.them.time — آج رات 8:15 بجے
+- book.chat.them.post —  دعا ہسپتال میں ہے۔ براہ کرم پرانی رپورٹیں ساتھ لائیں۔
+- reviews.heading — مریض کیا کہتے ہیں
+- faq.overline — آنے سے پہلے
+- faq.heading — مریضوں کے سوالات
+- faq.lead — ابھی بھی کوئی سوال ہے؟ واٹس ایپ پر پیغام بھیجیں، آپ کو جواب دیا جائے گا۔
+- faq.emergencyTitle — ایمرجنسی ہے؟ پیغام کا انتظار نہ کریں۔
+- faq.emergencyBody — سینے میں درد، بے ہوشی یا سانس لینے میں مشکل ہو تو 1122 پر کال کریں یا قریبی ایمرجنسی میں جائیں۔
+- faq.items[0].q — اپوائنٹمنٹ کیسے لوں؟
+- faq.items[0].a — واٹس ایپ پر اپنا نام اور مسئلہ بھیجیں۔ کلینک جواب میں آپ کا وقت اور کلینک بتا دے گا۔
+- faq.items[1].q — ڈاکٹر صاحب کن دنوں میں ملتے ہیں؟
+- faq.items[1].a — پیر سے ہفتہ تک۔ حیات میڈیکل سنٹر صبح 11 سے شام 7 بجے تک، دعا ہسپتال شام 7 سے رات 10 بجے تک۔ اتوار کو دونوں کلینک بند ہوتے ہیں۔
+- faq.items[2].q — کیا بغیر اپوائنٹمنٹ کے آ سکتے ہیں؟
+- faq.items[2].a — اس کی تصدیق ابھی باقی ہے۔ پہلے اپوائنٹمنٹ لینے سے کم انتظار کرنا پڑتا ہے۔
+- faq.items[3].q — ساتھ کیا لائیں؟
+- faq.items[3].a — پرانے نسخے، ٹیسٹ رپورٹیں اور وہ دوائیں جو آپ ابھی لے رہے ہیں۔ شوگر کے مریض اپنی ریڈنگز بھی ساتھ لائیں۔
+- faq.items[4].q — فیس کتنی ہے؟
+- faq.items[4].a — اس کی تصدیق ابھی باقی ہے۔ اپنے واٹس ایپ پیغام میں پوچھ لیں۔
+- faq.items[5].q — کون سا کلینک چنوں؟
+- faq.items[5].a — دونوں جگہ ایک ہی ڈاکٹر ہیں۔ دن میں آنا ہو تو حیات، شام کو آنا ہو تو دعا ہسپتال۔
+- final.heading — طبیعت ٹھیک نہیں؟ اپوائنٹمنٹ لیں۔
+- final.sub — ڈاکٹر حسن عزیز · پیر تا ہفتہ · ملتان
+- footer.tagline2 — MBBS، آرمی میڈیکل کالج
+- footer.onPage — اس صفحے پر
+- footer.clinicsHeading — کلینک
+- footer.help — مدد
+- footer.emergency.title — ایمرجنسی؟
+- footer.emergency.body — 1122 پر کال کریں یا قریبی ایمرجنسی میں جائیں۔
+- footer.copyright — © 2026 ڈاکٹر حسن عزیز · دعا ہسپتال ملتان کا حصہ
+- dock.timings — اوقات
+- days[0] — پیر
+- days[1] — منگل
+- days[2] — بدھ
+- days[3] — جمعرات
+- days[4] — جمعہ
+- days[5] — ہفتہ
+- days[6] — اتوار
+- clinic.hayat.nameUr — حیات میڈیکل سنٹر
+- clinic.hayat.label — دن کے وقت
+- clinic.dua.nameUr — دعا ہسپتال
+- clinic.dua.label — شام کے وقت
+- clinic.dua.address — فرسٹ فلور، بینک پلازہ، شیر شاہ روڈ، گارڈن ٹاؤن، ملتان
+- clinic.dua.landmark — نزد شیل پٹرول پمپ
+- treatment.Fever.nameUr — بخار
+- treatment.Fever.blurbUr — بار بار آنے والا بخار، فلو سمیت۔
+- treatment.Dengue.nameUr — ڈینگی
+- treatment.Dengue.blurbUr — تشخیص، پلیٹ لیٹس کی جانچ اور قریبی نگرانی۔
+- treatment.Allergy.nameUr — الرجی
+- treatment.Allergy.blurbUr — جلد، کھانے اور موسم کی الرجی۔
+- treatment.Headache.nameUr — سر درد
+- treatment.Headache.blurbUr — بار بار یا شدید سر درد اور آدھے سر کا درد۔
+- treatment.Back & joint pain.nameUr — کمر اور جوڑوں کا درد
+- treatment.Back & joint pain.blurbUr — درد، اکڑن اور جوڑوں کا درد۔
+- treatment.Sugar (diabetes).blurbUr — شوگر کنٹرول، ٹیسٹ اور پیچیدگیوں کی جانچ۔
+- treatment.Blood pressure.blurbUr — ہائی بلڈ پریشر کی جلد پہچان اور اسے قابو میں رکھنا۔
+- treatment.Low blood (anaemia).nameUr — خون کی کمی
+- treatment.Low blood (anaemia).blurbUr — خون کی کمی سے کمزوری اور تھکاوٹ۔
+- treatment.Obesity.nameUr — موٹاپا
+- treatment.Obesity.blurbUr — وزن، خوراک اور موٹاپے سے ہونے والے مسائل۔
+- treatment.Kidney stones.nameUr — گردے کی پتھری
+- treatment.Kidney stones.blurbUr — تشخیص، درد سے آرام اور فالو اپ۔
+- treatment.Kidney & bladder.nameUr — گردے اور مثانہ
+- treatment.Kidney & bladder.blurbUr — پیشاب کا انفیکشن اور گردوں کے مسائل۔
+- treatment.Heart disease.blurbUr — سینے میں درد، دل کا چیک اپ اور مسلسل علاج۔
+- treatment.Stroke & paralysis.nameUr — فالج
+- treatment.Stroke & paralysis.blurbUr — فالج یا لقوہ کے بعد علاج اور بحالی۔
+- treatment.Fits (epilepsy).nameUr — مرگی
+- treatment.Fits (epilepsy).blurbUr — تشخیص اور دوروں کو قابو میں رکھنے کی دوائیں۔
+- treatment.Acidity.nameUr — تیزابیت
+- treatment.Acidity.blurbUr — تیزابیت، گیس اور معدے کی تکلیف۔
+- treatment.Ulcer.nameUr — السر
+- treatment.Ulcer.blurbUr — معدے اور آنتوں کے السر۔
+- treatment.Jaundice.nameUr — یرقان
+- treatment.Jaundice.blurbUr — جگر کی خرابی سے ہونے والا پیلا پن۔
+- treatment.Hepatitis.nameUr — ہیپاٹائٹس
+- treatment.Hepatitis.blurbUr — ہیپاٹائٹس بی اور سی کے ٹیسٹ اور علاج۔
+- treatment.Cough.nameUr — کھانسی
+- treatment.Cough.blurbUr — مسلسل کھانسی اور سینے کا انفیکشن۔
+- treatment.Asthma.nameUr — دمہ
+- treatment.Asthma.blurbUr — سانس کی تکلیف کا علاج اور انہیلر کے استعمال میں مدد۔
+- treatment.TB.nameUr — ٹی بی
+- treatment.TB.blurbUr — ٹی بی کی تشخیص اور مکمل کورس کا علاج۔
