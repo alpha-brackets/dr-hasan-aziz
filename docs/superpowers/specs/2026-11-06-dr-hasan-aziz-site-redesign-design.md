@@ -124,7 +124,7 @@ Order follows the mockup. Section numbers appear as small "01"–"06" badges.
     - **On this page:** numbered links to all six sections (01 The doctor … 06 Questions).
     - **Clinics:** each clinic with its hours and a Directions link, then "Monday to Saturday · Closed on Sunday".
     - **Help:** Book on WhatsApp, Questions, the Urdu page ("اردو میں دیکھیں"), and an emergency note ("Call 1122 or go to the nearest emergency").
-    - **Bottom line:** "© 2026 Dr. Hasan Aziz · Part of Dua Hospital, Multan" and "Back to top ↑".
+    - **Bottom line:** "© 2026 Dr. Hasan Aziz · Part of Dua Hospital, Multan". No footer "Back to top" link; the floating back-to-top button covers it.
     - Columns go 4 → 2 at 1080px → 1 at 420px.
 12. **Mobile dock** (760px and below): a fixed bottom bar with "Timings" (→ `#clinics`) and "Book on WhatsApp".
 
