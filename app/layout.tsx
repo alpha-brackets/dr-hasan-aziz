@@ -1,6 +1,21 @@
 import type { Metadata, Viewport } from 'next';
+import { Figtree, Gulzar } from 'next/font/google';
 import { SITE_URL } from '@/lib/site';
 import './globals.css';
+
+const figtree = Figtree({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-figtree',
+  display: 'swap',
+});
+
+const gulzar = Gulzar({
+  subsets: ['arabic', 'latin'],
+  weight: '400',
+  variable: '--font-gulzar',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -12,11 +27,11 @@ export const metadata: Metadata = {
   applicationName: 'Dr. Hasan Aziz',
   category: 'health' as Metadata['category'],
   icons: { icon: '/icon.svg' },
-  formatDetection: { telephone: true, address: true, email: false },
+  formatDetection: { telephone: false, address: true, email: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#b4232a',
+  themeColor: '#074EA2',
   width: 'device-width',
   initialScale: 1,
 };
@@ -27,7 +42,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="ltr">
+    <html
+      lang="en"
+      dir="ltr"
+      className={`${figtree.variable} ${gulzar.variable}`}
+    >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
