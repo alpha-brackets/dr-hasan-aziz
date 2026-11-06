@@ -2,6 +2,8 @@ import { getContent } from '@/lib/content';
 import { buildPageSchema } from '@/lib/schema';
 import type { Locale } from '@/lib/site';
 import { About } from './About';
+import { Booking } from './Booking';
+import { Clinics } from './Clinics';
 import { Header } from './Header';
 import { Hero } from './Hero';
 import { BackToTop } from './nav/BackToTop';
@@ -28,6 +30,8 @@ export function Page({ locale }: { locale: Locale }) {
         <Hero c={c} locale={locale} />
         <About c={c} />
         <Treatments c={c} locale={locale} />
+        <Clinics c={c} locale={locale} />
+        <Booking c={c} locale={locale} />
       </main>
       <BackToTop label={c.toTop} />
     </>

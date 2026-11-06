@@ -282,8 +282,9 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .wa-top .av{width:36px;height:36px;border-radius:50%;background:var(--photo) center 15%/cover}
 .wa-top small{display:block;opacity:.75;font-size:12px}
 .chat{padding:16px 12px;display:flex;flex-direction:column;gap:8px;min-height:340px;color:var(--n900)}
-.msg{max-width:86%;padding:8px 11px 6px;border-radius:12px;font-size:14px;line-height:20px;box-shadow:0 1px 1px rgba(0,0,0,.08);opacity:0;transform:translateY(8px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
-.msg.show{opacity:1;transform:none}
+.msg{max-width:86%;padding:8px 11px 6px;border-radius:12px;font-size:14px;line-height:20px;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.js .msg{opacity:0;transform:translateY(8px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+.js .msg.show{opacity:1;transform:none}
 .msg.me{align-self:flex-end;background:#D9FDD3;border-top-right-radius:4px}
 .msg.them{align-self:flex-start;background:#fff;border-top-left-radius:4px}
 .msg small{display:block;text-align:right;font-size:10.5px;color:#667781;margin-top:2px}
