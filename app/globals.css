@@ -252,7 +252,7 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .cl-time span{color:var(--n500);font-size:15px}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 .week div{text-align:center;padding:8px 0;border-radius:10px;font-size:13px;line-height:20px;font-weight:700;background:var(--b600);color:#fff}
-.week div.off{background:var(--n50);color:var(--n400);border:1px solid var(--line)}
+.week div.off{background:var(--n50);color:var(--n500);border:1px solid var(--line)}
 .week div.today{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--n900)}
 .cl-addr{display:flex;gap:12px;font-size:16px;line-height:24px;color:var(--n700)}
 .cl-addr svg{color:var(--b600);margin-top:2px}
