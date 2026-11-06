@@ -41,7 +41,7 @@ The page is doctor-first, trust-oriented, modern, and in the Dua Hospital brand.
 | D5 | **Clinic hours:** Hayat Medical Center 11:00 AM – 7:00 PM. Dua Hospital 7:00 PM – 10:00 PM. | The user confirmed. This replaces the old "Prime Hospital" data. |
 | D6 | **Both hospitals are named** in the qualifications ("Consultant Physician · Dua Hospital & Hayat Medical Center, Multan") and in the About text. | The user's instruction. |
 | D7 | **Degree and specialisation sit together** in one strip under the portrait: MBBS (Army Medical College, Rawalpindi), then FCPS Medicine (College of Physicians & Surgeons Pakistan). Nothing covers the photo. | The user approved this layout. |
-| D8 | **Reduced motion keeps calm motion.** Under `prefers-reduced-motion`, keep the marquee (slower), the ECG line, the live dots and fades. Remove slides, lifts, bobbing and the button sheen. | The user's own system has reduced motion on and they want the marquee to run. Large movement is still removed. |
+| D8 | **Reduced motion keeps calm motion.** Under `prefers-reduced-motion`, keep the ECG line, the live dots, fades and smooth link scrolling. Remove slides, lifts, bobbing and the button sheen. | The user's own system has reduced motion on and they want the page to feel animated. Large movement is still removed. |
 | D9 | **The reviews section renders only when real reviews exist** (`REVIEWS.length > 0`). | The mockup's three reviews are sample text. Publishing made-up patient reviews would mislead patients. |
 | D10 | **The portrait is a launch blocker.** Build with the stock image at `public/images/doctor-placeholder.jpg`. The real portrait must replace it before go-live. | The stock photo shows a different person. It is fine for development, not for production. |
 
@@ -74,8 +74,8 @@ Order follows the mockup. Section numbers appear as small "01"–"06" badges.
      - A 9 AM – 11 PM track with the Hayat and Dua segments and a "Now" marker.
      - One status row per clinic.
      - On Sunday, the track is replaced by a "Both clinics are closed today" note.
-   - **Trust ribbon (4 cards):** FCPS specialist; Army Medical College; 2 clinics in Multan; Urdu & English.
-3. **Conditions marquee:** English and Urdu condition names alternating, looping, pausing on hover. It is decorative (`aria-hidden`).
+   - **Info strip (4 clickable cards):** "6 days a week / Mon – Sat · closed Sunday" (→ `#clinics`); "Day & evening / Hayat 11 AM – 7 PM · Dua 7 – 10 PM" (→ `#clinics`); "21 conditions / From fever to diabetes and BP" (→ `#treatments`); "Book in 1 message / WhatsApp. No forms, no app." (WhatsApp link). Each card has a chevron that moves on hover. The credentials are not repeated here; they are already in the portrait strip.
+3. **No marquee.** It was removed as repetitive; the condition chips and the Treatments section carry that content.
 4. **01 The doctor**
    - **Heading:** "A specialist who listens first."
    - **About text:** "Dr. Hasan Aziz is a consultant physician at Dua Hospital and Hayat Medical Center, Multan. He treats adults for everyday illness, such as fever, cough and infections, and for long-term conditions, such as diabetes and high blood pressure." Then: "If you need a surgeon or another specialist, he explains why and guides you to the right one."
@@ -119,9 +119,13 @@ Order follows the mockup. Section numbers appear as small "01"–"06" badges.
      - Which clinic should I choose?
    - Emergency note: "Emergency? Don't wait for a message. Chest pain, fainting or trouble breathing: call 1122 or go to the nearest emergency."
 10. **Final call to action:** a blue band with an avatar, "Feeling unwell? Book your visit.", "Dr. Hasan Aziz · Monday to Saturday · Multan" and a Book button. An ECG line runs across the background.
-11. **Footer** (Blue 900)
-    - Columns: Dr. Hasan Aziz (credentials, Urdu name); Pages; Clinics (hours, "Closed Sunday"); Book (WhatsApp, Questions).
-    - Bottom line: "© 2026 Dr. Hasan Aziz · Part of Dua Hospital, Multan".
+11. **Footer** (Blue 900), four columns:
+    - **Brand:** name, "Consultant Physician · FCPS Medicine / MBBS, Army Medical College", Urdu name, white "Book on WhatsApp" button.
+    - **On this page:** numbered links to all six sections (01 The doctor … 06 Questions).
+    - **Clinics:** each clinic with its hours and a Directions link, then "Monday to Saturday · Closed on Sunday".
+    - **Help:** Book on WhatsApp, Questions, the Urdu page ("اردو میں دیکھیں"), and an emergency note ("Call 1122 or go to the nearest emergency").
+    - **Bottom line:** "© 2026 Dr. Hasan Aziz · Part of Dua Hospital, Multan" and "Back to top ↑".
+    - Columns go 4 → 2 at 1080px → 1 at 420px.
 12. **Mobile dock** (760px and below): a fixed bottom bar with "Timings" (→ `#clinics`) and "Book on WhatsApp".
 
 ### Urdu page (`/ur/`)
@@ -266,7 +270,10 @@ The Urdu page uses an Urdu template. Every booking button calls this helper, so 
 - **Treatment tabs:** a client component. ARIA `tablist` and `tab` with `aria-selected`. Arrow-key support. Filtered cards fade in.
 - **Mobile menu:** `aria-expanded` and `aria-controls`. Closes on link click and on Escape.
 - **FAQ:** native `<details>`, with the first item open.
-- **Marquee:** two identical sets translated −50% for a seamless loop.
+- **In-page links:** every `href="#…"` link scrolls smoothly with an ease-in-out curve (450–1100ms, scaled by distance) and stops below the sticky header. The URL hash updates with `history.replaceState`. This runs in JS, so CSS `scroll-behavior` is not used. It runs even with reduced motion, because the user starts it and it is short.
+- **Active section:** an IntersectionObserver marks the header link (and the mobile-menu link) for the section in the middle of the screen with `aria-current="true"`, shown as a Blue 100 pill.
+- **Reading progress:** a 3px Blue 600 bar at the top of the window shows how far down the page the reader is.
+- **Buttons never shrink:** a button inside a flex row is `flex: none`, so its icon and arrow keep their padding.
 
 ### 7.6 Motion
 These match the Figma "Motion notes" board.
@@ -277,7 +284,8 @@ These match the Figma "Motion notes" board.
 | Live dots | Ping ring, 1.8s | Keep |
 | Timeline segments | Grow in on load | Keep |
 | Scroll reveal | Fade up 22px, staggered | Fade only |
-| Marquee | 60s loop | 110s loop |
+| Nav link click | Eased smooth scroll | Eased smooth scroll (user-started) |
+| Info strip chevrons | Slide 3px on hover | Keep |
 | Card hover | Lift 3–4px, icon tilts | No lift |
 | Primary button sheen | Every 6s | Off |
 | Map pin | Drops in, shadow breathes | Pin keeps; shadow off |
@@ -293,10 +301,11 @@ These match the Figma "Motion notes" board.
   - `TreatmentTabs`
   - `MobileMenu`
   - `Reveal` (one observer that adds `.in`)
+  - `SmoothNav` (smooth in-page scrolling, active-section highlight, progress bar)
   - `ChatDemo`
 - **Files:**
   - `components/` is rebuilt to match the sections:
-    - `Header`, `Hero`, `PortraitCard`, `TodayCard`, `TrustRibbon`, `Marquee`
+    - `Header`, `Hero`, `PortraitCard`, `TodayCard`, `InfoStrip`, `ScrollProgress`
     - `About`, `Treatments`, `Clinics`, `Booking`, `Reviews`, `Faq`, `FinalCta`, `Footer`, `MobileDock`
     - `icons`
   - `components/Page.tsx` composes the sections for a given locale.
@@ -326,6 +335,7 @@ These match the Figma "Motion notes" board.
   - Compare against the Figma frames at 1440, 820 and 390.
   - No horizontal scroll.
   - Tabs, menu and FAQ work by keyboard.
+  - Every header and footer link scrolls smoothly to its section and the right header link becomes active.
   - Reduced-motion behaviour as in section 7.6.
   - Lighthouse targets from section 1.
 
@@ -341,4 +351,4 @@ These match the Figma "Motion notes" board.
 5. Fee, and walk-in policy.
 6. Wording for men's health and infertility. These are currently left out of the 21 treatments.
 7. Urdu translations for the new copy: hero line, condition chips, visit steps and FAQ. These need a native reviewer.
-8. Optional: years of experience and PMDC number. If provided, add them to the trust ribbon.
+8. Optional: years of experience and PMDC number. If provided, add them to the info strip or the portrait credentials.
