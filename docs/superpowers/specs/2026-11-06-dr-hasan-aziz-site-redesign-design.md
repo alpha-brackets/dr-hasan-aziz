@@ -51,7 +51,7 @@ Order follows the mockup. Section numbers appear as small "01"–"06" badges.
 
 1. **Header** (sticky, floating pill)
    - Logo slot (master Dua logo SVG, still needed), name and "Consultant Physician · Multan".
-   - Links: The doctor, Treatments, Clinics & timings, How to book, Reviews, Questions.
+   - Links: About Me, Treatments, Clinics & timings, How to book, Reviews, Questions. ("About Me" links to the 01 section.)
    - اردو link to `/ur/`. "Book on WhatsApp" button.
    - At 1180px and below, the links and the button collapse into a ☰ menu: a dropdown panel with all the links and the Book button. The panel closes when a link is chosen.
 2. **Hero (bento grid)**
