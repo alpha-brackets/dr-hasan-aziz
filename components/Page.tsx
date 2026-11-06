@@ -4,14 +4,19 @@ import type { Locale } from '@/lib/site';
 import { About } from './About';
 import { Booking } from './Booking';
 import { Clinics } from './Clinics';
+import { Faq } from './Faq';
+import { FinalCta } from './FinalCta';
+import { Footer } from './Footer';
 import { Header } from './Header';
 import { Hero } from './Hero';
+import { MobileDock } from './MobileDock';
 import { BackToTop } from './nav/BackToTop';
 import { Reveal } from './nav/Reveal';
 import { SmoothNav } from './nav/SmoothNav';
+import { Reviews } from './Reviews';
 import { Treatments } from './Treatments';
 
-/** The whole page for one locale. Sections after the hero arrive in Tasks 7–9. */
+/** The whole page for one locale. */
 export function Page({ locale }: { locale: Locale }) {
   const c = getContent(locale);
   return (
@@ -32,7 +37,12 @@ export function Page({ locale }: { locale: Locale }) {
         <Treatments c={c} locale={locale} />
         <Clinics c={c} locale={locale} />
         <Booking c={c} locale={locale} />
+        <Reviews c={c} />
+        <Faq c={c} />
+        <FinalCta c={c} locale={locale} />
       </main>
+      <Footer c={c} locale={locale} />
+      <MobileDock c={c} locale={locale} />
       <BackToTop label={c.toTop} />
     </>
   );
