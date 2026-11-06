@@ -76,7 +76,7 @@ Order follows the mockup. Section numbers appear as small "01"–"06" badges.
      - On Sunday, the track is replaced by a "Both clinics are closed today" note.
    - **Info strip (4 clickable cards):** "6 days a week / Mon – Sat · closed Sunday" (→ `#clinics`); "Day & evening / Hayat 11 AM – 7 PM · Dua 7 – 10 PM" (→ `#clinics`); "21 conditions / From fever to diabetes and BP" (→ `#treatments`); "Book in 1 message / WhatsApp. No forms, no app." (WhatsApp link). Each card has a chevron that moves on hover. The credentials are not repeated here; they are already in the portrait strip.
 3. **No marquee.** It was removed as repetitive; the condition chips and the Treatments section carry that content.
-4. **01 The doctor**
+4. **01 About Me**
    - **Heading:** "A specialist who listens first."
    - **About text:** "Dr. Hasan Aziz is a consultant physician at Dua Hospital and Hayat Medical Center, Multan. He treats adults for everyday illness, such as fever, cough and infections, and for long-term conditions, such as diabetes and high blood pressure." Then: "If you need a surgeon or another specialist, he explains why and guides you to the right one."
    - **Fact tiles:** "Adults / Adult medicine" and "Mon – Sat / Closed on Sunday".
@@ -121,7 +121,7 @@ Order follows the mockup. Section numbers appear as small "01"–"06" badges.
 10. **Final call to action:** a blue band with an avatar, "Feeling unwell? Book your visit.", "Dr. Hasan Aziz · Monday to Saturday · Multan" and a Book button. An ECG line runs across the background.
 11. **Footer** (Blue 900), four columns:
     - **Brand:** name, "Consultant Physician · FCPS Medicine / MBBS, Army Medical College", Urdu name, white "Book on WhatsApp" button.
-    - **On this page:** numbered links to all six sections (01 The doctor … 06 Questions).
+    - **On this page:** numbered links to all six sections (01 About Me … 06 Questions).
     - **Clinics:** each clinic with its hours and a Directions link, then "Monday to Saturday · Closed on Sunday".
     - **Help:** Book on WhatsApp, Questions, the Urdu page ("اردو میں دیکھیں"), and an emergency note ("Call 1122 or go to the nearest emergency").
     - **Bottom line:** "© 2026 Dr. Hasan Aziz · Part of Dua Hospital, Multan". No footer "Back to top" link; the floating back-to-top button covers it.
