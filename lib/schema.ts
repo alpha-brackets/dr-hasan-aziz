@@ -1,76 +1,66 @@
-import { DOCTOR, LOCATIONS, SERVICES, type SiteContent } from './content';
-import { SITE_URL } from './site';
+import { CLINICS, DOCTOR, TREATMENTS, getContent } from './content.ts';
+import { SITE_URL } from './site.ts';
+import type { Locale } from './site.ts';
 
-/** Days each clinic is open (weekly off excluded). */
-const DUA_OPEN_DAYS = [
+const DAY_NAMES = [
+  'Sunday',
   'Monday',
   'Tuesday',
   'Wednesday',
   'Thursday',
   'Friday',
   'Saturday',
-];
+] as const;
 
-const PRIME_OPEN_DAYS = [
-  'Saturday',
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-];
+/** Minutes since midnight -> 24-hour "HH:MM". */
+function hhmm(min: number): string {
+  const h = String(Math.floor(min / 60)).padStart(2, '0');
+  const m = String(min % 60).padStart(2, '0');
+  return `${h}:${m}`;
+}
 
 /**
- * Structured data (JSON-LD) for the page — Physician + MedicalClinic
- * with opening hours, so Google can show rich results in both languages.
+ * Structured data (JSON-LD) for the page: one Physician and one
+ * MedicalClinic per clinic. No telephone: booking is WhatsApp only.
  */
-export function buildPageSchema(content: SiteContent, path: string) {
-  const isUrdu = content.dir === 'rtl';
-  const pageUrl = `${SITE_URL}${path}`;
+export function buildPageSchema(locale: Locale) {
+  const isUrdu = locale === 'ur';
+  const content = getContent(locale);
+  const pageUrl = `${SITE_URL}${isUrdu ? '/ur/' : '/'}`;
+  const services = TREATMENTS.map((t) => ({
+    '@type': 'MedicalTherapy',
+    name: isUrdu ? t.nameUr : t.name,
+  }));
 
-  const addressOf = (lines: string[]) => ({
-    '@type': 'PostalAddress',
-    streetAddress: lines.join(' '),
-    addressLocality: 'Multan',
-    addressRegion: 'Punjab',
-    addressCountry: 'PK',
-  });
-
-  const clinicSchema = (
-    id: 'dua' | 'prime',
-    days: string[],
-    opens: string,
-    closes: string
-  ) => {
-    const loc = LOCATIONS.find((l) => l.id === id)!;
-    return {
+  const clinics = CLINICS.map((c) => {
+    const node: Record<string, unknown> = {
       '@type': 'MedicalClinic',
-      '@id': `${pageUrl}#${id}-hospital`,
-      name: isUrdu ? loc.nameUrdu : loc.name,
-      alternateName: isUrdu ? loc.name : loc.nameUrdu,
+      '@id': `${pageUrl}#${c.id}`,
+      name: isUrdu ? c.nameUr : c.name,
+      alternateName: isUrdu ? c.name : c.nameUr,
       url: pageUrl,
-      telephone: DOCTOR.phoneTel,
       medicalSpecialty: 'InternalMedicine',
-      address: addressOf(
-        isUrdu ? loc.addressLinesUrdu : loc.addressLines
-      ),
-      openingHoursSpecification: [
-        {
-          '@type': 'OpeningHoursSpecification',
-          dayOfWeek: days,
-          opens,
-          closes,
-        },
-      ],
-      availableService: SERVICES.map((s) => ({
-        '@type': 'MedicalTherapy',
-        name: isUrdu ? s.nameUrdu : s.name,
-      })),
     };
-  };
-
-  const dua = clinicSchema('dua', DUA_OPEN_DAYS, '19:00', '22:00');
-  const prime = clinicSchema('prime', PRIME_OPEN_DAYS, '11:00', '18:00');
+    if (c.address) {
+      node.address = {
+        '@type': 'PostalAddress',
+        streetAddress: isUrdu ? c.address.ur : c.address.en,
+        addressLocality: 'Multan',
+        addressRegion: 'Punjab',
+        addressCountry: 'PK',
+      };
+    }
+    node.openingHoursSpecification = [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: DAY_NAMES.filter((_, i) => c.days[i]),
+        opens: hhmm(c.openMin),
+        closes: hhmm(c.closeMin),
+      },
+    ];
+    node.availableService = services;
+    return node;
+  });
 
   return {
     '@context': 'https://schema.org',
@@ -78,8 +68,8 @@ export function buildPageSchema(content: SiteContent, path: string) {
       {
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
-        name: 'Dr. Hasan Aziz',
-        alternateName: 'ڈاکٹر حسن عزیز',
+        name: DOCTOR.name,
+        alternateName: DOCTOR.nameUr,
         url: pageUrl,
         inLanguage: isUrdu ? 'ur-PK' : 'en-PK',
       },
@@ -87,22 +77,16 @@ export function buildPageSchema(content: SiteContent, path: string) {
         '@type': 'Physician',
         '@id': `${pageUrl}#physician`,
         name: DOCTOR.name,
-        alternateName: DOCTOR.nameUrdu,
+        alternateName: DOCTOR.nameUr,
         description: content.meta.description,
         url: pageUrl,
-        telephone: DOCTOR.phoneTel,
-        jobTitle: content.hero.title,
         medicalSpecialty: 'InternalMedicine',
         qualification: ['MBBS', 'FCPS (Medicine)'],
         knowsLanguage: ['en', 'ur'],
-        availableService: SERVICES.map((s) => ({
-          '@type': 'MedicalTherapy',
-          name: isUrdu ? s.nameUrdu : s.name,
-        })),
-        worksFor: [{ '@id': dua['@id'] }, { '@id': prime['@id'] }],
+        availableService: services,
+        worksFor: clinics.map((c) => ({ '@id': c['@id'] })),
       },
-      dua,
-      prime,
+      ...clinics,
     ],
   };
 }
