@@ -272,7 +272,7 @@ The Urdu page uses an Urdu template. Every booking button calls this helper, so 
 - **FAQ:** native `<details>`, with the first item open.
 - **In-page links:** every `href="#…"` link scrolls smoothly with an ease-in-out curve (450–1100ms, scaled by distance) and stops below the sticky header. The URL hash updates with `history.replaceState`. This runs in JS, so CSS `scroll-behavior` is not used. It runs even with reduced motion, because the user starts it and it is short.
 - **Active section:** an IntersectionObserver marks the header link (and the mobile-menu link) for the section in the middle of the screen with `aria-current="true"`, shown as a Blue 100 pill.
-- **Reading progress:** a 3px Blue 600 bar at the top of the window shows how far down the page the reader is.
+- **Back-to-top button:** a 56px white circle fixed at the bottom right (52px, and 88px from the bottom on phones so it sits above the dock). It appears after 600px of scrolling with a fade and lift. A Blue 600 ring around it fills clockwise as the reader scrolls (SVG `stroke-dashoffset`, radius 25). The ring turns Green 500 at the very bottom. On hover the arrow nudges up. On click it runs the same eased scroll to the top. It is a `<button>` with `aria-label="Back to top"`.
 - **Buttons never shrink:** a button inside a flex row is `flex: none`, so its icon and arrow keep their padding.
 
 ### 7.6 Motion
@@ -286,6 +286,7 @@ These match the Figma "Motion notes" board.
 | Scroll reveal | Fade up 22px, staggered | Fade only |
 | Nav link click | Eased smooth scroll | Eased smooth scroll (user-started) |
 | Info strip chevrons | Slide 3px on hover | Keep |
+| Back-to-top ring | Fills with scroll; button fades in after 600px | Keep |
 | Card hover | Lift 3–4px, icon tilts | No lift |
 | Primary button sheen | Every 6s | Off |
 | Map pin | Drops in, shadow breathes | Pin keeps; shadow off |
@@ -301,11 +302,11 @@ These match the Figma "Motion notes" board.
   - `TreatmentTabs`
   - `MobileMenu`
   - `Reveal` (one observer that adds `.in`)
-  - `SmoothNav` (smooth in-page scrolling, active-section highlight, progress bar)
+  - `SmoothNav` (smooth in-page scrolling, active-section highlight, back-to-top ring)
   - `ChatDemo`
 - **Files:**
   - `components/` is rebuilt to match the sections:
-    - `Header`, `Hero`, `PortraitCard`, `TodayCard`, `InfoStrip`, `ScrollProgress`
+    - `Header`, `Hero`, `PortraitCard`, `TodayCard`, `InfoStrip`, `BackToTop`
     - `About`, `Treatments`, `Clinics`, `Booking`, `Reviews`, `Faq`, `FinalCta`, `Footer`, `MobileDock`
     - `icons`
   - `components/Page.tsx` composes the sections for a given locale.

@@ -85,7 +85,19 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .menu.open{display:grid}
 
 /* scroll progress + active section */
-.progress{position:fixed;left:0;top:0;height:3px;width:100%;z-index:70;background:var(--b600);transform-origin:left;transform:scaleX(0)}
+.to-top{position:fixed;right:24px;bottom:24px;z-index:65;width:56px;height:56px;border-radius:50%;border:0;padding:0;cursor:pointer;
+  background:#fff;color:var(--b700);box-shadow:var(--sh-hi);display:grid;place-items:center;
+  opacity:0;transform:translateY(16px) scale(.85);pointer-events:none;transition:opacity .35s var(--ease),transform .45s var(--ease),box-shadow .3s}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{box-shadow:0 2px 4px rgba(3,37,79,.06),0 18px 40px -14px rgba(7,78,162,.5)}
+.to-top:focus-visible{outline:2px solid var(--b400);outline-offset:3px}
+.to-top .ring{position:absolute;inset:0;width:56px;height:56px;transform:rotate(-90deg)}
+.to-top .ring circle{fill:none;stroke-width:3}
+.to-top .ring .track{stroke:var(--b100)}
+.to-top .ring .bar{stroke:var(--b600);stroke-linecap:round;stroke-dasharray:157.08;stroke-dashoffset:157.08;transition:stroke-dashoffset .12s linear}
+.to-top .arrow{position:relative;width:20px;height:20px;transition:transform .35s var(--ease)}
+.to-top:hover .arrow{transform:translateY(-3px)}
+.to-top.done .ring .bar{stroke:var(--g500)}
 .nav-links a[aria-current=true]{background:var(--b100);color:var(--b800)}
 .menu a[aria-current=true]{background:var(--b50);color:var(--b800)}
 
@@ -458,12 +470,17 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
   .ask .btn{margin-left:0;width:100%}
   .dock{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:60;gap:8px;padding:8px;border-radius:999px;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:var(--sh-hi);border:1px solid var(--line)}
   .dock .btn{--h:48px;flex:1;font-size:15px;padding:0 12px}
+  .to-top{right:16px;bottom:88px;width:52px;height:52px}
+  .to-top .ring{width:52px;height:52px}
 }
 @media (max-width:420px){.ft{grid-template-columns:1fr}.brand small{display:none}}
 </style>
 </head>
 <body class="no-js">
-<div class="progress" id="progress" aria-hidden="true"></div>
+<button class="to-top" id="toTop" type="button" aria-label="Back to top">
+  <svg class="ring" viewBox="0 0 56 56" aria-hidden="true"><circle class="track" cx="28" cy="28" r="25"/><circle class="bar" id="toTopBar" cx="28" cy="28" r="25"/></svg>
+  <svg class="i arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <header class="nav">
   <div class="nav-in">
@@ -860,8 +877,10 @@ document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#
  smoothTo(id==='#top'?0:el.getBoundingClientRect().top+scrollY-headerOffset());history.replaceState(null,'',id)});
 
 /* ---- reading progress + active nav link ---- */
-var pb=document.getElementById('progress');
-function onScroll(){var h=document.documentElement.scrollHeight-innerHeight;pb.style.transform='scaleX('+(h>0?scrollY/h:0)+')'}
+var tt=document.getElementById('toTop'),bar=document.getElementById('toTopBar'),C=2*Math.PI*25;
+function onScroll(){var h=document.documentElement.scrollHeight-innerHeight,p=h>0?Math.min(1,scrollY/h):0;
+ bar.style.strokeDashoffset=(C*(1-p)).toFixed(2);tt.classList.toggle('show',scrollY>600);tt.classList.toggle('done',p>.995)}
+tt.addEventListener('click',function(){smoothTo(0);history.replaceState(null,'','#top');document.querySelector('.brand').focus({preventScroll:true})});
 addEventListener('scroll',onScroll,{passive:true});onScroll();
 var navLinks=document.querySelectorAll('.nav-links a,.menu a[href^="#"]');
 var spy=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){navLinks.forEach(function(a){a.setAttribute('aria-current',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
