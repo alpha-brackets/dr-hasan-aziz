@@ -37,9 +37,12 @@ export const CLINICS: readonly Clinic[] = [
     openMin: 660,
     closeMin: 1140,
     days: MON_SAT,
-    address: null,
-    landmark: null,
-    mapsQuery: 'Hayat Medical Center Multan',
+    address: {
+      en: 'Ground Floor, Dost Plaza, Nishtar Road, Al Rahim Colony, Multan',
+      ur: 'گراؤنڈ فلور، دوست پلازہ، نشتر روڈ، الرحیم کالونی، ملتان',
+    },
+    landmark: { en: 'Dost Plaza, Nishtar Road', ur: 'دوست پلازہ، نشتر روڈ' },
+    mapsQuery: 'Dost Plaza Nishtar Road Al Rahim Colony Multan',
     hoursText: '11:00 AM – 7:00 PM',
   },
   {
@@ -487,7 +490,7 @@ const ur: SiteContent = {
     overline: ABOUT_UR,
     heading: 'ایک سپیشلسٹ جو پہلے آپ کی پوری بات سنتے ہیں۔',
     lead:
-      'ڈاکٹر حسن عزیز دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان میں کنسلٹنٹ فزیشن ہیں۔ وہ بڑوں کا علاج کرتے ہیں: روزمرہ کی بیماریاں جیسے بخار، کھانسی اور انفیکشن، اور لمبے عرصے کی بیماریاں جیسے شوگر اور ہائی بلڈ پریشر۔',
+      'ڈاکٹر حسن عزیز دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان میں کنسلٹنٹ فزیشن ہیں۔ وہ بڑوں کا علاج کرتے ہیں: روزمرہ بیماریوں جیسے بخار، کھانسی اور انفیکشن، اور لمبے عرصے کی بیماریاں جیسے شوگر اور ہائی بلڈ پریشر۔',
     lead2: 'اگر آپ کو سرجن یا کسی اور سپیشلسٹ کی ضرورت ہو تو وہ وجہ سمجھاتے ہیں اور صحیح ڈاکٹر تک پہنچنے میں مدد کرتے ہیں۔',
     facts: [
       { value: 'بالغ افراد', label: 'بڑوں کی بیماریوں کا علاج' },
@@ -578,7 +581,7 @@ const ur: SiteContent = {
     questions: 'سوالات',
     urduLink: 'View in English',
     emergency: { title: 'ایمرجنسی؟', body: '1122 پر کال کریں یا قریبی ایمرجنسی میں جائیں۔' },
-    copyright: '© 2026 ڈاکٹر حسن عزیز · دعا ہسپتال ملتان کا حصہ',
+    copyright: '© 2026 ڈاکٹر حسن عزیز · دعا ہسپتال، ملتان',
   },
   dock: { timings: 'اوقات', book: BOOK_UR },
   days: ['پیر', 'منگل', 'بدھ', 'جمعرات', 'جمعہ', 'ہفتہ', 'اتوار'],

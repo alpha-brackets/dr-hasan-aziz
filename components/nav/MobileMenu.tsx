@@ -9,7 +9,8 @@ import { navItems } from './items';
 
 /**
  * The header bar (`.nav-in`, holding the server-rendered `children` plus the ☰ button)
- * and the dropdown `.menu` panel shown at ≤1180px. Closes on a link click and on Escape.
+ * and the dropdown `.menu` panel shown at ≤1180px. Closes on a link click, on Escape,
+ * or when resized to desktop (>= 1181px).
  */
 export function MobileMenu({ locale, children }: { locale: Locale; children: ReactNode }) {
   const c = getContent(locale);
@@ -26,6 +27,16 @@ export function MobileMenu({ locale, children }: { locale: Locale; children: Rea
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
+
+  // Auto-close menu if resized to desktop view
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 1181px)');
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setOpen(false);
+    };
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, []);
 
   return (
     <>

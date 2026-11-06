@@ -48,7 +48,7 @@ test('no telephone or Prime anywhere', () => {
 
 test('addresses', () => {
   const { hayat, dua } = parts();
-  assert.ok(!('address' in hayat));
+  assert.ok(hayat.address.streetAddress.includes('Dost Plaza'));
   assert.ok(dua.address.streetAddress.includes('Sher Shah Road'));
 });
 

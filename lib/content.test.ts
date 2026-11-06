@@ -55,9 +55,9 @@ test('clinics', () => {
   assert.deepEqual([dua.openMin, dua.closeMin], [1140, 1320]);
   assert.equal(hayat.hoursText, '11:00 AM – 7:00 PM');
   assert.equal(dua.hoursText, '7:00 PM – 10:00 PM');
-  assert.equal(hayat.address, null);
+  assert.ok(hayat.address?.en.includes('Dost Plaza'));
   assert.ok(dua.address?.en.includes('Sher Shah Road'));
-  assert.equal(hayat.mapsQuery, 'Hayat Medical Center Multan');
+  assert.ok(hayat.mapsQuery.includes('Dost Plaza'));
   assert.equal(dua.mapsQuery, 'Dua Hospital Bank Plaza Sher Shah Road Garden Town Multan');
 });
 

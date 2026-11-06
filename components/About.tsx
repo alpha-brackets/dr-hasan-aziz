@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import { DOCTOR } from '@/lib/content';
 import type { CSSProperties } from 'react';
 import type { IconName, SiteContent } from '@/lib/content';
 import { Icon } from './icons';
@@ -20,6 +22,19 @@ export function About({ c }: { c: SiteContent }) {
           <p className="lead" style={{ marginTop: 14 }}>
             {a.lead2}
           </p>
+          <div className="about-photo-card rv" style={{ marginTop: 28, marginBottom: 20 }}>
+            <Image
+              src="/images/dr-hasan-aziz-consultation.jpg"
+              alt={DOCTOR.name}
+              width={640}
+              height={400}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <span className="about-photo-badge">
+              <Icon name="steth" />
+              <span>{a.heading.includes('سنتے') ? 'کلینیکل معائنہ و مشاورت' : 'Clinical Consultation'}</span>
+            </span>
+          </div>
           <div className="facts">
             {a.facts.map((f) => (
               <div className="fact" key={f.value}>
