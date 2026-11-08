@@ -59,14 +59,14 @@ export function TodayCard({ locale }: { locale: Locale }) {
             <div
               className="now"
               style={{ left: `${trackPercent(now.minutes)}%` }}
-              // U+2066/U+2069 keep the Latin clock in order next to Urdu text.
-              data-t={`${c.today.now} ⁦${formatClock(now.minutes)}⁩`}
+              // U+200E (LTR mark) ensures Latin clock tokens remain correctly ordered in RTL.
+              data-t={`${c.today.now} \u200E${formatClock(now.minutes)}`}
             />
           )}
         </div>
         <div className="ticks">
           {TICKS.map((t) => (
-            <span key={t.m} className={t.edge} style={{ left: `${trackPercent(t.m)}%` }}>
+            <span key={t.m} className={t.edge} style={{ left: `${trackPercent(t.m)}%` }} dir="ltr">
               {formatClock(t.m)}
             </span>
           ))}
@@ -77,11 +77,11 @@ export function TodayCard({ locale }: { locale: Locale }) {
             return (
               <div className="t-row" key={x.id}>
                 <span className={dotClass(live ? live.state : 'off')} />
-                <b>{name(x).split(' ')[0]}</b>{' '}
-                <bdi dir="ltr">
+                <b className="t-name">{name(x).split(' ')[0]}</b>
+                <span className="t-time" dir="ltr">
                   {formatClock(x.openMin)} – {formatClock(x.closeMin)}
-                </bdi>
-                <span>{live?.text}</span>
+                </span>
+                <span className="t-status">{live?.text}</span>
               </div>
             );
           })}
