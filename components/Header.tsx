@@ -11,8 +11,8 @@ export function Header({ c, locale }: { c: SiteContent; locale: Locale }) {
     <header className="nav">
       <MobileMenu locale={locale}>
         <a className="brand" href="#top">
-          {/* Placeholder slot until the master Dua logo SVG arrives (spec §10). */}
-          <span className="logo-ph" aria-hidden="true" />
+          {/* Dr. Hasan Aziz "HA" monogram. Decorative: the name follows as text. */}
+          <img className="logo" src="/brand/dr-hasan-aziz-mark.svg" alt="" width={42} height={42} />
           <span>
             {locale === 'ur' ? DOCTOR.nameUr : DOCTOR.name}
             <small>{c.nav.subtitle}</small>

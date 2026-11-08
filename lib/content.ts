@@ -24,9 +24,11 @@ export interface Clinic extends ClinicHours {
   landmark: Both | null;
   mapsQuery: string;
   hoursText: string; // same in both locales
+  daysText: Both; // working days and day off
 }
 
-const MON_SAT = [false, true, true, true, true, true, true] as const; // Sun..Sat
+const MON_SAT = [false, true, true, true, true, true, true] as const; // Sun..Sat — Dua, off Sunday
+const SAT_THU = [true, true, true, true, true, false, true] as const; // Sun..Sat — Hayat, off Friday
 
 export const CLINICS: readonly Clinic[] = [
   {
@@ -34,24 +36,25 @@ export const CLINICS: readonly Clinic[] = [
     name: 'Hayat Medical Center',
     nameUr: 'حیات میڈیکل سنٹر',
     label: { en: 'Daytime', ur: 'دن کے وقت' },
-    openMin: 660,
-    closeMin: 1140,
-    days: MON_SAT,
+    openMin: 720, // 12 PM
+    closeMin: 1020, // 5 PM
+    days: SAT_THU,
     address: {
       en: 'Ground Floor, Dost Plaza, Nishtar Road, Al Rahim Colony, Multan',
       ur: 'گراؤنڈ فلور، دوست پلازہ، نشتر روڈ، الرحیم کالونی، ملتان',
     },
     landmark: { en: 'Dost Plaza, Nishtar Road', ur: 'دوست پلازہ، نشتر روڈ' },
     mapsQuery: 'Dost Plaza Nishtar Road Al Rahim Colony Multan',
-    hoursText: '11:00 AM – 7:00 PM',
+    hoursText: '12:00 PM – 5:00 PM',
+    daysText: { en: 'Saturday to Thursday · Friday off', ur: 'ہفتہ تا جمعرات · جمعہ کو بند' },
   },
   {
     id: 'dua',
     name: 'Dua Hospital',
     nameUr: 'دعا ہسپتال',
     label: { en: 'Evening', ur: 'شام کے وقت' },
-    openMin: 1140,
-    closeMin: 1320,
+    openMin: 1200, // 8 PM
+    closeMin: 1290, // 9:30 PM
     days: MON_SAT,
     address: {
       en: 'First Floor, Bank Plaza, Sher Shah Road, Garden Town, Multan',
@@ -59,7 +62,8 @@ export const CLINICS: readonly Clinic[] = [
     },
     landmark: { en: 'Near Shell Petrol Pump', ur: 'نزد شیل پٹرول پمپ' },
     mapsQuery: 'Dua Hospital Bank Plaza Sher Shah Road Garden Town Multan',
-    hoursText: '7:00 PM – 10:00 PM',
+    hoursText: '8:00 PM – 9:30 PM',
+    daysText: { en: 'Monday to Saturday · Sunday off', ur: 'پیر تا ہفتہ · اتوار کو بند' },
   },
 ];
 
@@ -133,19 +137,19 @@ export interface SiteContent {
     neutral: string;
     lead: string; // before the pill's detail: "· "
     comma: string; // between clinic name and its detail
-    sunday: string;
+    noClinicToday: string;
     seeing: string;
     until: Text; // (clock)
     next: string;
     opensIn: Text; // (duration), lower-case, for the hero pill
     closedNow: string;
     bookTomorrow: string;
-    bookMonday: string;
+    bookOn: Text; // (day name)
     open: string;
     later: Text; // (duration), per-clinic label
     done: string;
     closedToday: string;
-    sundayNote: string;
+    noClinicNote: Text; // (day name)
   };
   hero: {
     overline: string;
@@ -188,7 +192,7 @@ export interface SiteContent {
   clinics: {
     overline: string; heading: string; lead: string;
     toConfirmAddress: string; toConfirmLandmark: string;
-    monSat: string; directions: string; bookHere: string; holiday: string;
+    directions: string; bookHere: string; holiday: string;
   };
   book: {
     overline: string;
@@ -255,22 +259,22 @@ const en: SiteContent = {
     subtitle: 'Consultant Physician · Multan',
   },
   status: {
-    neutral: 'Mon–Sat · see timings',
+    neutral: 'Open 7 days · see timings',
     lead: '· ',
     comma: ', ',
-    sunday: 'Closed today (Sunday)',
+    noClinicToday: 'No clinic today',
     seeing: 'Seeing patients now',
     until: (clock) => `until ${clock}`,
     next: 'Next clinic',
     opensIn: (d) => `opens in ${d}`,
     closedNow: 'Clinics closed now',
     bookTomorrow: 'Book now for tomorrow',
-    bookMonday: 'Book now for Monday',
+    bookOn: (day) => `Book now for ${day}`,
     open: 'Open now',
     later: (d) => `Opens in ${d}`,
     done: 'Closed for today',
     closedToday: 'Closed today',
-    sundayNote: 'Both clinics are closed today (Sunday). Send a WhatsApp message to book for Monday.',
+    noClinicNote: (day) => `Both clinics are closed today. Send a WhatsApp message to book for ${day}.`,
   },
   hero: {
     overline: 'Consultant Physician · FCPS Medicine',
@@ -281,7 +285,7 @@ const en: SiteContent = {
     seeAll: 'See all 21',
     ctaBook: 'Book on WhatsApp',
     ctaTimings: 'See clinic timings',
-    note: 'Monday to Saturday · Closed on Sunday',
+    note: 'Open every day · Hayat closed Friday · Dua closed Sunday',
   },
   portrait: {
     plateTitle: 'Dr. Hasan Aziz',
@@ -298,8 +302,8 @@ const en: SiteContent = {
   },
   today: { heading: 'Where is he today?', now: 'Now' },
   info: [
-    { title: '6 days a week', sub: 'Mon – Sat · closed Sunday', target: '#clinics' },
-    { title: 'Day & evening', sub: 'Hayat 11 AM – 7 PM · Dua 7 – 10 PM', target: '#clinics' },
+    { title: '7 days a week', sub: 'Hayat Sat – Thu · Dua Mon – Sat', target: '#clinics' },
+    { title: 'Day & evening', sub: 'Hayat 12 – 5 PM · Dua 8 – 9:30 PM', target: '#clinics' },
     { title: '21 conditions', sub: 'From fever to diabetes and BP', target: '#treatments' },
     { title: 'Book in 1 message', sub: 'WhatsApp. No forms, no app.', target: 'whatsapp' },
   ],
@@ -312,7 +316,7 @@ const en: SiteContent = {
     photoBadge: 'Clinical Consultation',
     facts: [
       { value: 'Adults', label: 'Adult medicine' },
-      { value: 'Mon – Sat', label: 'Closed on Sunday' },
+      { value: '7 days', label: 'Hayat off Friday · Dua off Sunday' },
     ],
     qualHeading: 'Qualifications',
     quals: [
@@ -342,10 +346,9 @@ const en: SiteContent = {
   clinics: {
     overline: 'Clinics & timings',
     heading: 'Two clinics. Same doctor.',
-    lead: 'Daytime at Hayat Medical Center, evenings at Dua Hospital. Both closed on Sunday.',
+    lead: 'Daytime at Hayat Medical Center (closed Friday), evenings at Dua Hospital (closed Sunday).',
     toConfirmAddress: 'Address to confirm, Multan',
     toConfirmLandmark: 'Landmark to confirm',
-    monSat: 'Monday to Saturday',
     directions: 'Directions',
     bookHere: 'Book here',
     holiday: 'On public holidays, timings can change. Send a message before you come.',
@@ -361,7 +364,7 @@ const en: SiteContent = {
     ],
     cta: 'Book on WhatsApp',
     chat: {
-      name: 'Dr. Hasan Aziz Clinic',
+      name: 'Dr. Hasan Aziz',
       status: 'usually replies within the hour',
       me1: "Assalam o Alaikum. I'd like to book an appointment with Dr. Hasan Aziz.",
       me2: 'Name: Ahmed · Problem: fever for 3 days',
@@ -378,7 +381,7 @@ const en: SiteContent = {
     emergencyBody: 'Chest pain, fainting or trouble breathing: call 1122 or go to the nearest emergency.',
     items: [
       { q: 'How do I book?', a: 'Send a WhatsApp message with your name and problem. The clinic replies with your time and which clinic to visit.' },
-      { q: 'Which days is he available?', a: 'Monday to Saturday. Hayat Medical Center 11 AM – 7 PM, Dua Hospital 7 – 10 PM. Both clinics are closed on Sunday.' },
+      { q: 'Which days is he available?', a: 'Every day, at one clinic or the other. Hayat Medical Center: 12 – 5 PM, Saturday to Thursday (closed Friday). Dua Hospital: 8 – 9:30 PM, Monday to Saturday (closed Sunday).' },
       { q: 'Can I come without booking?', a: 'To confirm with the clinic. Booking first means less waiting.' },
       { q: 'What should I bring?', a: 'Old prescriptions, test reports and the medicines you take now. Sugar patients: bring your readings.' },
       { q: 'What is the fee?', a: 'To confirm with the clinic. Ask in your WhatsApp message.' },
@@ -387,7 +390,7 @@ const en: SiteContent = {
   },
   final: {
     heading: 'Feeling unwell? Book your visit.',
-    sub: 'Dr. Hasan Aziz · Monday to Saturday · Multan',
+    sub: 'Dr. Hasan Aziz · Open every day · Multan',
     cta: 'Book on WhatsApp',
   },
   footer: {
@@ -440,22 +443,23 @@ const ur: SiteContent = {
     subtitle: 'کنسلٹنٹ فزیشن · ملتان',
   },
   status: {
-    neutral: 'پیر تا ہفتہ · اوقات دیکھیں',
+    neutral: 'ہفتے کے ساتوں دن · اوقات دیکھیں',
     lead: '· ',
     comma: '، ',
-    sunday: 'آج اتوار ہے، کلینک بند ہیں',
+    noClinicToday: 'آج کوئی کلینک نہیں',
     seeing: 'ابھی مریض دیکھ رہے ہیں',
-    until: (clock) => `${clock} تک`,
+    // U+2066/U+2069 isolate the Latin clock ("5 PM") so right-to-left text doesn't flip it to "PM 5".
+    until: (clock) => `⁦${clock}⁩ تک`,
     next: 'اگلا کلینک',
     opensIn: (d) => `${d} میں کھلے گا`,
     closedNow: 'ابھی کلینک بند ہیں',
     bookTomorrow: 'کل کے لیے ابھی اپوائنٹمنٹ لیں',
-    bookMonday: 'پیر کے لیے ابھی اپوائنٹمنٹ لیں',
+    bookOn: (day) => `${day} کے لیے ابھی اپوائنٹمنٹ لیں`,
     open: 'ابھی کھلا ہے',
     later: (d) => `${d} میں کھلے گا`,
     done: 'آج کے لیے بند',
     closedToday: 'آج بند ہے',
-    sundayNote: 'آج اتوار ہے، دونوں کلینک بند ہیں۔ پیر کی اپوائنٹمنٹ کے لیے واٹس ایپ پر پیغام بھیجیں۔',
+    noClinicNote: (day) => `آج دونوں کلینک بند ہیں۔ ${day} کی اپوائنٹمنٹ کے لیے واٹس ایپ پر پیغام بھیجیں۔`,
   },
   hero: {
     overline: 'کنسلٹنٹ فزیشن · FCPS میڈیسن',
@@ -466,7 +470,7 @@ const ur: SiteContent = {
     seeAll: 'تمام 21 دیکھیں',
     ctaBook: BOOK_UR,
     ctaTimings: 'کلینک کے اوقات دیکھیں',
-    note: 'پیر تا ہفتہ · اتوار کو بند',
+    note: 'ہر روز · حیات جمعہ کو بند · دعا اتوار کو بند',
   },
   portrait: {
     plateTitle: 'ڈاکٹر حسن عزیز',
@@ -483,8 +487,8 @@ const ur: SiteContent = {
   },
   today: { heading: 'آج ڈاکٹر صاحب کہاں ہیں؟', now: 'ابھی' },
   info: [
-    { title: 'ہفتے میں 6 دن', sub: 'پیر تا ہفتہ · اتوار بند', target: '#clinics' },
-    { title: 'دن اور شام', sub: 'حیات صبح 11 سے شام 7 · دعا شام 7 سے رات 10', target: '#clinics' },
+    { title: 'ہفتے کے 7 دن', sub: 'حیات ہفتہ تا جمعرات · دعا پیر تا ہفتہ', target: '#clinics' },
+    { title: 'دن اور شام', sub: 'حیات دوپہر 12 سے شام 5 · دعا رات 8 سے 9:30', target: '#clinics' },
     { title: '21 بیماریاں', sub: 'بخار سے لے کر شوگر اور بلڈ پریشر تک', target: '#treatments' },
     { title: 'ایک پیغام سے اپوائنٹمنٹ', sub: 'واٹس ایپ۔ نہ کوئی فارم، نہ کوئی ایپ۔', target: 'whatsapp' },
   ],
@@ -497,7 +501,7 @@ const ur: SiteContent = {
     photoBadge: 'کلینیکل معائنہ و مشاورت',
     facts: [
       { value: 'بالغ افراد', label: 'بڑوں کی بیماریوں کا علاج' },
-      { value: 'پیر تا ہفتہ', label: 'اتوار کو بند' },
+      { value: '7 دن', label: 'حیات جمعہ، دعا اتوار کو بند' },
     ],
     qualHeading: 'تعلیم',
     quals: [
@@ -527,10 +531,9 @@ const ur: SiteContent = {
   clinics: {
     overline: 'کلینک اور اوقات',
     heading: 'دو کلینک، ایک ہی ڈاکٹر۔',
-    lead: 'دن میں حیات میڈیکل سنٹر، شام کو دعا ہسپتال۔ اتوار کو دونوں بند۔',
+    lead: 'دن میں حیات میڈیکل سنٹر (جمعہ کو بند)، شام کو دعا ہسپتال (اتوار کو بند)۔',
     toConfirmAddress: 'پتے کی تصدیق باقی ہے، ملتان',
     toConfirmLandmark: 'قریبی نشانی کی تصدیق باقی ہے',
-    monSat: 'پیر تا ہفتہ',
     directions: 'نقشہ دیکھیں',
     bookHere: 'یہاں اپوائنٹمنٹ لیں',
     holiday: 'سرکاری چھٹیوں پر اوقات بدل سکتے ہیں۔ آنے سے پہلے پیغام بھیج دیں۔',
@@ -546,7 +549,7 @@ const ur: SiteContent = {
     ],
     cta: BOOK_UR,
     chat: {
-      name: 'ڈاکٹر حسن عزیز کلینک',
+      name: 'ڈاکٹر حسن عزیز',
       status: 'عام طور پر ایک گھنٹے میں جواب دیتے ہیں',
       me1: 'السلام علیکم۔ مجھے ڈاکٹر حسن عزیز سے اپوائنٹمنٹ چاہیے۔',
       me2: 'نام: احمد · مسئلہ: 3 دن سے بخار',
@@ -563,7 +566,7 @@ const ur: SiteContent = {
     emergencyBody: 'سینے میں درد، بے ہوشی یا سانس لینے میں مشکل ہو تو 1122 پر کال کریں یا قریبی ایمرجنسی میں جائیں۔',
     items: [
       { q: 'اپوائنٹمنٹ کیسے لوں؟', a: 'واٹس ایپ پر اپنا نام اور مسئلہ بھیجیں۔ کلینک جواب میں آپ کا وقت اور کلینک بتا دے گا۔' },
-      { q: 'ڈاکٹر صاحب کن دنوں میں ملتے ہیں؟', a: 'پیر سے ہفتہ تک۔ حیات میڈیکل سنٹر صبح 11 سے شام 7 بجے تک، دعا ہسپتال شام 7 سے رات 10 بجے تک۔ اتوار کو دونوں کلینک بند ہوتے ہیں۔' },
+      { q: 'ڈاکٹر صاحب کن دنوں میں ملتے ہیں؟', a: 'ہر روز، کسی ایک کلینک میں۔ حیات میڈیکل سنٹر: دوپہر 12 سے شام 5 بجے، ہفتہ تا جمعرات (جمعہ کو بند)۔ دعا ہسپتال: رات 8 سے 9:30 بجے، پیر تا ہفتہ (اتوار کو بند)۔' },
       { q: 'کیا بغیر اپوائنٹمنٹ کے آ سکتے ہیں؟', a: 'اس کی تصدیق ابھی باقی ہے۔ پہلے اپوائنٹمنٹ لینے سے کم انتظار کرنا پڑتا ہے۔' },
       { q: 'ساتھ کیا لائیں؟', a: 'پرانے نسخے، ٹیسٹ رپورٹیں اور وہ دوائیں جو آپ ابھی لے رہے ہیں۔ شوگر کے مریض اپنی ریڈنگز بھی ساتھ لائیں۔' },
       { q: 'فیس کتنی ہے؟', a: 'اس کی تصدیق ابھی باقی ہے۔ اپنے واٹس ایپ پیغام میں پوچھ لیں۔' },
@@ -572,7 +575,7 @@ const ur: SiteContent = {
   },
   final: {
     heading: 'طبیعت ٹھیک نہیں؟ اپوائنٹمنٹ لیں۔',
-    sub: 'ڈاکٹر حسن عزیز · پیر تا ہفتہ · ملتان',
+    sub: 'ڈاکٹر حسن عزیز · ہر روز · ملتان',
     cta: BOOK_UR,
   },
   footer: {

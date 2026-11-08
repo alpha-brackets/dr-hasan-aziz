@@ -66,7 +66,7 @@ export function Clinics({ c, locale }: { c: SiteContent; locale: Locale }) {
                   </div>
                   <div className="cl-time">
                     <b dir="ltr">{clinic.hoursText}</b>
-                    <span>{t.monSat}</span>
+                    <span>{clinic.daysText[locale]}</span>
                   </div>
                   <WeekStrip clinic={clinic} locale={locale} />
                   <div className="cl-addr">

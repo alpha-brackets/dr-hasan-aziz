@@ -2,19 +2,26 @@
 
 import type { CSSProperties } from 'react';
 import { CLINICS, getContent, type Clinic } from '@/lib/content';
-import { TRACK_END, TRACK_START, formatClock, trackPercent } from '@/lib/clinic-status';
+import { TRACK_END, TRACK_START, formatClock, trackPercent, nextWorkingDay } from '@/lib/clinic-status';
 import type { Locale } from '@/lib/site';
 import { clinicLabel } from './clinicLabel';
 import { dotClass, useKarachiNow } from './useKarachiNow';
 
-const TICKS = [540, 720, 900, 1080, 1260, 1380]; // 9 AM … 11 PM
+// Tick labels sit at the real clinic boundaries (open and close times), placed by minutes —
+// not spread evenly — so they line up with the bars. Opening times anchor to the bar's start,
+// closing times to its end, so a short bar's two labels don't overlap.
+const TICKS = CLINICS.flatMap((x) => [
+  { m: x.openMin, edge: 'start' as const },
+  { m: x.closeMin, edge: 'end' as const },
+]).sort((a, b) => a.m - b.m);
 const SEG_CLASS: Record<string, string> = { hayat: 'hy', dua: 'du' };
 
 /** "Where is he today?": the 9 AM – 11 PM track, the Now marker and one row per clinic (spec §7.3). */
 export function TodayCard({ locale }: { locale: Locale }) {
   const c = getContent(locale);
   const now = useKarachiNow();
-  const sunday = now !== null && !CLINICS.some((x) => x.days[now.day]);
+  const sunday = now !== null && !CLINICS.some((x) => x.days[now.day]); // no clinic works today
+  const nextDay = now ? c.days[(nextWorkingDay(now.day, CLINICS) + 6) % 7] : '';
   const name = (x: Clinic) => (locale === 'ur' ? x.nameUr : x.name);
   const date =
     now &&
@@ -45,22 +52,23 @@ export function TodayCard({ locale }: { locale: Locale }) {
                 width: `${trackPercent(x.closeMin) - trackPercent(x.openMin)}%`,
               }}
             >
-              <span className="seg-t">
-                {formatClock(x.openMin)} – {formatClock(x.closeMin)}
-              </span>
+              <span className="seg-t">{name(x).split(' ')[0]}</span>
             </div>
           ))}
           {now && now.minutes >= TRACK_START && now.minutes <= TRACK_END && (
             <div
               className="now"
               style={{ left: `${trackPercent(now.minutes)}%` }}
-              data-t={`${c.today.now} ${formatClock(now.minutes)}`}
+              // U+2066/U+2069 keep the Latin clock in order next to Urdu text.
+              data-t={`${c.today.now} ⁦${formatClock(now.minutes)}⁩`}
             />
           )}
         </div>
         <div className="ticks">
-          {TICKS.map((m) => (
-            <span key={m}>{formatClock(m)}</span>
+          {TICKS.map((t) => (
+            <span key={t.m} className={t.edge} style={{ left: `${trackPercent(t.m)}%` }}>
+              {formatClock(t.m)}
+            </span>
           ))}
         </div>
         <div className="t-foot">
@@ -69,13 +77,16 @@ export function TodayCard({ locale }: { locale: Locale }) {
             return (
               <div className="t-row" key={x.id}>
                 <span className={dotClass(live ? live.state : 'off')} />
-                <b>{name(x).split(' ')[0]}</b> {formatClock(x.openMin)} – {formatClock(x.closeMin)}
+                <b>{name(x).split(' ')[0]}</b>{' '}
+                <bdi dir="ltr">
+                  {formatClock(x.openMin)} – {formatClock(x.closeMin)}
+                </bdi>
                 <span>{live?.text}</span>
               </div>
             );
           })}
         </div>
-        <div className="sunday">{c.status.sundayNote}</div>
+        <div className="sunday">{c.status.noClinicNote(nextDay)}</div>
       </div>
     </div>
   );

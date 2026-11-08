@@ -127,7 +127,7 @@ Every Urdu string in the new content, by key. Repeated text is listed once, unde
 - book.steps[1].body — اردو میں وائس نوٹ بھی بھیج سکتے ہیں۔
 - book.steps[2].title — اپنا وقت اور کلینک جانیں
 - book.steps[2].body — اپنے وقت پر آئیں اور پیغام دکھا دیں۔
-- book.chat.name — ڈاکٹر حسن عزیز کلینک
+- book.chat.name — ڈاکٹر حسن عزیز
 - book.chat.status — عام طور پر ایک گھنٹے میں جواب دیتے ہیں
 - book.chat.me1 — السلام علیکم۔ مجھے ڈاکٹر حسن عزیز سے اپوائنٹمنٹ چاہیے۔
 - book.chat.me2 — نام: احمد · مسئلہ: 3 دن سے بخار
@@ -214,3 +214,18 @@ Every Urdu string in the new content, by key. Repeated text is listed once, unde
 - treatment.Asthma.blurbUr — سانس کی تکلیف کا علاج اور انہیلر کے استعمال میں مدد۔
 - treatment.TB.nameUr — ٹی بی
 - treatment.TB.blurbUr — ٹی بی کی تشخیص اور مکمل کورس کا علاج۔
+
+### Added 2026-11-08 — new clinic timings (Hayat off Friday, Dua off Sunday)
+- Hayat days — ہفتہ تا جمعرات · جمعہ کو بند
+- Dua days — پیر تا ہفتہ · اتوار کو بند
+- status.neutral — ہفتے کے ساتوں دن · اوقات دیکھیں
+- status.noClinicToday — آج کوئی کلینک نہیں
+- status.bookOn — {day} کے لیے ابھی اپوائنٹمنٹ لیں
+- status.noClinicNote — آج دونوں کلینک بند ہیں۔ {day} کی اپوائنٹمنٹ کے لیے واٹس ایپ پر پیغام بھیجیں۔
+- hero.note — ہر روز · حیات جمعہ کو بند · دعا اتوار کو بند
+- info[0] — ہفتے کے 7 دن / حیات ہفتہ تا جمعرات · دعا پیر تا ہفتہ
+- info[1].sub — حیات دوپہر 12 سے شام 5 · دعا رات 8 سے 9:30
+- about.facts[1] — 7 دن / حیات جمعہ، دعا اتوار کو بند
+- clinics.lead — دن میں حیات میڈیکل سنٹر (جمعہ کو بند)، شام کو دعا ہسپتال (اتوار کو بند)۔
+- faq "Which days" answer — ہر روز، کسی ایک کلینک میں۔ حیات میڈیکل سنٹر: دوپہر 12 سے شام 5 بجے، ہفتہ تا جمعرات (جمعہ کو بند)۔ دعا ہسپتال: رات 8 سے 9:30 بجے، پیر تا ہفتہ (اتوار کو بند)۔
+- final.sub — ڈاکٹر حسن عزیز · ہر روز · ملتان
