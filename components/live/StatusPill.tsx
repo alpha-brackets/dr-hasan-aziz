@@ -10,6 +10,8 @@ export function StatusPill({ locale }: { locale: Locale }) {
   const c = getContent(locale);
   const now = useKarachiNow();
   const comma = c.status.comma;
+  // c.days is Mon..Sun; status days are 0 = Sunday.
+  const dayName = (d: number) => c.days[(d + 6) % 7];
   const nameOf = (id: string) => {
     const clinic = CLINICS.find((x) => x.id === id);
     return clinic ? (locale === 'ur' ? clinic.nameUr : clinic.name) : '';
@@ -22,9 +24,9 @@ export function StatusPill({ locale }: { locale: Locale }) {
   if (now) {
     const s = heroStatus(now.day, now.minutes, CLINICS);
     switch (s.kind) {
-      case 'sunday':
-        text = c.status.sunday;
-        where = c.status.bookMonday;
+      case 'none-today':
+        text = c.status.noClinicToday;
+        where = c.status.bookOn(dayName(s.nextDay));
         break;
       case 'open':
         state = 'open';
@@ -38,7 +40,7 @@ export function StatusPill({ locale }: { locale: Locale }) {
         break;
       case 'closed':
         text = c.status.closedNow;
-        where = s.bookFor === 'monday' ? c.status.bookMonday : c.status.bookTomorrow;
+        where = s.nextDay === (now.day + 1) % 7 ? c.status.bookTomorrow : c.status.bookOn(dayName(s.nextDay));
         break;
     }
   }

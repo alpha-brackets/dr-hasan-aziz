@@ -10,14 +10,17 @@ export type ClinicState =
   | { kind: 'open'; closeMin: number }
   | { kind: 'done' };
 
+// `nextDay` is the next day (0 = Sunday) on which at least one clinic works.
 export type HeroStatus =
-  | { kind: 'sunday' }
+  | { kind: 'none-today'; nextDay: number }
   | { kind: 'open'; clinic: ClinicId; closeMin: number }
   | { kind: 'next'; clinic: ClinicId; minsUntilOpen: number }
-  | { kind: 'closed'; bookFor: 'tomorrow' | 'monday' };
+  | { kind: 'closed'; nextDay: number };
 
-export const TRACK_START = 540; // 9 AM
-export const TRACK_END = 1380; // 11 PM
+// The "Where is he today?" track spans the working day: an hour before the first clinic
+// opens (Hayat, 12 PM) to an hour after the last one closes (Dua, 9:30 PM).
+export const TRACK_START = 660; // 11 AM
+export const TRACK_END = 1350; // 10:30 PM
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -44,8 +47,17 @@ export function clinicState(day: number, minutes: number, clinic: ClinicHours): 
   return { kind: 'done' };
 }
 
+/** The next day (0 = Sunday) after `day` on which at least one clinic works; `day` itself if none do. */
+export function nextWorkingDay(day: number, clinics: readonly ClinicHours[]): number {
+  for (let d = 1; d <= 7; d++) {
+    const next = (day + d) % 7;
+    if (clinics.some((c) => c.days[next])) return next;
+  }
+  return day;
+}
+
 export function heroStatus(day: number, minutes: number, clinics: readonly ClinicHours[]): HeroStatus {
-  if (!clinics.some((c) => c.days[day])) return { kind: 'sunday' };
+  if (!clinics.some((c) => c.days[day])) return { kind: 'none-today', nextDay: nextWorkingDay(day, clinics) };
 
   let next: { clinic: ClinicId; minsUntilOpen: number } | null = null;
   for (const c of clinics) {
@@ -56,7 +68,7 @@ export function heroStatus(day: number, minutes: number, clinics: readonly Clini
     }
   }
   if (next) return { kind: 'next', ...next };
-  return { kind: 'closed', bookFor: day === 6 ? 'monday' : 'tomorrow' };
+  return { kind: 'closed', nextDay: nextWorkingDay(day, clinics) };
 }
 
 export function formatDuration(mins: number, locale: Locale): string {

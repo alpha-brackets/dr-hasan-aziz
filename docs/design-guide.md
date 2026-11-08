@@ -114,7 +114,7 @@ Both locales render the same components, wrapped in `dir="rtl"` for Urdu. So:
 States come from `lib/clinic-status.ts`; the texts come from `SiteContent.status`.
 
 - `closed-today` → "Closed today" · `later` → "Opens in 2h 14m" · `open` → "Open now" · `done` → "Closed for today".
-- The hero pill prefers: Sunday → open clinic → next clinic → closed, with "book for tomorrow" (Monday after Saturday).
+- The hero pill prefers: no clinic today → open clinic → next clinic → closed, with "book for tomorrow" or "book for <day>" (the next day any clinic works, from `nextWorkingDay`).
 - Client islands take `locale`, not the content object: `SiteContent` contains functions, which cannot cross into a client component. They call `getContent(locale)` themselves.
 - Always render a neutral fallback when `useKarachiNow()` returns `null`; that is what keeps exported HTML honest and hydration stable.
 

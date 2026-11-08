@@ -56,12 +56,12 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .nav{position:sticky;top:12px;z-index:50;max-width:1240px;margin:12px auto 0;padding:0 24px}
 .nav-in{display:flex;align-items:center;gap:16px;height:68px;padding:0 10px 0 14px;background:rgba(255,255,255,.98);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);border:1px solid rgba(231,232,232,.95);border-radius:999px;box-shadow:var(--sh)}
 .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:17px;color:var(--b900);line-height:1.2;min-width:0}
-.logo-ph{width:42px;height:42px;border-radius:12px;border:1.5px dashed var(--b300);display:grid;place-items:center;font-size:9px;line-height:11px;font-weight:700;color:var(--b500);text-align:center;flex:none}
+.logo{width:42px;height:42px;object-fit:contain;flex:none;display:block}
 .brand small{display:block;font-weight:500;font-size:13px;color:var(--n500)}
 .nav-links{display:flex;gap:2px;margin-inline-start:auto}
 .nav-links a{white-space:nowrap;font-size:15px;font-weight:500;color:var(--n600);padding:8px 13px;border-radius:999px;transition:background .2s,color .2s}
 .nav-links a:hover{background:var(--b50);color:var(--b700)}
-.lang{font-family:var(--font-gulzar),serif;font-size:18px;line-height:1;height:40px;display:grid;place-items:center;padding:0 14px;border-radius:999px;border:1px solid var(--line);color:var(--b700)}
+.lang{font-family:var(--font-gulzar),serif;font-size:18px;line-height:1.7;height:40px;display:grid;place-items:center;padding:0 14px;border-radius:999px;border:1px solid var(--line);color:var(--b700)}
 .nav .btn{--h:48px;padding:0 20px;font-size:15px}
 .burger{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;place-items:center;color:var(--b800)}
 .menu{display:none}
@@ -160,7 +160,11 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .now{position:absolute;top:4px;bottom:4px;width:2px;background:var(--n900);border-radius:2px}
 .now::before{content:attr(data-t);position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:11.5px;line-height:16px;font-weight:700;background:var(--n900);color:#fff;padding:2px 7px;border-radius:6px;white-space:nowrap}
 .h-today .track,.ticks{direction:ltr}
-.ticks{display:flex;justify-content:space-between;font-size:12px;line-height:16px;color:var(--n500);margin:4px 2px 0;font-variant-numeric:tabular-nums}
+.ticks{position:relative;height:16px;font-size:12px;line-height:16px;color:var(--n500);margin:4px 2px 0;font-variant-numeric:tabular-nums}
+.ticks span{position:absolute;top:0;white-space:nowrap;font-weight:600;color:var(--n600)}
+.ticks span.end{transform:translateX(-100%)}
+.ticks span::before{content:"";position:absolute;top:-5px;width:1px;height:4px;background:var(--n300)}
+.ticks span.start::before{left:0}.ticks span.end::before{right:0}
 .t-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
 .t-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--r-sm);background:var(--b50);font-size:15px;line-height:22px;color:var(--n700)}
 .t-row b{color:var(--b900)}
@@ -406,13 +410,16 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
   .ft{grid-template-columns:1fr 1fr;gap:36px 32px}
 }
 @media (max-width:760px){
+  .ticks{height:34px}
+  .ticks span.end{top:17px}
+  .ticks span.end::before{top:-22px;height:21px}
   body{font-size:16px}
   section{padding-top:88px}
   .wrap,.nav{padding:0 14px}
   .menu{left:14px;right:14px;top:70px}
   .nav-in{height:60px;padding:0 8px 0 10px;gap:10px}
   .brand{font-size:16px}.brand small{font-size:12px}
-  .logo-ph{width:38px;height:38px}
+  .logo{width:38px;height:38px}
   .lang{height:38px;padding:0 12px}
   .burger{width:40px;height:40px}
   .bento{gap:12px}
@@ -443,6 +450,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
   .cl-body{padding:22px 20px}
   .cl-time b{font-size:28px;line-height:36px}
   .cl-act{flex-direction:column}
+  .cl-act .btn{flex:none;width:100%}
   .week div{font-size:12px}
   .book{padding:36px 22px;border-radius:28px}
   .final{flex-direction:column;align-items:flex-start;padding:36px 24px;margin-top:88px}
@@ -479,6 +487,16 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 [dir=rtl][lang=ur]{font-family:var(--font-gulzar),serif;font-size:20px;line-height:2}
 [dir=rtl][lang=ur] h2{font-size:36px;line-height:68px}
 [dir=rtl][lang=ur] .h-name{font-size:clamp(40px,3vw + 20px,56px);line-height:1.86}
+/* Urdu badges, pills and small labels (brand: Urdu ≥16px, line-height 1.8–2).
+   No letter-spacing — it pulls joined Urdu letters apart — and no fixed heights, which clip dots and tails. */
+[dir=rtl][lang=ur] :is(.overline,.cred small,.ex b small,.cl-map .label,.tl .chip,.q-bar .tag,.badge,.pill-status,.pill-status b,.h-conds span,.h-conds a,.tabs button,.week div,.blk h3,.ft h4,.ft-note,.t-row span){letter-spacing:0;text-transform:none}
+[dir=rtl][lang=ur] :is(.overline,.cred small,.ex b small,.cl-map .label,.tl .chip,.q-bar .tag,.badge,.pill-status,.h-conds span,.h-conds a,.blk h3,.ft h4,.brand small){font-size:16px;line-height:1.8}
+[dir=rtl][lang=ur] :is(.h-conds span,.h-conds a,.tabs button){height:auto;min-height:38px;padding-block:2px}
+[dir=rtl][lang=ur] :is(.week div,.cl-time span,.cl-addr small,.h-note,.t-row span:last-child){font-size:16px;line-height:1.8}
+[dir=rtl][lang=ur] :is(.pill-status,.badge,.tl .chip,.q-bar .tag,.cl-map .label){padding-block:3px}
+[dir=rtl][lang=ur] .tabs .ct{font-family:var(--font-figtree),system-ui,sans-serif}
+/* The language switch on the Urdu page reads "English": set it in Figtree, not Gulzar. */
+[dir=rtl][lang=ur] .lang{font-family:var(--font-figtree),system-ui,sans-serif;font-size:15px;font-weight:600;line-height:1}
 
 .about-photo-card{position:relative;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line);background:var(--n100);box-shadow:var(--sh);aspect-ratio:16/10}
 .about-photo-card img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block;transition:transform 1.2s var(--ease)}

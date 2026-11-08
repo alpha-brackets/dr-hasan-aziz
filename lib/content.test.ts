@@ -47,14 +47,14 @@ test('21 treatments', () => {
 
 test('clinics', () => {
   assert.deepEqual(CLINICS.map((c) => c.id), ['hayat', 'dua']);
-  for (const c of CLINICS) {
-    assert.deepEqual([...c.days], [false, true, true, true, true, true, true]);
-  }
   const [hayat, dua] = CLINICS;
-  assert.deepEqual([hayat.openMin, hayat.closeMin], [660, 1140]);
-  assert.deepEqual([dua.openMin, dua.closeMin], [1140, 1320]);
-  assert.equal(hayat.hoursText, '11:00 AM – 7:00 PM');
-  assert.equal(dua.hoursText, '7:00 PM – 10:00 PM');
+  assert.deepEqual([...hayat.days], [true, true, true, true, true, false, true]); // off Friday
+  assert.deepEqual([...dua.days], [false, true, true, true, true, true, true]); // off Sunday
+  assert.deepEqual([hayat.openMin, hayat.closeMin], [720, 1020]);
+  assert.deepEqual([dua.openMin, dua.closeMin], [1200, 1290]);
+  assert.equal(hayat.hoursText, '12:00 PM – 5:00 PM');
+  assert.equal(dua.hoursText, '8:00 PM – 9:30 PM');
+  for (let d = 0; d < 7; d++) assert.ok(CLINICS.some((c) => c.days[d]), `a clinic works on day ${d}`);
   assert.ok(hayat.address?.en.includes('Dost Plaza'));
   assert.ok(dua.address?.en.includes('Sher Shah Road'));
   assert.ok(hayat.mapsQuery.includes('Dost Plaza'));
@@ -97,7 +97,14 @@ test('About Me label', () => {
 });
 
 test('neutral status', () => {
-  assert.equal(en.status.neutral, 'Mon–Sat · see timings');
+  assert.equal(en.status.neutral, 'Open 7 days · see timings');
+});
+
+test('day-name status strings', () => {
+  assert.equal(en.status.bookOn('Monday'), 'Book now for Monday');
+  assert.ok(en.status.noClinicNote('Monday').includes('Monday'));
+  assert.ok(ur.status.bookOn('پیر').includes('پیر'));
+  assert.ok(ur.status.noClinicNote('پیر').includes('پیر'));
 });
 
 test('status strings take their variables', () => {

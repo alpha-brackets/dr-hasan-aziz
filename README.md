@@ -30,12 +30,12 @@ Node 22.18+ is needed so `node --test` can run the TypeScript files without a bu
 
 ## Site data
 
-**Clinics** — both Monday to Saturday, closed Sunday.
+**Clinics** — at least one clinic works every day. Hayat is closed on Friday; Dua is closed on Sunday.
 
-| Clinic | id | Session | Hours |
-|---|---|---|---|
-| Hayat Medical Center | `hayat` | Daytime | 11:00 AM – 7:00 PM |
-| Dua Hospital | `dua` | Evening | 7:00 PM – 10:00 PM |
+| Clinic | id | Session | Hours | Days |
+|---|---|---|---|---|
+| Hayat Medical Center | `hayat` | Daytime | 12:00 PM – 5:00 PM | Saturday – Thursday (off Friday) |
+| Dua Hospital | `dua` | Evening | 8:00 PM – 9:30 PM | Monday – Saturday (off Sunday) |
 
 **Treatments** — 21, in five filter groups: Everyday 5, Long-term 6, Heart & brain 3, Stomach & liver 4, Chest 3.
 
@@ -45,7 +45,7 @@ Node 22.18+ is needed so `node --test` can run the TypeScript files without a bu
 
 Every "open now" label comes from `lib/clinic-status.ts`, which reads the day and minute in **Asia/Karachi** (not the visitor's device clock) and reduces both clinics to `closed-today | later | open | done`. `components/live/useKarachiNow.ts` returns `null` until the client mounts and re-checks every 60 seconds.
 
-Consequence, and it is deliberate: **the exported HTML must never contain a live status.** Build-time HTML, search engines and no-JS visitors get the neutral "Mon–Sat · see timings" text from `lib/content.ts`.
+Consequence, and it is deliberate: **the exported HTML must never contain a live status.** Build-time HTML, search engines and no-JS visitors get the neutral "Open 7 days · see timings" text from `lib/content.ts`.
 
 ## Project layout
 
@@ -80,11 +80,11 @@ Consequence, and it is deliberate: **the exported HTML must never contain a live
 | `public/images/dr-hasan-aziz-consultation.jpg` | About section photo and the WhatsApp chat avatar |
 | `public/images/dr-hasan-aziz-hero.jpg` | not referenced yet; only the unused `--photo` custom property points at it |
 
-The header logo is still a dashed placeholder (`.logo-ph`) and waits for the master Dua Hospital SVG.
+The header logo and favicon are a "HA" monogram in brand Blue 600 with a Green 500 dot (`public/brand/dr-hasan-aziz-mark.svg`, `app/icon.svg`). Swap both files if an official doctor logo is made.
 
 ## Before launch
 
-1. Replace the logo placeholder with the Dua Hospital master SVG.
+1. Confirm the "HA" monogram with the client, or swap in an official doctor logo.
 2. Add real patient reviews, with permission, to `REVIEWS` — the section appears on its own once the array is non-empty.
 3. Confirm the fee and the walk-in policy; the FAQ currently answers both with "to confirm".
 4. Have a native speaker review the Urdu copy; the outstanding strings are listed in `docs/urdu-review.md`.
