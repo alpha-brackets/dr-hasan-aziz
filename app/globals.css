@@ -226,6 +226,7 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .tx .ic svg{width:22px;height:22px}
 .tx b{font-size:17px;line-height:22px;color:var(--b900)}
 .tx .ur{font-size:17px;line-height:1.6;color:var(--b600);direction:rtl;text-align:left;margin-top:8px}
+.tx .en{font-family:var(--font-figtree),system-ui,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:var(--b600);text-align:right;margin-top:2px}
 .tx p{grid-column:1/-1;font-size:14.5px;line-height:22px;color:var(--n500);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
 .tx.hide{display:none}
 @media (min-width:1081px){.tx-grid .ask{grid-column:span 3}.tx-grid.filtered .ask{grid-column:1/-1}}
@@ -243,7 +244,7 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .cl-map .pin{position:absolute;left:58%;top:26%;width:44px;height:44px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--b600);display:grid;place-items:center;box-shadow:0 12px 24px -8px rgba(7,78,162,.6);animation:drop 1s var(--ease) both}
 .cl-map .pin::after{content:"";width:14px;height:14px;border-radius:50%;background:#fff}
 .cl-map .shadow{position:absolute;left:calc(58% + 2px);top:calc(26% + 42px);width:40px;height:12px;border-radius:50%;background:rgba(7,78,162,.22);animation:shadow 2.4s ease-in-out infinite}
-.cl-map .label{position:absolute;inset-inline-start:16px;top:14px;font-size:12px;line-height:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--b700);background:#fff;padding:4px 10px;border-radius:999px;border:1px solid var(--line)}
+.cl-map .label{position:absolute;z-index:1;inset-inline-start:16px;top:14px;font-size:12px;line-height:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--b700);background:#fff;padding:4px 10px;border-radius:999px;border:1px solid var(--line)}
 @keyframes drop{from{transform:translateY(-30px) rotate(-45deg);opacity:0}}
 @keyframes shadow{50%{transform:scale(1.4);opacity:.45}}
 .cl-body{padding:24px 28px 28px;display:flex;flex-direction:column;gap:18px;flex:1}
@@ -493,8 +494,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 @media (max-width:760px){[dir=rtl][lang=ur] .nav-in{height:64px;padding:0 8px 0 10px}}
 [dir=rtl][lang=ur] .brand{gap:10px;line-height:1.3}
 [dir=rtl][lang=ur] .brand span{display:flex;flex-direction:column;gap:0;justify-content:center}
-[dir=rtl][lang=ur] .brand span > span:first-child{font-size:17px;line-height:1.4}
-[dir=rtl][lang=ur] .brand small{font-size:13px !important;line-height:1.3 !important}
+[dir=rtl][lang=ur] .brand > span{font-size:17px;line-height:1.4}
 [dir=rtl][lang=ur] .nav-links{align-items:center;gap:4px}
 [dir=rtl][lang=ur] .nav-links a{font-size:16px;line-height:1.6;padding:5px 14px;display:inline-flex;align-items:center}
 [dir=rtl][lang=ur] .nav .btn{--h:46px;font-size:15px;line-height:1.5;padding:0 18px}
@@ -508,7 +508,17 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 [dir=rtl][lang=ur] :is(.overline,.cred small,.ex b small,.cl-map .label,.tl .chip,.q-bar .tag,.badge,.pill-status,.h-conds span,.h-conds a,.blk h3,.ft h4,.brand small){font-size:16px;line-height:1.8}
 [dir=rtl][lang=ur] :is(.h-conds span,.h-conds a,.tabs button){height:auto;min-height:38px;padding-block:4px}
 [dir=rtl][lang=ur] :is(.week div,.cl-time span,.cl-addr small,.h-note,.t-status){font-size:16px;line-height:1.8}
-[dir=rtl][lang=ur] :is(.pill-status,.badge,.tl .chip,.q-bar .tag,.cl-map .label){padding-block:4px;padding-inline:12px}
+/* Gulzar leaves ~9px of empty descent under the text while tall letters (ٹ گ ک) and their marks rise above it,
+   so equal padding reads as text pushed to the top. More room on top than below balances the ink;
+   in flex pills the dot moves with the content box, so it stays level with the letters. */
+[dir=rtl][lang=ur] :is(.pill-status,.badge,.tl .chip,.q-bar .tag,.cl-map .label){padding-block:8px 2px;padding-inline:12px}
+[dir=rtl][lang=ur] :is(.h-conds span,.h-conds a){padding-block:7px 1px}
+/* The Latin section number sits on the box centre; Gulzar's letters sit ~3px lower. */
+[dir=rtl][lang=ur] .overline .num{transform:translateY(3px)}
+/* Phone dock: the Urdu booking label is long and "اوقات" is short, so give booking the larger share. */
+[dir=rtl][lang=ur] .dock .wa-link{flex:1.7}
+/* Treatment card titles: Gulzar needs more line height than the 22px Latin line. */
+[dir=rtl][lang=ur] .tx b{font-size:18px;line-height:1.7}
 [dir=rtl][lang=ur] :is(.tabs .ct,.ticks,.ticks span,.cl-time b,.t-time){font-family:var(--font-figtree),system-ui,sans-serif;direction:ltr}
 /* The language switch on the Urdu page reads "English": set it in Figtree, not Gulzar. */
 [dir=rtl][lang=ur] .lang{font-family:var(--font-figtree),system-ui,sans-serif;font-size:15px;font-weight:600;line-height:1}

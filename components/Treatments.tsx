@@ -37,7 +37,13 @@ export function Treatments({ c, locale }: { c: SiteContent; locale: Locale }) {
                 <Icon name={x.icon} />
               </span>
               <b>{ur ? x.nameUr : x.name}</b>
-              {!ur && (
+              {/* The other language's name on the second line: Urdu on the English page, English on the Urdu page
+                  (patients often know a condition by its English name, e.g. "Allergy", "Diabetes"). */}
+              {ur ? (
+                <span className="en" lang="en" dir="ltr">
+                  {x.name}
+                </span>
+              ) : (
                 <span className="ur" lang="ur">
                   {x.nameUr}
                 </span>
