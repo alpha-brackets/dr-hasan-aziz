@@ -49,7 +49,7 @@ export function About({ c }: { c: SiteContent }) {
             <h3>{a.qualHeading}</h3>
             <ul className="tl">
               {a.quals.map((q) => (
-                <li key={q.title}>
+                <li key={q.title} className={q.current ? 'tl-current' : undefined}>
                   <b>{q.title}</b>
                   <span className="chip">{q.chip}</span>
                   <span className="where">{q.where}</span>

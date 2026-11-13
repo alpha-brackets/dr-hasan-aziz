@@ -178,7 +178,8 @@ export interface SiteContent {
     photoBadge: string; // label on the About photo card
     facts: { value: string; label: string }[];
     qualHeading: string;
-    quals: { title: string; chip: string; where: string }[];
+    /** `current`: a role he holds now (green dot and chip in the timeline). */
+    quals: { title: string; chip: string; where: string; current?: boolean }[];
     visitHeading: string;
     visit: { stage: string; title: string; body: string }[];
   };
@@ -231,7 +232,7 @@ const en: SiteContent = {
   meta: {
     title: 'Dr. Hasan Aziz — Consultant Physician in Multan',
     description:
-      'Dr. Hasan Aziz (MBBS, FCPS Medicine), consultant physician at Dua Hospital and Hayat Medical Center, Multan. Treatment for diabetes, blood pressure, fever, heart, liver, kidney, allergy and asthma. Monday to Saturday. Book on WhatsApp.',
+      'Dr. Hasan Aziz (MBBS, FCPS Medicine), Medical Director of Dua Hospital and consultant physician at Dua Hospital and Hayat Medical Center, Multan. Treatment for diabetes, blood pressure, fever, heart, liver, kidney, allergy and asthma. Open every day. Book on WhatsApp.',
     keywords: [
       'Dr Hasan Aziz',
       'doctor in Multan',
@@ -291,7 +292,7 @@ const en: SiteContent = {
     plateTitle: 'Dr. Hasan Aziz',
     plateSub: 'Consultant Physician, Multan',
     sideOverline: 'About Me',
-    sideTitle: 'Consultant Physician at Dua Hospital & Hayat Medical Center',
+    sideTitle: 'Medical Director at Dua Hospital and Consultant Physician',
     sideSub: 'Adult medicine: sudden illness and long-term care.',
     degreeLabel: 'Degree',
     degree: 'MBBS',
@@ -311,7 +312,7 @@ const en: SiteContent = {
     overline: 'About Me',
     heading: 'A specialist who listens first.',
     lead:
-      'Dr. Hasan Aziz is a consultant physician at Dua Hospital and Hayat Medical Center, Multan. He treats adults for everyday illness, such as fever, cough and infections, and for long-term conditions, such as diabetes and high blood pressure.',
+      'Dr. Hasan Aziz is the Medical Director of Dua Hospital, Multan, and a consultant physician at Dua Hospital and Hayat Medical Center. He treats adults for everyday illness, such as fever, cough and infections, and for long-term conditions, such as diabetes and high blood pressure.',
     lead2: 'If you need a surgeon or another specialist, he explains why and guides you to the right one.',
     photoBadge: 'Clinical Consultation',
     facts: [
@@ -322,7 +323,8 @@ const en: SiteContent = {
     quals: [
       { title: 'MBBS', chip: 'Degree', where: 'Army Medical College, Rawalpindi' },
       { title: 'FCPS (Medicine)', chip: 'Specialist', where: 'College of Physicians & Surgeons Pakistan' },
-      { title: 'Consultant Physician', chip: 'Current', where: 'Dua Hospital & Hayat Medical Center, Multan' },
+      { title: 'Medical Director', chip: 'Current', where: 'Dua Hospital, Multan', current: true },
+      { title: 'Consultant Physician', chip: 'Current', where: 'Dua Hospital & Hayat Medical Center, Multan', current: true },
     ],
     visitHeading: 'Your visit, step by step',
     visit: [
@@ -415,7 +417,7 @@ const ur: SiteContent = {
   meta: {
     title: 'ڈاکٹر حسن عزیز — کنسلٹنٹ فزیشن، ملتان',
     description:
-      'ڈاکٹر حسن عزیز (MBBS، FCPS میڈیسن)، کنسلٹنٹ فزیشن، دعا ہسپتال اور حیات میڈیکل سنٹر ملتان۔ شوگر، بلڈ پریشر، بخار، دل، جگر، گردے، الرجی اور دمہ کا علاج۔ پیر تا ہفتہ۔ اپوائنٹمنٹ واٹس ایپ پر۔',
+      'ڈاکٹر حسن عزیز (MBBS، FCPS میڈیسن)، میڈیکل ڈائریکٹر دعا ہسپتال، اور کنسلٹنٹ فزیشن، دعا ہسپتال اور حیات میڈیکل سنٹر ملتان۔ شوگر، بلڈ پریشر، بخار، دل، جگر، گردے، الرجی اور دمہ کا علاج۔ ہر روز۔ اپوائنٹمنٹ واٹس ایپ پر۔',
     keywords: [
       'ڈاکٹر حسن عزیز',
       'ڈاکٹر ملتان',
@@ -476,7 +478,7 @@ const ur: SiteContent = {
     plateTitle: 'ڈاکٹر حسن عزیز',
     plateSub: 'کنسلٹنٹ فزیشن، ملتان',
     sideOverline: ABOUT_UR,
-    sideTitle: 'دعا ہسپتال اور حیات میڈیکل سنٹر میں کنسلٹنٹ فزیشن',
+    sideTitle: 'دعا ہسپتال کے میڈیکل ڈائریکٹر اور کنسلٹنٹ فزیشن',
     sideSub: 'بڑوں کا علاج: اچانک بیماری اور لمبے عرصے کی دیکھ بھال۔',
     degreeLabel: 'ڈگری',
     degree: 'MBBS',
@@ -496,7 +498,7 @@ const ur: SiteContent = {
     overline: ABOUT_UR,
     heading: 'ایک سپیشلسٹ جو پہلے آپ کی پوری بات سنتے ہیں۔',
     lead:
-      'ڈاکٹر حسن عزیز دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان میں کنسلٹنٹ فزیشن ہیں۔ وہ بڑوں کا علاج کرتے ہیں: روزمرہ بیماریوں جیسے بخار، کھانسی اور انفیکشن، اور لمبے عرصے کی بیماریاں جیسے شوگر اور ہائی بلڈ پریشر۔',
+      'ڈاکٹر حسن عزیز دعا ہسپتال، ملتان کے میڈیکل ڈائریکٹر ہیں اور دعا ہسپتال اور حیات میڈیکل سنٹر میں کنسلٹنٹ فزیشن ہیں۔ وہ بڑوں کا علاج کرتے ہیں: روزمرہ بیماریوں جیسے بخار، کھانسی اور انفیکشن، اور لمبے عرصے کی بیماریاں جیسے شوگر اور ہائی بلڈ پریشر۔',
     lead2: 'اگر آپ کو سرجن یا کسی اور سپیشلسٹ کی ضرورت ہو تو وہ وجہ سمجھاتے ہیں اور صحیح ڈاکٹر تک پہنچنے میں مدد کرتے ہیں۔',
     photoBadge: 'کلینیکل معائنہ و مشاورت',
     facts: [
@@ -507,7 +509,8 @@ const ur: SiteContent = {
     quals: [
       { title: 'MBBS', chip: 'ڈگری', where: 'آرمی میڈیکل کالج، راولپنڈی' },
       { title: 'FCPS (میڈیسن)', chip: 'سپیشلسٹ', where: 'کالج آف فزیشنز اینڈ سرجنز پاکستان' },
-      { title: 'کنسلٹنٹ فزیشن', chip: 'موجودہ', where: 'دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان' },
+      { title: 'میڈیکل ڈائریکٹر', chip: 'موجودہ', where: 'دعا ہسپتال، ملتان', current: true },
+      { title: 'کنسلٹنٹ فزیشن', chip: 'موجودہ', where: 'دعا ہسپتال اور حیات میڈیکل سنٹر، ملتان', current: true },
     ],
     visitHeading: 'آپ کا چیک اپ، قدم بہ قدم',
     visit: [

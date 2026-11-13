@@ -96,6 +96,14 @@ test('About Me label', () => {
   assert.equal(en.about.overline, 'About Me');
 });
 
+test('Medical Director of Dua Hospital', () => {
+  assert.ok(en.about.lead.includes('Medical Director of Dua Hospital'));
+  assert.ok(en.meta.description.includes('Medical Director of Dua Hospital'));
+  assert.deepEqual(en.about.quals.map((q) => q.title), ['MBBS', 'FCPS (Medicine)', 'Medical Director', 'Consultant Physician']);
+  assert.ok(ur.about.lead.includes('میڈیکل ڈائریکٹر'));
+  assert.equal(ur.about.quals.length, en.about.quals.length);
+});
+
 test('neutral status', () => {
   assert.equal(en.status.neutral, 'Open 7 days · see timings');
 });
