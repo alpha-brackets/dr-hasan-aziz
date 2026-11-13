@@ -109,6 +109,8 @@ test('social accounts', () => {
   const dua = CLINICS.find((x) => x.id === 'dua')!;
   assert.deepEqual(dua.social?.map((s) => s.network), ['youtube', 'tiktok', 'instagram', 'facebook']);
   assert.equal(CLINICS.find((x) => x.id === 'hayat')!.social, undefined);
+  assert.equal(dua.website, 'https://duahospital.pk');
+  assert.equal(CLINICS.find((x) => x.id === 'hayat')!.website, undefined);
   for (const s of [...DOCTOR_SOCIAL, ...(dua.social ?? [])]) {
     assert.ok(s.url.startsWith('https://www.'), s.url);
     assert.ok(/drhasanaziz|duahospitalmultan/.test(s.url), s.url);

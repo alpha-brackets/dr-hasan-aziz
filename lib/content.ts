@@ -43,6 +43,7 @@ export interface Clinic extends ClinicHours {
   mapsQuery: string;
   hoursText: string; // same in both locales
   daysText: Both; // working days and day off
+  website?: string; // the hospital's own website, when it has one
   social?: readonly SocialLink[]; // the hospital's own accounts, when it has them
 }
 
@@ -83,6 +84,7 @@ export const CLINICS: readonly Clinic[] = [
     mapsQuery: 'Dua Hospital Bank Plaza Sher Shah Road Garden Town Multan',
     hoursText: '8:00 PM – 9:30 PM',
     daysText: { en: 'Monday to Saturday · Sunday off', ur: 'پیر تا ہفتہ · اتوار کو بند' },
+    website: 'https://duahospital.pk',
     social: [
       { network: 'youtube', url: 'https://www.youtube.com/@duahospitalmultan' },
       { network: 'tiktok', url: 'https://www.tiktok.com/@duahospitalmultan' },

@@ -1,5 +1,5 @@
 import { CLINICS, DOCTOR, DOCTOR_SOCIAL, NETWORK_NAMES, type SiteContent, type SocialLink } from '@/lib/content';
-import { bookingHref, directionsHref } from '@/lib/links';
+import { bookingHref, directionsHref, siteHost } from '@/lib/links';
 import type { Locale } from '@/lib/site';
 import { Icon } from './icons';
 import { navItems } from './nav/items';
@@ -84,6 +84,14 @@ export function Footer({ c, locale }: { c: SiteContent; locale: Locale }) {
                   <Icon name="nav" />
                   {c.clinics.directions}
                 </a>
+                {clinic.website && (
+                  <a href={clinic.website} target="_blank" rel="noopener">
+                    <Icon name="globe" />
+                    <span lang="en" dir="ltr">
+                      {siteHost(clinic.website)}
+                    </span>
+                  </a>
+                )}
                 {clinic.social && (
                   <Social
                     links={clinic.social}

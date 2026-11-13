@@ -17,3 +17,8 @@ export function bookingHref(locale: Locale, clinicName?: string): string {
 export function directionsHref(query: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
+
+/** The bare domain shown as a website link's text: 'https://www.duahospital.pk/' → 'duahospital.pk'. */
+export function siteHost(url: string): string {
+  return new URL(url).hostname.replace(/^www\./, '');
+}

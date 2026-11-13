@@ -244,6 +244,10 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .cl-map .pin{position:absolute;left:58%;top:26%;width:44px;height:44px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);background:var(--b600);display:grid;place-items:center;box-shadow:0 12px 24px -8px rgba(7,78,162,.6);animation:drop 1s var(--ease) both}
 .cl-map .pin::after{content:"";width:14px;height:14px;border-radius:50%;background:#fff}
 .cl-map .shadow{position:absolute;left:calc(58% + 2px);top:calc(26% + 42px);width:40px;height:12px;border-radius:50%;background:rgba(7,78,162,.22);animation:shadow 2.4s ease-in-out infinite}
+/* The hospital's website, on the map's bottom edge (same pill as the label above it). */
+.cl-map .web{position:absolute;z-index:1;inset-inline-start:16px;bottom:14px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-figtree),system-ui,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:var(--b600);background:#fff;padding:5px 12px 5px 10px;border-radius:999px;border:1px solid var(--line);box-shadow:0 6px 16px -10px rgba(7,78,162,.5);transition:color .2s,border-color .2s,transform .25s var(--ease)}
+.cl-map .web svg{width:16px;height:16px}
+.cl-map .web:hover{color:var(--b800);border-color:var(--b200);transform:translateY(-1px)}
 .cl-map .label{position:absolute;z-index:1;inset-inline-start:16px;top:14px;font-size:12px;line-height:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--b700);background:#fff;padding:4px 10px;border-radius:999px;border:1px solid var(--line)}
 @keyframes drop{from{transform:translateY(-30px) rotate(-45deg);opacity:0}}
 @keyframes shadow{50%{transform:scale(1.4);opacity:.45}}
@@ -361,6 +365,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 .ft-clinic span{display:block}
 .ft-clinic a{display:inline-flex;align-items:center;gap:6px;color:var(--b300);font-weight:600;font-size:14px;margin-top:2px}
 .ft-clinic a:hover{color:#fff}
+.ft-clinic a+a{margin-inline-start:16px} /* website link beside Directions */
 .ft-clinic a svg,.ft-links a svg{width:16px;height:16px}
 .ft-note{font-size:14px;color:var(--b300)}
 .ft-emerg{margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(198,40,40,.16);border:1px solid rgba(245,194,194,.25);color:#FBD5D5;font-size:14px;line-height:20px}
@@ -386,7 +391,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 @media (prefers-reduced-motion:reduce){
   .js .rv{transform:none}
   .btn-pri::after,.cl-map .shadow{animation:none}
-  .btn:hover,.rb:hover,.tx:hover,.review:hover,.soc a:hover,.ft-clinic .soc a:hover{transform:none}
+  .btn:hover,.rb:hover,.tx:hover,.review:hover,.soc a:hover,.ft-clinic .soc a:hover,.cl-map .web:hover{transform:none}
   .tx:hover .ic{transform:none}
 }
 

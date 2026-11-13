@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { CLINICS, type SiteContent } from '@/lib/content';
-import { bookingHref, directionsHref } from '@/lib/links';
+import { bookingHref, directionsHref, siteHost } from '@/lib/links';
 import type { Locale } from '@/lib/site';
 import { Icon } from './icons';
 import { ClinicBadge } from './live/ClinicBadge';
@@ -36,6 +36,14 @@ export function Clinics({ c, locale }: { c: SiteContent; locale: Locale }) {
               >
                 <div className="cl-map">
                   <span className="label">{clinic.label[locale]}</span>
+                  {clinic.website && (
+                    <a className="web" href={clinic.website} target="_blank" rel="noopener">
+                      <Icon name="globe" />
+                      <span lang="en" dir="ltr">
+                        {siteHost(clinic.website)}
+                      </span>
+                    </a>
+                  )}
                   <svg className="road" preserveAspectRatio="none" viewBox="0 0 600 140" aria-hidden="true">
                     {i === 0 ? (
                       <>

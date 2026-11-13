@@ -41,7 +41,8 @@ export function buildPageSchema(locale: Locale) {
       url: pageUrl,
       medicalSpecialty: 'InternalMedicine',
     };
-    if (c.social) node.sameAs = c.social.map((s) => s.url);
+    const sameAs = [...(c.website ? [c.website] : []), ...(c.social ?? []).map((s) => s.url)];
+    if (sameAs.length) node.sameAs = sameAs;
     if (c.address) {
       node.address = {
         '@type': 'PostalAddress',

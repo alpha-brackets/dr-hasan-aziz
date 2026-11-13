@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { bookingHref, directionsHref } from './links.ts';
+import { bookingHref, directionsHref, siteHost } from './links.ts';
 
 const text = (href: string) => new URL(href).searchParams.get('text');
 
@@ -47,4 +47,9 @@ test('directions', () => {
     directionsHref('Dua Hospital Multan'),
     'https://www.google.com/maps/search/?api=1&query=Dua%20Hospital%20Multan',
   );
+});
+
+test('siteHost shows the bare domain', () => {
+  assert.equal(siteHost('https://duahospital.pk'), 'duahospital.pk');
+  assert.equal(siteHost('https://www.duahospital.pk/about/'), 'duahospital.pk');
 });

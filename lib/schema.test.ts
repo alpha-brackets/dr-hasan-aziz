@@ -59,11 +59,12 @@ test('Urdu locale', () => {
   assert.ok(graph('ur').some((n) => n.inLanguage === 'ur-PK'));
 });
 
-test('sameAs links to the social accounts', () => {
+test('sameAs links to the website and social accounts', () => {
   const { physicians, hayat, dua } = parts();
   assert.equal(physicians[0].sameAs.length, 5);
   assert.ok(physicians[0].sameAs.includes('https://www.linkedin.com/in/drhasanaziz/'));
-  assert.equal(dua.sameAs.length, 4);
+  assert.equal(dua.sameAs.length, 5);
+  assert.equal(dua.sameAs[0], 'https://duahospital.pk');
   assert.ok(dua.sameAs.includes('https://www.facebook.com/duahospitalmultan'));
   assert.equal(hayat.sameAs, undefined);
 });
