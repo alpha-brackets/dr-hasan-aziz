@@ -1,4 +1,4 @@
-import { CLINICS, DOCTOR, TREATMENTS, getContent } from './content.ts';
+import { CLINICS, DOCTOR, DOCTOR_SOCIAL, TREATMENTS, getContent } from './content.ts';
 import { SITE_URL } from './site.ts';
 import type { Locale } from './site.ts';
 
@@ -41,6 +41,7 @@ export function buildPageSchema(locale: Locale) {
       url: pageUrl,
       medicalSpecialty: 'InternalMedicine',
     };
+    if (c.social) node.sameAs = c.social.map((s) => s.url);
     if (c.address) {
       node.address = {
         '@type': 'PostalAddress',
@@ -83,6 +84,7 @@ export function buildPageSchema(locale: Locale) {
         medicalSpecialty: 'InternalMedicine',
         qualification: ['MBBS', 'FCPS (Medicine)'],
         knowsLanguage: ['en', 'ur'],
+        sameAs: DOCTOR_SOCIAL.map((s) => s.url),
         availableService: services,
         worksFor: clinics.map((c) => ({ '@id': c['@id'] })),
       },

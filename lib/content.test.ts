@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CLINICS, REVIEWS, TREATMENTS, TREATMENT_GROUPS, getContent } from './content.ts';
+import { CLINICS, DOCTOR_SOCIAL, REVIEWS, TREATMENTS, TREATMENT_GROUPS, getContent } from './content.ts';
 
 // Every string in a value; functions are called with a sample argument so their text is checked too.
 function leaves(value: unknown): string[] {
@@ -102,6 +102,17 @@ test('Medical Director of Dua Hospital', () => {
   assert.deepEqual(en.about.quals.map((q) => q.title), ['MBBS', 'FCPS (Medicine)', 'Medical Director', 'Consultant Physician']);
   assert.ok(ur.about.lead.includes('میڈیکل ڈائریکٹر'));
   assert.equal(ur.about.quals.length, en.about.quals.length);
+});
+
+test('social accounts', () => {
+  assert.deepEqual(DOCTOR_SOCIAL.map((s) => s.network), ['youtube', 'tiktok', 'instagram', 'facebook', 'linkedin']);
+  const dua = CLINICS.find((x) => x.id === 'dua')!;
+  assert.deepEqual(dua.social?.map((s) => s.network), ['youtube', 'tiktok', 'instagram', 'facebook']);
+  assert.equal(CLINICS.find((x) => x.id === 'hayat')!.social, undefined);
+  for (const s of [...DOCTOR_SOCIAL, ...(dua.social ?? [])]) {
+    assert.ok(s.url.startsWith('https://www.'), s.url);
+    assert.ok(/drhasanaziz|duahospitalmultan/.test(s.url), s.url);
+  }
 });
 
 test('neutral status', () => {

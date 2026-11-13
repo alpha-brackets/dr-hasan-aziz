@@ -236,3 +236,8 @@ Every Urdu string in the new content, by key. Repeated text is listed once, unde
 - portrait.sideTitle — دعا ہسپتال کے میڈیکل ڈائریکٹر اور کنسلٹنٹ فزیشن
 - about.lead (opening) — ڈاکٹر حسن عزیز دعا ہسپتال، ملتان کے میڈیکل ڈائریکٹر ہیں اور دعا ہسپتال اور حیات میڈیکل سنٹر میں کنسلٹنٹ فزیشن ہیں۔
 - about.quals (new) — میڈیکل ڈائریکٹر · موجودہ · دعا ہسپتال، ملتان
+
+## 2026-11-13 — Social links
+
+- footer.followDoctor — ڈاکٹر حسن کو فالو کریں
+- footer.followClinic — «{name} کو فالو کریں» (screen-reader label for the Dua Hospital icons, e.g. «دعا ہسپتال کو فالو کریں»)

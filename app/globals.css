@@ -365,6 +365,15 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 .ft-note{font-size:14px;color:var(--b300)}
 .ft-emerg{margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(198,40,40,.16);border:1px solid rgba(245,194,194,.25);color:#FBD5D5;font-size:14px;line-height:20px}
 .ft-emerg b{color:#fff}
+/* Social links: the doctor's under the booking button, Dua Hospital's under its clinic entry. */
+.ft-social{margin-top:22px}
+.ft-follow{display:block;font-size:13px;line-height:16px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--b300);margin-bottom:10px}
+.soc{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.soc a,.ft-clinic .soc a{display:grid;place-items:center;width:40px;height:40px;margin:0;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(191,209,231,.2);color:var(--b100);transition:background .2s,color .2s,transform .25s var(--ease)}
+.soc a:hover,.ft-clinic .soc a:hover{background:#fff;color:var(--b800);transform:translateY(-2px)}
+.soc a svg,.ft-clinic .soc a svg{width:18px;height:18px}
+.ft-clinic .soc{margin-top:10px}
+.ft-clinic .soc a{width:36px;height:36px;border-radius:10px}
 .ft-bottom{border-top:1px solid rgba(191,209,231,.18);margin-top:48px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px}
 .dock{display:none}
 
@@ -377,7 +386,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 @media (prefers-reduced-motion:reduce){
   .js .rv{transform:none}
   .btn-pri::after,.cl-map .shadow{animation:none}
-  .btn:hover,.rb:hover,.tx:hover,.review:hover{transform:none}
+  .btn:hover,.rb:hover,.tx:hover,.review:hover,.soc a:hover,.ft-clinic .soc a:hover{transform:none}
   .tx:hover .ic{transform:none}
 }
 
@@ -519,6 +528,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 [dir=rtl][lang=ur] .dock .wa-link{flex:1.7}
 /* Treatment card titles: Gulzar needs more line height than the 22px Latin line. */
 [dir=rtl][lang=ur] .tx b{font-size:18px;line-height:1.7}
+[dir=rtl][lang=ur] .ft-follow{font-size:16px;line-height:1.8;letter-spacing:0;text-transform:none}
 [dir=rtl][lang=ur] :is(.tabs .ct,.ticks,.ticks span,.cl-time b,.t-time){font-family:var(--font-figtree),system-ui,sans-serif;direction:ltr}
 /* The language switch on the Urdu page reads "English": set it in Figtree, not Gulzar. */
 [dir=rtl][lang=ur] .lang{font-family:var(--font-figtree),system-ui,sans-serif;font-size:15px;font-weight:600;line-height:1}

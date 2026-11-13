@@ -6,11 +6,29 @@ import type { Locale } from './site.ts';
 
 export type IconName = 'fever'|'bug'|'allergy'|'head'|'bone'|'sugar'|'bp'|'blood'|'scale'|'kidney'|'bladder'
   |'heart'|'brain'|'zap'|'acid'|'ulcer'|'liver'|'virus'|'cough'|'asthma'|'lungs'
-  |'wa'|'arrow'|'chev'|'menu'|'close'|'check'|'award'|'cap'|'pin'|'chat'|'nav'|'cal'|'plus'|'alert'|'clock'|'file'|'steth'|'list'|'star'|'globe';
+  |'wa'|'arrow'|'chev'|'menu'|'close'|'check'|'award'|'cap'|'pin'|'chat'|'nav'|'cal'|'plus'|'alert'|'clock'|'file'|'steth'|'list'|'star'|'globe'
+  |Network;
+
+/** Social networks; each name is also its icon name. */
+export type Network = 'tiktok'|'youtube'|'instagram'|'facebook'|'linkedin';
+export type SocialLink = { network: Network; url: string };
+/** Brand names, written the same in both languages. */
+export const NETWORK_NAMES: Record<Network, string> = {
+  tiktok: 'TikTok', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', linkedin: 'LinkedIn',
+};
 
 type Both = { en: string; ur: string };
 
 export const DOCTOR = { name: 'Dr. Hasan Aziz', nameUr: 'ڈاکٹر حسن عزیز' } as const;
+
+/** Dr. Hasan Aziz's own accounts (footer, and `sameAs` in the JSON-LD). */
+export const DOCTOR_SOCIAL: readonly SocialLink[] = [
+  { network: 'youtube', url: 'https://www.youtube.com/@drhasanaziz' },
+  { network: 'tiktok', url: 'https://www.tiktok.com/@drhasanaziz_' },
+  { network: 'instagram', url: 'https://www.instagram.com/drhasanaziz_/' },
+  { network: 'facebook', url: 'https://www.facebook.com/drhasanaziz' },
+  { network: 'linkedin', url: 'https://www.linkedin.com/in/drhasanaziz/' },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Clinics                                                            */
@@ -25,6 +43,7 @@ export interface Clinic extends ClinicHours {
   mapsQuery: string;
   hoursText: string; // same in both locales
   daysText: Both; // working days and day off
+  social?: readonly SocialLink[]; // the hospital's own accounts, when it has them
 }
 
 const MON_SAT = [false, true, true, true, true, true, true] as const; // Sun..Sat — Dua, off Sunday
@@ -64,6 +83,12 @@ export const CLINICS: readonly Clinic[] = [
     mapsQuery: 'Dua Hospital Bank Plaza Sher Shah Road Garden Town Multan',
     hoursText: '8:00 PM – 9:30 PM',
     daysText: { en: 'Monday to Saturday · Sunday off', ur: 'پیر تا ہفتہ · اتوار کو بند' },
+    social: [
+      { network: 'youtube', url: 'https://www.youtube.com/@duahospitalmultan' },
+      { network: 'tiktok', url: 'https://www.tiktok.com/@duahospitalmultan' },
+      { network: 'instagram', url: 'https://www.instagram.com/duahospitalmultan/' },
+      { network: 'facebook', url: 'https://www.facebook.com/duahospitalmultan' },
+    ],
   },
 ];
 
@@ -221,6 +246,8 @@ export interface SiteContent {
     tagline1: string; tagline2: string;
     onPage: string; clinicsHeading: string; help: string; questions: string;
     urduLink: string; // the link to the other language's page
+    followDoctor: string; // heading over the doctor's social links
+    followClinic: (name: string) => string; // accessible label for a clinic's social row
     emergency: Titled;
     copyright: string;
   };
@@ -403,6 +430,8 @@ const en: SiteContent = {
     help: 'Help',
     questions: 'Questions',
     urduLink: 'اردو میں دیکھیں',
+    followDoctor: 'Follow Dr. Hasan',
+    followClinic: (name) => `Follow ${name}`,
     emergency: { title: 'Emergency?', body: 'Call 1122 or go to the nearest emergency.' },
     copyright: '© 2026 Dr. Hasan Aziz · Part of Dua Hospital, Multan',
   },
@@ -589,6 +618,8 @@ const ur: SiteContent = {
     help: 'مدد',
     questions: 'سوالات',
     urduLink: 'View in English',
+    followDoctor: 'ڈاکٹر حسن کو فالو کریں',
+    followClinic: (name) => `${name} کو فالو کریں`,
     emergency: { title: 'ایمرجنسی؟', body: '1122 پر کال کریں یا قریبی ایمرجنسی میں جائیں۔' },
     copyright: '© 2026 ڈاکٹر حسن عزیز · دعا ہسپتال، ملتان',
   },

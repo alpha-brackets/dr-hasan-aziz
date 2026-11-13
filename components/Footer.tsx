@@ -1,4 +1,4 @@
-import { CLINICS, DOCTOR, type SiteContent } from '@/lib/content';
+import { CLINICS, DOCTOR, DOCTOR_SOCIAL, NETWORK_NAMES, type SiteContent, type SocialLink } from '@/lib/content';
 import { bookingHref, directionsHref } from '@/lib/links';
 import type { Locale } from '@/lib/site';
 import { Icon } from './icons';
@@ -13,6 +13,27 @@ const NUMBERS: Record<string, string> = {
   '#reviews': '05',
   '#faq': '06',
 };
+
+/** A row of round social icons; each link names the network and whose account it is. */
+function Social({ links, owner, label, me }: { links: readonly SocialLink[]; owner: string; label: string; me?: boolean }) {
+  return (
+    <ul className="soc" aria-label={label}>
+      {links.map((s) => (
+        <li key={s.network}>
+          <a
+            href={s.url}
+            target="_blank"
+            rel={me ? 'noopener me' : 'noopener'}
+            aria-label={`${NETWORK_NAMES[s.network]} · ${owner}`}
+            title={NETWORK_NAMES[s.network]}
+          >
+            <Icon name={s.network} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 /** The four-column footer (spec §3.11). No back-to-top link: the floating button does that. */
 export function Footer({ c, locale }: { c: SiteContent; locale: Locale }) {
@@ -39,6 +60,10 @@ export function Footer({ c, locale }: { c: SiteContent; locale: Locale }) {
               <Icon name="wa" />
               {c.nav.cta}
             </a>
+            <div className="ft-social">
+              <span className="ft-follow">{f.followDoctor}</span>
+              <Social links={DOCTOR_SOCIAL} owner={ur ? DOCTOR.nameUr : DOCTOR.name} label={f.followDoctor} me />
+            </div>
           </div>
           <nav className="ft-links" aria-label={f.onPage}>
             <h4>{f.onPage}</h4>
@@ -59,6 +84,13 @@ export function Footer({ c, locale }: { c: SiteContent; locale: Locale }) {
                   <Icon name="nav" />
                   {c.clinics.directions}
                 </a>
+                {clinic.social && (
+                  <Social
+                    links={clinic.social}
+                    owner={ur ? clinic.nameUr : clinic.name}
+                    label={f.followClinic(ur ? clinic.nameUr : clinic.name)}
+                  />
+                )}
               </div>
             ))}
             <div className="ft-note">{c.hero.note}</div>
