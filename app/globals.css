@@ -219,13 +219,13 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .tabs button:not([aria-selected=true]):hover{background:var(--b50);color:var(--b700)}
 .tabs .ct{font-size:12px;opacity:.7;margin-inline-start:5px}
 .tx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.tx{padding:18px;display:grid;grid-template-columns:46px 1fr;gap:0 14px;align-items:center;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
+.tx{padding:18px;display:grid;grid-template-columns:46px 1fr;gap:0 14px;align-items:center;align-content:center;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s}
 .tx:hover{transform:translateY(-3px);box-shadow:var(--sh-hi);border-color:var(--b200)}
 .tx .ic{grid-row:span 2;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--b50);color:var(--b600);transition:transform .4s var(--ease),background .3s,color .3s}
 .tx:hover .ic{transform:rotate(-8deg);background:var(--b600);color:#fff}
 .tx .ic svg{width:22px;height:22px}
 .tx b{font-size:17px;line-height:22px;color:var(--b900)}
-.tx .ur{font-size:17px;line-height:1.6;color:var(--b600);direction:rtl;text-align:left;margin-top:8px}
+.tx .ur{font-size:17px;line-height:1.6;color:var(--b600);direction:rtl;text-align:left;margin-top:9px}
 .tx .en{font-family:var(--font-figtree),system-ui,sans-serif;font-size:14px;line-height:20px;font-weight:600;color:var(--b600);text-align:right;margin-top:2px}
 .tx p{grid-column:1/-1;font-size:14.5px;line-height:22px;color:var(--n500);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
 .tx.hide{display:none}
@@ -451,7 +451,7 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
   .t-foot,.ribbon,.cl-grid,.rv-grid,.ex-list{grid-template-columns:1fr}
   .ribbon{gap:12px}
   .tx-grid{grid-template-columns:1fr 1fr;gap:10px}
-  .tx{grid-template-columns:1fr;padding:16px;gap:2px}
+  .tx{grid-template-columns:1fr;padding:16px;gap:2px;align-content:start}
   .tx .ic{grid-row:auto;width:42px;height:42px;margin-bottom:8px}
   .tx p{display:none}
   .tabs{flex-wrap:nowrap;overflow-x:auto;border-radius:16px;scrollbar-width:none;max-width:100%}
