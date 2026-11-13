@@ -69,7 +69,7 @@ Consequence, and it is deliberate: **the exported HTML must never contain a live
 
 ## Configuration
 
-- **Domain:** `SITE_URL` in `lib/site.ts`. Canonical URLs, `hreflang`, JSON-LD ids, the sitemap and robots all derive from it; override per build with `NEXT_PUBLIC_SITE_URL`.
+- **Domain:** `https://drhasanaziz.com`, from `SITE_URL` in `lib/site.ts`. Canonical URLs, `hreflang`, JSON-LD ids, the sitemap and robots all derive from it. Vercel sets the same value as `NEXT_PUBLIC_SITE_URL` (production and preview); keep the two in step.
 - **WhatsApp number:** `WHATSAPP_NUMBER` in `lib/site.ts` (`923336489392`).
 
 ## Images
