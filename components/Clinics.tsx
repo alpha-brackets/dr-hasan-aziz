@@ -62,7 +62,8 @@ export function Clinics({ c, locale }: { c: SiteContent; locale: Locale }) {
                 </div>
                 <div className="cl-body">
                   <div className="cl-top">
-                    <div>
+                    <div className={clinic.logo ? 'cl-id has-logo' : 'cl-id'}>
+                      {clinic.logo && <img className="cl-logo" src={clinic.logo.color} alt="" width={48} height={47} />}
                       <h3>{name}</h3>
                       {!ur && (
                         <div className="ur" lang="ur">

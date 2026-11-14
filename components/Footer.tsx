@@ -5,6 +5,9 @@ import { Icon } from './icons';
 import { navItems } from './nav/items';
 
 // Section numbers match the section overlines, so they stay fixed even when Reviews (05) is hidden.
+/** Dua Hospital's white logo, shown beside "Part of Dua Hospital" at the very bottom. */
+const DUA_LOGO_WHITE = CLINICS.find((x) => x.id === 'dua')?.logo?.white;
+
 const NUMBERS: Record<string, string> = {
   '#doctor': '01',
   '#treatments': '02',
@@ -78,7 +81,10 @@ export function Footer({ c, locale }: { c: SiteContent; locale: Locale }) {
             <h4>{f.clinicsHeading}</h4>
             {CLINICS.map((clinic) => (
               <div className="ft-clinic" key={clinic.id}>
-                <b>{ur ? clinic.nameUr : clinic.name}</b>
+                <b>
+                  {clinic.logo && <img className="ft-logo" src={clinic.logo.white} alt="" width={22} height={21} />}
+                  {ur ? clinic.nameUr : clinic.name}
+                </b>
                 <span dir="ltr">{clinic.hoursText}</span>
                 <a href={directionsHref(clinic.mapsQuery)} target="_blank" rel="noopener">
                   <Icon name="nav" />
@@ -123,7 +129,10 @@ export function Footer({ c, locale }: { c: SiteContent; locale: Locale }) {
           </div>
         </div>
         <div className="ft-bottom">
-          <span>{f.copyright}</span>
+          <span className="ft-copy">
+            {DUA_LOGO_WHITE && <img className="ft-logo" src={DUA_LOGO_WHITE} alt="" width={22} height={21} />}
+            {f.copyright}
+          </span>
         </div>
       </div>
     </footer>

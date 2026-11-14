@@ -39,7 +39,7 @@ Node 22.18+ is required (native TypeScript type-stripping). Run `npm test` after
 - Value imports inside `lib/` use explicit `.ts` extensions so `node --test` can load them; type-only imports use `import type`.
 - `app/globals.css` is one file with a block per section — extend it rather than adding a stylesheet.
 - Motion is CSS keyframes plus four small JS islands (`Reveal`, `SmoothNav`, `BackToTop`, `ChatDemo`); keep the `prefers-reduced-motion` behaviour in spec §7.6.
-- Images use `next/image` with fixed `width`/`height` and `unoptimized` (static export). The header logo and favicon are the "HA" monogram (`public/brand/dr-hasan-aziz-mark.svg`, `app/icon.svg`); no official doctor logo exists in the brand file yet.
+- Images use `next/image` with fixed `width`/`height` and `unoptimized` (static export). The header logo and favicon are the "HA" monogram (`public/brand/dr-hasan-aziz-mark.svg`, `app/icon.svg`); no official doctor logo exists in the brand file yet. Dua Hospital's own logo (Figma "Dua Hospital — Logo" v2, icon-only, blue and white) is `public/brand/dua-hospital-icon*.svg`, set on its clinic as `logo` and shown on its clinic card and in the footer; never as the site's header logo.
 
 ## Where things are
 

@@ -254,6 +254,9 @@ section{padding:120px 0 0;scroll-margin-top:90px}
 .cl-body{padding:24px 28px 28px;display:flex;flex-direction:column;gap:18px;flex:1}
 .cl-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .cl-top h3{font-size:24px;line-height:32px;color:var(--b900);letter-spacing:-.02em;font-weight:700}
+/* A clinic's own logo, when it has one, beside its name. */
+.cl-id.has-logo{display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:center}
+.cl-id.has-logo .cl-logo{grid-row:span 2;width:48px;height:auto}
 .cl-top .ur{font-size:18px;color:var(--b600);text-align:left;line-height:1.7;margin-top:6px}
 .badge{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;line-height:20px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--b50);color:var(--b800);white-space:nowrap}
 .badge[data-state=open]{background:var(--ok-bg);color:var(--ok-text)}
@@ -379,6 +382,9 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
 .soc a svg,.ft-clinic .soc a svg{width:18px;height:18px}
 .ft-clinic .soc{margin-top:10px}
 .ft-clinic .soc a{width:36px;height:36px;border-radius:10px}
+.ft-logo{width:22px;height:auto;flex:none}
+.ft-clinic b{display:flex;align-items:center;gap:8px}
+.ft-copy{display:inline-flex;align-items:center;gap:10px}
 .ft-bottom{border-top:1px solid rgba(191,209,231,.18);margin-top:48px;padding-top:22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px}
 .dock{display:none}
 
@@ -464,6 +470,8 @@ footer{margin-top:64px;background:var(--b900);color:var(--b200);padding:64px 0 3
   .sec-head{margin-bottom:24px}
   .blk{padding:24px 20px}
   .cl-body{padding:22px 20px}
+  .cl-top:has(.has-logo){flex-wrap:wrap} /* logo + name + live badge don't fit one phone row: the badge drops below */
+  .cl-id.has-logo .cl-logo{width:42px}
   .cl-time b{font-size:28px;line-height:36px}
   .cl-act{flex-direction:column}
   .cl-act .btn{flex:none;width:100%}

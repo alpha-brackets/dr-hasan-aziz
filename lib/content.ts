@@ -44,6 +44,7 @@ export interface Clinic extends ClinicHours {
   hoursText: string; // same in both locales
   daysText: Both; // working days and day off
   website?: string; // the hospital's own website, when it has one
+  logo?: { color: string; white: string }; // icon-only logo files: for light and dark backgrounds
   social?: readonly SocialLink[]; // the hospital's own accounts, when it has them
 }
 
@@ -85,6 +86,8 @@ export const CLINICS: readonly Clinic[] = [
     hoursText: '8:00 PM – 9:30 PM',
     daysText: { en: 'Monday to Saturday · Sunday off', ur: 'پیر تا ہفتہ · اتوار کو بند' },
     website: 'https://duahospital.pk',
+    // Figma "Dua Hospital — Logo" v2, Type=Icon (the brand's choice below 120 px).
+    logo: { color: '/brand/dua-hospital-icon.svg', white: '/brand/dua-hospital-icon-white.svg' },
     social: [
       { network: 'youtube', url: 'https://www.youtube.com/@duahospitalmultan' },
       { network: 'tiktok', url: 'https://www.tiktok.com/@duahospitalmultan' },

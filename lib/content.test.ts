@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { CLINICS, DOCTOR_SOCIAL, REVIEWS, TREATMENTS, TREATMENT_GROUPS, getContent } from './content.ts';
 
 // Every string in a value; functions are called with a sample argument so their text is checked too.
@@ -115,6 +116,15 @@ test('social accounts', () => {
     assert.ok(s.url.startsWith('https://www.'), s.url);
     assert.ok(/drhasanaziz|duahospitalmultan/.test(s.url), s.url);
   }
+});
+
+test('Dua Hospital logo files exist', () => {
+  const dua = CLINICS.find((x) => x.id === 'dua')!;
+  assert.ok(dua.logo, 'Dua Hospital has a logo');
+  for (const file of [dua.logo.color, dua.logo.white]) {
+    assert.ok(existsSync(new URL(`../public${file}`, import.meta.url)), file);
+  }
+  assert.equal(CLINICS.find((x) => x.id === 'hayat')!.logo, undefined);
 });
 
 test('neutral status', () => {
